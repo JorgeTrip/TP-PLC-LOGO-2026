@@ -109,14 +109,15 @@ header h1 {
 }
 
 .sidebar {
-  width: 280px;
+  width: 320px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--borde-sidebar);
-  padding: 20px 14px;
+  padding: 20px 12px;
   position: sticky;
   top: 58px;
   height: calc(100vh - 58px);
   overflow-y: auto;
+  overflow-x: hidden;
   flex-shrink: 0;
 }
 
@@ -137,15 +138,31 @@ header h1 {
 
 .sidebar-link {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
   border-radius: 8px;
   color: var(--texto-secundario);
   text-decoration: none;
   font-size: 13px;
+  line-height: 1.35;
   font-weight: 500;
   transition: all .15s;
+  white-space: normal;
+}
+
+.sidebar-num {
+  font-weight: 700;
+  color: var(--acento-azul);
+  flex-shrink: 0;
+  min-width: 30px;
+}
+
+.sidebar-texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .sidebar-link:hover {

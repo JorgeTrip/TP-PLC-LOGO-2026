@@ -80,14 +80,16 @@ export const estilosMovilCss = `
   .sidebar {
     position: fixed;
     top: 0;
-    left: -300px;
-    width: 280px;
+    left: -340px;
+    width: min(320px, 85vw);
     height: 100vh;
     z-index: 90;
+    overflow-x: hidden;
     transition: left .25s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 6px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.abierto { left: 0; }
+  .fab-top { bottom: 20px; right: 16px; width: 44px; height: 44px; font-size: 20px; }
   .sidebar-header-movil {
     display: flex;
     justify-content: space-between;

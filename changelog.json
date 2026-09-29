@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.8.0",
+    "fecha": "2026-09-29",
+    "tipo": "fix",
+    "titulo": "Se oculta badge de Netlify, se reubica FAB y se ensancha sidebar sin scroll lateral",
+    "cambios": [
+      "Se suprime el badge/drawer inyectado por Netlify mediante reglas de CSS prioritarias y limpieza activa en tiempo de ejecución con MutationObserver.",
+      "Se eleva el FAB de retorno al inicio con z-index 99999 y coordenadas optimizadas (bottom: 28px, right: 28px).",
+      "Se ensancha el sidebar a 320px en escritorio con overflow-x: hidden y ajuste multilínea para visualizar títulos completos sin necesidad de scroll horizontal."
+    ]
+  },
+  {
     "version": "1.7.0",
     "fecha": "2026-09-29",
     "tipo": "fix",

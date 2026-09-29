@@ -71,5 +71,27 @@ export function generarScriptInteraccionesUi() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
   }
+
+  // Supresión activa de badges y widgets de Netlify
+  function suprimirBadgeNetlify() {
+    const selectores = [
+      '[data-netlify-badge]', '.netlify-badge', '#netlify-badge',
+      'iframe#netlify-badge', 'iframe[src*="netlify"]', 'netlify-drawer-root',
+      '#netlify-drawer', '[class*="netlify-badge"]', '[class*="netlify-drawer"]'
+    ];
+    selectores.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => el.remove());
+    });
+    document.querySelectorAll('a[href*="netlify.com"]').forEach(enlace => {
+      const contenedor = enlace.closest('div[style*="fixed"]') || enlace;
+      contenedor.remove();
+    });
+  }
+  suprimirBadgeNetlify();
+  try {
+    const obsNetlify = new MutationObserver(suprimirBadgeNetlify);
+    obsNetlify.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => obsNetlify.disconnect(), 10000);
+  } catch (e) {}
 `;
 }

@@ -60,6 +60,15 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   await page.mouse.wheel(0, 100);
   const sticky45 = card45.locator('.cabecera-ejercicio-sticky');
   await expect(sticky45).toBeVisible();
+
+  // Verificar que el sidebar de escritorio no tiene desborde horizontal (sin scroll lateral)
+  const sidebarDesktop = page.locator('#sidebar-principal');
+  const sinScrollLateralSidebar = await sidebarDesktop.evaluate(el => el.scrollWidth <= el.clientWidth);
+  expect(sinScrollLateralSidebar).toBe(true);
+
+  // Verificar z-index del botón FAB flotante
+  const zIndexFab = await page.locator('#btn-fab-top').evaluate(el => window.getComputedStyle(el).zIndex);
+  expect(Number(zIndexFab)).toBeGreaterThanOrEqual(9999);
 });
 
 test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {

@@ -108,14 +108,15 @@ header h1 {
 }
 
 .sidebar {
-  width: 280px;
+  width: 320px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--borde-sidebar);
-  padding: 20px 14px;
+  padding: 20px 12px;
   position: sticky;
   top: 58px;
   height: calc(100vh - 58px);
   overflow-y: auto;
+  overflow-x: hidden;
   flex-shrink: 0;
 }
 
@@ -136,15 +137,31 @@ header h1 {
 
 .sidebar-link {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
   border-radius: 8px;
   color: var(--texto-secundario);
   text-decoration: none;
   font-size: 13px;
+  line-height: 1.35;
   font-weight: 500;
   transition: all .15s;
+  white-space: normal;
+}
+
+.sidebar-num {
+  font-weight: 700;
+  color: var(--acento-azul);
+  flex-shrink: 0;
+  min-width: 30px;
+}
+
+.sidebar-texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .sidebar-link:hover {
@@ -267,11 +284,33 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 .tanque-visual { width: 130px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
 .tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
+/* Supresión activa de badge y drawer inyectados por Netlify */
+[data-netlify-badge],
+.netlify-badge,
+#netlify-badge,
+iframe#netlify-badge,
+iframe[src*="netlify"],
+netlify-drawer-root,
+#netlify-drawer,
+div[class*="netlify-badge"],
+div[class*="netlify-drawer"],
+a[href*="netlify.com"][style*="position: fixed"],
+div[style*="position: fixed"]:has(a[href*="netlify.com"]),
+div[style*="position:fixed"]:has(a[href*="netlify.com"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  z-index: -9999 !important;
+}
+
 /* FAB Volver al Top */
 .fab-top {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 28px;
+  right: 28px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -290,7 +329,7 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
   visibility: hidden;
   transform: translateY(12px);
   transition: opacity .25s ease, transform .25s ease, background .15s, color .15s;
-  z-index: 99;
+  z-index: 99999;
 }
 .fab-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 .fab-top:hover { background: var(--bg-btn-hover); color: var(--texto-principal); transform: translateY(-2px); }
@@ -473,14 +512,16 @@ header .header-controles [data-tooltip]:focus::after {
   .sidebar {
     position: fixed;
     top: 0;
-    left: -300px;
-    width: 280px;
+    left: -340px;
+    width: min(320px, 85vw);
     height: 100vh;
     z-index: 90;
+    overflow-x: hidden;
     transition: left .25s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 6px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.abierto { left: 0; }
+  .fab-top { bottom: 20px; right: 16px; width: 44px; height: 44px; font-size: 20px; }
   .sidebar-header-movil {
     display: flex;
     justify-content: space-between;
@@ -581,55 +622,55 @@ header .header-controles [data-tooltip]:focus::after {
       <div class="sidebar-titulo">Documentación Oficial</div>
       <nav class="sidebar-nav">
         <a href="#enunciado-tp-completo" class="sidebar-link activo" title="Enunciado Oficial Completo" data-tooltip="Enunciado Oficial Completo">
-          <span>📋</span>
-          <span>Enunciado Completo TP</span>
+          <span class="sidebar-num">📋</span>
+          <span class="sidebar-texto">Enunciado Completo TP</span>
         </a>
       </nav>
       <div class="sidebar-titulo" style="margin-top:20px">Ejercicios Resueltos</div>
       <nav class="sidebar-nav">
 <a href="#ejercicio-4-1" class="sidebar-link" title="4.1 · Control de Motor con Retención" data-tooltip="4.1 · Control de Motor con Retención">
-      <span style="font-weight:700;color:var(--acento-azul)">4.1</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Motor con Retención</span>
+      <span class="sidebar-num">4.1</span>
+      <span class="sidebar-texto">Control de Motor con Retención</span>
     </a>
 <a href="#ejercicio-4-2" class="sidebar-link" title="4.2 · Control de Motor con Bobina Set-Reset" data-tooltip="4.2 · Control de Motor con Bobina Set-Reset">
-      <span style="font-weight:700;color:var(--acento-azul)">4.2</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Motor con Bobina Set-Reset</span>
+      <span class="sidebar-num">4.2</span>
+      <span class="sidebar-texto">Control de Motor con Bobina Set-Reset</span>
     </a>
 <a href="#ejercicio-4-3" class="sidebar-link" title="4.3 · Encendido Retardado con Pre-aviso" data-tooltip="4.3 · Encendido Retardado con Pre-aviso">
-      <span style="font-weight:700;color:var(--acento-azul)">4.3</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Encendido Retardado con Pre-aviso</span>
+      <span class="sidebar-num">4.3</span>
+      <span class="sidebar-texto">Encendido Retardado con Pre-aviso</span>
     </a>
 <a href="#ejercicio-4-4" class="sidebar-link" title="4.4 · Temporización de Pasillo (Luz de Cortesía)" data-tooltip="4.4 · Temporización de Pasillo (Luz de Cortesía)">
-      <span style="font-weight:700;color:var(--acento-azul)">4.4</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Temporización de Pasillo (Luz de Cortesía)</span>
+      <span class="sidebar-num">4.4</span>
+      <span class="sidebar-texto">Temporización de Pasillo (Luz de Cortesía)</span>
     </a>
 <a href="#ejercicio-4-5" class="sidebar-link" title="4.5 · Desconexión por Conteo de Pulsos" data-tooltip="4.5 · Desconexión por Conteo de Pulsos">
-      <span style="font-weight:700;color:var(--acento-azul)">4.5</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Desconexión por Conteo de Pulsos</span>
+      <span class="sidebar-num">4.5</span>
+      <span class="sidebar-texto">Desconexión por Conteo de Pulsos</span>
     </a>
 <a href="#ejercicio-4-6" class="sidebar-link" title="4.6 · Secuencia Lógica de Seguridad" data-tooltip="4.6 · Secuencia Lógica de Seguridad">
-      <span style="font-weight:700;color:var(--acento-azul)">4.6</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Secuencia Lógica de Seguridad</span>
+      <span class="sidebar-num">4.6</span>
+      <span class="sidebar-texto">Secuencia Lógica de Seguridad</span>
     </a>
 <a href="#ejercicio-4-7" class="sidebar-link" title="4.7 · Sistema de Alerta Multifunción" data-tooltip="4.7 · Sistema de Alerta Multifunción">
-      <span style="font-weight:700;color:var(--acento-azul)">4.7</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Sistema de Alerta Multifunción</span>
+      <span class="sidebar-num">4.7</span>
+      <span class="sidebar-texto">Sistema de Alerta Multifunción</span>
     </a>
 <a href="#ejercicio-4-8" class="sidebar-link" title="4.8 · Control de Acceso a Estacionamiento" data-tooltip="4.8 · Control de Acceso a Estacionamiento">
-      <span style="font-weight:700;color:var(--acento-azul)">4.8</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Acceso a Estacionamiento</span>
+      <span class="sidebar-num">4.8</span>
+      <span class="sidebar-texto">Control de Acceso a Estacionamiento</span>
     </a>
 <a href="#ejercicio-4-9" class="sidebar-link" title="4.9 · Automatización de Portón Levadizo" data-tooltip="4.9 · Automatización de Portón Levadizo">
-      <span style="font-weight:700;color:var(--acento-azul)">4.9</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Automatización de Portón Levadizo</span>
+      <span class="sidebar-num">4.9</span>
+      <span class="sidebar-texto">Automatización de Portón Levadizo</span>
     </a>
 <a href="#ejercicio-4-10" class="sidebar-link" title="4.10 · Control de Nivel de Tanque con Bombas en Cascada" data-tooltip="4.10 · Control de Nivel de Tanque con Bombas en Cascada">
-      <span style="font-weight:700;color:var(--acento-azul)">4.10</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Nivel de Tanque con Bombas en Cascada</span>
+      <span class="sidebar-num">4.10</span>
+      <span class="sidebar-texto">Control de Nivel de Tanque con Bombas en Cascada</span>
     </a>
 <a href="#ejercicio-4-11" class="sidebar-link" title="4.11 · Alternancia de Bombas para Reparto de Carga" data-tooltip="4.11 · Alternancia de Bombas para Reparto de Carga">
-      <span style="font-weight:700;color:var(--acento-azul)">4.11</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Alternancia de Bombas para Reparto de Carga</span>
+      <span class="sidebar-num">4.11</span>
+      <span class="sidebar-texto">Alternancia de Bombas para Reparto de Carga</span>
     </a>
       </nav>
     </aside>
@@ -1164,6 +1205,28 @@ header .header-controles [data-tooltip]:focus::after {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
   }
+
+  // Supresión activa de badges y widgets de Netlify
+  function suprimirBadgeNetlify() {
+    const selectores = [
+      '[data-netlify-badge]', '.netlify-badge', '#netlify-badge',
+      'iframe#netlify-badge', 'iframe[src*="netlify"]', 'netlify-drawer-root',
+      '#netlify-drawer', '[class*="netlify-badge"]', '[class*="netlify-drawer"]'
+    ];
+    selectores.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => el.remove());
+    });
+    document.querySelectorAll('a[href*="netlify.com"]').forEach(enlace => {
+      const contenedor = enlace.closest('div[style*="fixed"]') || enlace;
+      contenedor.remove();
+    });
+  }
+  suprimirBadgeNetlify();
+  try {
+    const obsNetlify = new MutationObserver(suprimirBadgeNetlify);
+    obsNetlify.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => obsNetlify.disconnect(), 10000);
+  } catch (e) {}
 
 
   const glosarioTerminosPlc = {"Siemens LOGO!":"Micro-PLC modular para automatización básica de relés, temporizadores y contadores.","LOGO!":"Microcontrolador lógico programable de Siemens para aplicaciones industriales y edilicias.","KOP":"Diagrama de Contactos o Ladder (escalera), lenguaje gráfico basado en relés eléctricos.","Ladder":"Lenguaje de contactos en escalera (KOP) estandarizado por la norma IEC 61131-3.","FBD":"Diagrama de Bloques de Funciones (FUP en alemán), lenguaje gráfico de compuertas lógicas.","AWL":"Lista de Instrucciones (IL), lenguaje de programación de bajo nivel tipo ensamblador.","TON":"Timer On-Delay: Temporizador con retardo a la conexión. Cuenta mientras la entrada esté activa.","TOF":"Timer Off-Delay: Temporizador con retardo a la desconexión. Mantiene encendida la salida un tiempo extra.","TP":"Pulse Timer: Temporizador de impulso. Emite un pulso de duración calibrada ante un flanco.","CTU":"Count-Up: Contador ascendente por flancos de entrada hasta alcanzar el valor prefijado.","CTUD":"Count Up/Down: Contador bidireccional ascendente y descendente con reset y dirección.","Autorretención":"Circuito de sello donde un contacto auxiliar de la bobina sostiene su propia energización.","Latching":"Término en inglés para autorretención o memoria biestable de un relé.","Relé autoenclavador":"Bloque de función RS de LOGO! con memoria interna no volátil y reset prioritario.","Enclavamiento":"Interlock: Bloqueo eléctrico o lógico que impide la activación simultánea de salidas opuestas.","N/A":"Normalmente Abierto: Contacto que solo conduce corriente cuando su actuador está energizado.","N/C":"Normalmente Cerrado: Contacto que conduce en reposo y corta el paso al ser presionado.","PE":"Parada de Emergencia: Botonera tipo hongo con apertura forzada para corte seguro inmediato.","Flanco positivo":"Transición de estado bajo (0) a estado alto (1) en un ciclo de escaneo del PLC."};

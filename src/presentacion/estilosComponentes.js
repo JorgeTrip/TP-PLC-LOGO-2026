@@ -101,11 +101,33 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 .tanque-visual { width: 130px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
 .tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
+/* Supresión activa de badge y drawer inyectados por Netlify */
+[data-netlify-badge],
+.netlify-badge,
+#netlify-badge,
+iframe#netlify-badge,
+iframe[src*="netlify"],
+netlify-drawer-root,
+#netlify-drawer,
+div[class*="netlify-badge"],
+div[class*="netlify-drawer"],
+a[href*="netlify.com"][style*="position: fixed"],
+div[style*="position: fixed"]:has(a[href*="netlify.com"]),
+div[style*="position:fixed"]:has(a[href*="netlify.com"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  z-index: -9999 !important;
+}
+
 /* FAB Volver al Top */
 .fab-top {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 28px;
+  right: 28px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -124,7 +146,7 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
   visibility: hidden;
   transform: translateY(12px);
   transition: opacity .25s ease, transform .25s ease, background .15s, color .15s;
-  z-index: 99;
+  z-index: 99999;
 }
 .fab-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 .fab-top:hover { background: var(--bg-btn-hover); color: var(--texto-principal); transform: translateY(-2px); }

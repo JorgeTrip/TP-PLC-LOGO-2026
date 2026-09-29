@@ -8,8 +8,8 @@ import { renderizarEnunciadoCompletoHtml } from '../presentacion/seccionEnunciad
 export function generarEncabezadoHtml(estilosCss) {
   const enlacesSidebar = catalogoEjercicios.map(ej => {
     return `<a href="#ejercicio-${ej.n.replace('.', '-')}" class="sidebar-link" title="${ej.n} · ${ej.t}" data-tooltip="${ej.n} · ${ej.t}">
-      <span style="font-weight:700;color:var(--acento-azul)">${ej.n}</span>
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ej.t}</span>
+      <span class="sidebar-num">${ej.n}</span>
+      <span class="sidebar-texto">${ej.t}</span>
     </a>`;
   }).join('\n');
 
@@ -55,8 +55,8 @@ ${estilosCss}
       <div class="sidebar-titulo">Documentación Oficial</div>
       <nav class="sidebar-nav">
         <a href="#enunciado-tp-completo" class="sidebar-link activo" title="Enunciado Oficial Completo" data-tooltip="Enunciado Oficial Completo">
-          <span>📋</span>
-          <span>Enunciado Completo TP</span>
+          <span class="sidebar-num">📋</span>
+          <span class="sidebar-texto">Enunciado Completo TP</span>
         </a>
       </nav>
       <div class="sidebar-titulo" style="margin-top:20px">Ejercicios Resueltos</div>
