@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.1.0",
+    "fecha": "2026-09-29",
+    "tipo": "docs",
+    "titulo": "Se amplían explicaciones didácticas de autorretención y términos técnicos",
+    "cambios": [
+      "Se detalla en profundidad qué es la autorretención (latching), memoria biestable y relé autoenclavador.",
+      "Se explica el significado y funcionamiento de temporizadores TON (retardo a la conexión), TOF y TP.",
+      "Se aclara la función de contadores CTU / CTUD y contactos normalmente abiertos (N/A) vs cerrados (N/C).",
+      "Se modulariza el catálogo en 4 bloques independientes respetando el límite estricto de 200 líneas."
+    ]
+  },
+  {
     "version": "1.0.0",
     "fecha": "2026-09-29",
     "tipo": "feat",
