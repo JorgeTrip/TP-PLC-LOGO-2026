@@ -72,7 +72,8 @@ header {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde-card);
-  padding: 12px 24px;
+  padding: 0 24px;
+  height: 58px;
   display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap;
 }
 header h1 {
@@ -85,7 +86,7 @@ header h1 {
 /* Layout con Sidebar */
 .app-layout {
   display: flex;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 58px);
 }
 
 .sidebar {
@@ -94,8 +95,8 @@ header h1 {
   border-right: 1px solid var(--borde-sidebar);
   padding: 20px 14px;
   position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
+  top: 58px;
+  height: calc(100vh - 58px);
   overflow-y: auto;
   flex-shrink: 0;
 }

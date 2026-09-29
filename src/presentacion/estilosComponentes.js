@@ -11,7 +11,31 @@ export const estilosComponentesCss = `
   padding: 24px;
   margin: 0 0 28px;
   box-shadow: 0 10px 30px var(--sombra-card);
-  scroll-margin-top: 80px;
+  scroll-margin-top: 70px;
+  position: relative;
+}
+.cabecera-ejercicio-sticky {
+  position: sticky;
+  top: 58px;
+  z-index: 20;
+  background: var(--bg-card);
+  padding: 16px 20px 14px;
+  margin: -24px -24px 20px -24px;
+  border-top-left-radius: 17px;
+  border-top-right-radius: 17px;
+  border-bottom: 1px solid var(--borde-card);
+  box-shadow: 0 4px 14px var(--sombra-card);
+}
+.cabecera-ejercicio-sticky h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  color: var(--acento-azul);
+}
+.cabecera-ejercicio-sticky .q {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  padding: 10px 14px;
 }
 h2 { margin: 0 0 12px; font-size: 22px; color: var(--acento-azul); }
 h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-secundario); }

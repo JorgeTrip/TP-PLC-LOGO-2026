@@ -12,9 +12,16 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   // Verificar título del encabezado
   await expect(page.locator('header h1')).toContainText('TP PLC Siemens LOGO! 2026');
 
-  // Verificar que existen 11 tarjetas de ejercicios
+  // Verificar que existen 11 tarjetas de ejercicios con cabecera sticky de enunciado
   const tarjetas = page.locator('#contenedor-ejercicios section.card');
   await expect(tarjetas).toHaveCount(11);
+
+  const cabecerasSticky = page.locator('.cabecera-ejercicio-sticky');
+  await expect(cabecerasSticky).toHaveCount(11);
+
+  // Verificar que cada cabecera contiene el enunciado (.q)
+  const primerEnunciado = cabecerasSticky.first().locator('.q');
+  await expect(primerEnunciado).toBeVisible();
 
   // Verificar que cada ejercicio tiene su SVG Ladder renderizado
   const svgs = page.locator('svg.ladder-svg');

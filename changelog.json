@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.2.0",
+    "fecha": "2026-09-29",
+    "tipo": "feat",
+    "titulo": "Se implementa cabecera sticky con enunciado persistente en cada ejercicio",
+    "cambios": [
+      "Se fija la cabecera del ejercicio (título y bloque de enunciado) con position: sticky bajo el header superior.",
+      "El enunciado permanece siempre visible mientras el usuario escrollea por la tabla I/O, análisis, Ladder y simulación.",
+      "Al ingresar al siguiente ejercicio, el contenedor sticky anterior es relevado de forma fluida por el nuevo enunciado."
+    ]
+  },
+  {
     "version": "1.1.0",
     "fecha": "2026-09-29",
     "tipo": "docs",

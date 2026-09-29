@@ -73,7 +73,8 @@ header {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde-card);
-  padding: 12px 24px;
+  padding: 0 24px;
+  height: 58px;
   display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap;
 }
 header h1 {
@@ -86,7 +87,7 @@ header h1 {
 /* Layout con Sidebar */
 .app-layout {
   display: flex;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 58px);
 }
 
 .sidebar {
@@ -95,8 +96,8 @@ header h1 {
   border-right: 1px solid var(--borde-sidebar);
   padding: 20px 14px;
   position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
+  top: 58px;
+  height: calc(100vh - 58px);
   overflow-y: auto;
   flex-shrink: 0;
 }
@@ -161,7 +162,31 @@ header h1 {
   padding: 24px;
   margin: 0 0 28px;
   box-shadow: 0 10px 30px var(--sombra-card);
-  scroll-margin-top: 80px;
+  scroll-margin-top: 70px;
+  position: relative;
+}
+.cabecera-ejercicio-sticky {
+  position: sticky;
+  top: 58px;
+  z-index: 20;
+  background: var(--bg-card);
+  padding: 16px 20px 14px;
+  margin: -24px -24px 20px -24px;
+  border-top-left-radius: 17px;
+  border-top-right-radius: 17px;
+  border-bottom: 1px solid var(--borde-card);
+  box-shadow: 0 4px 14px var(--sombra-card);
+}
+.cabecera-ejercicio-sticky h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  color: var(--acento-azul);
+}
+.cabecera-ejercicio-sticky .q {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  padding: 10px 14px;
 }
 h2 { margin: 0 0 12px; font-size: 22px; color: var(--acento-azul); }
 h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-secundario); }
@@ -818,16 +843,18 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     card.className = 'card';
     card.id = 'ejercicio-' + ej.n.replace('.', '-');
 
+    const cabeceraSticky = document.createElement('div');
+    cabeceraSticky.className = 'cabecera-ejercicio-sticky';
+
     const h2 = document.createElement('h2');
     h2.textContent = ej.n + ' · ' + ej.t;
-    card.append(h2);
 
-    const h3Enun = document.createElement('h3');
-    h3Enun.textContent = 'Enunciado';
     const divQ = document.createElement('div');
     divQ.className = 'q';
     divQ.textContent = ej.q;
-    card.append(h3Enun, divQ);
+
+    cabeceraSticky.append(h2, divQ);
+    card.append(cabeceraSticky);
 
     const h3Io = document.createElement('h3');
     h3Io.textContent = 'Asignación de Entradas y Salidas';

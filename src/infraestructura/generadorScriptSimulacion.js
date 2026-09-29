@@ -48,16 +48,18 @@ export function generarScriptSimulacion() {
     card.className = 'card';
     card.id = 'ejercicio-' + ej.n.replace('.', '-');
 
+    const cabeceraSticky = document.createElement('div');
+    cabeceraSticky.className = 'cabecera-ejercicio-sticky';
+
     const h2 = document.createElement('h2');
     h2.textContent = ej.n + ' · ' + ej.t;
-    card.append(h2);
 
-    const h3Enun = document.createElement('h3');
-    h3Enun.textContent = 'Enunciado';
     const divQ = document.createElement('div');
     divQ.className = 'q';
     divQ.textContent = ej.q;
-    card.append(h3Enun, divQ);
+
+    cabeceraSticky.append(h2, divQ);
+    card.append(cabeceraSticky);
 
     const h3Io = document.createElement('h3');
     h3Io.textContent = 'Asignación de Entradas y Salidas';
