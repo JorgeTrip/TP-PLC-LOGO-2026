@@ -9,7 +9,14 @@ export const ejerciciosParte2 = [
     n: '4.7',
     t: 'Sistema de Alerta Multifunción',
     q: 'Lógica para un pulsador (I1): Presión simple: Q1 por 20s. Presión 2s: Alarma cabina Q2. Presión 5s: Parpadeo de emergencia (Q1 y Q2) a 0.5 Hz durante 2 min (incendio).',
-    io: [['I1', 'Pulsador N/A'], ['Q1', 'Luz / emergencia'], ['Q2', 'Alarma cabina / emergencia'], ['T2, T5', 'TON 2s y 5s'], ['M1–M4', 'Pulsos y reloj 0.5 Hz']],
+    io: [
+      ['I1', 'Pulsador multifunción N/A (Normal Abierto: discrimina tiempo de presión)'],
+      ['Q1', 'Luz general / evacuación (enciende 20s en simple o parpadea en incendio)'],
+      ['Q2', 'Alarma en cabina de seguridad (activa a los 2s o parpadea en incendio)'],
+      ['T2', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 2 s para cabina)'],
+      ['T5', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 5 s para incendio)'],
+      ['M1–M4', 'Marcas internas M: M1 (TP 20s simple), M2 (alarma cabina), M3 (emergencia 120s), M4 (reloj asíncrono 0.5 Hz)']
+    ],
     e: 'Presión < 2s dispara TP 20s para Q1 al soltar. Presión >= 2s activa Q2 (cabina). Presión >= 5s activa parpadeo síncrono 0.5 Hz (1s ON / 1s OFF) en Q1 y Q2 por 120s con prioridad.',
     i: [['I1', 'Pulsador multifunción', 'p']],
     o: ['Q1', 'Q2'],
@@ -28,20 +35,14 @@ export const ejerciciosParte2 = [
         S.presion = (S.presion || 0) + dt;
         if (S.presion >= 2 && !S.disparo2) { S.disparo2 = true; S.tCabina = 20; }
         if (S.presion >= 5 && !S.disparo5) {
-          S.disparo5 = true;
-          S.tEmergencia = 120;
-          S.tReloj = 0;
+          S.disparo5 = true; S.tEmergencia = 120; S.tReloj = 0;
         } else if (S.disparo5 && (S.tEmergencia || 0) > 0) {
           S.tReloj = (S.tReloj || 0) + dt;
         }
       } else {
         if (S.presion > 0 && S.presion < 2) S.tSimple = 20;
-        S.presion = 0;
-        S.disparo2 = false;
-        S.disparo5 = false;
-        if ((S.tEmergencia || 0) > 0) {
-          S.tReloj = (S.tReloj || 0) + dt;
-        }
+        S.presion = 0; S.disparo2 = false; S.disparo5 = false;
+        if ((S.tEmergencia || 0) > 0) S.tReloj = (S.tReloj || 0) + dt;
       }
       const emergenciaActiva = (S.tEmergencia || 0) > 0;
       const cicloReloj = emergenciaActiva && Math.floor(S.tReloj || 0) % 2 === 0;
@@ -60,7 +61,16 @@ export const ejerciciosParte2 = [
     n: '4.8',
     t: 'Control de Acceso a Estacionamiento',
     q: 'Playa con capacidad para 50 vehículos. Controlar barrera entrada/salida y emisión de tickets. Al llegar a 50: bloquear entrada y activar cartel "COMPLETO" (Q3).',
-    io: [['I1', 'Sensor entrada (auto)'], ['I2', 'Sensor salida (auto)'], ['I3', 'Reset cupos'], ['Q1', 'Barrera entrada'], ['Q2', 'Barrera salida'], ['Q3', 'Cartel COMPLETO'], ['Q4', 'Ticket'], ['C1', 'Contador adelante/atrás']],
+    io: [
+      ['I1', 'Sensor óptico de vehículo en entrada'],
+      ['I2', 'Sensor óptico de vehículo en salida'],
+      ['I3', 'Pulsador de Reset manual N/A (Normal Abierto: reinicia cupos a 0)'],
+      ['Q1', 'Barrera motorizada de entrada (pulso TP 3s)'],
+      ['Q2', 'Barrera motorizada de salida (pulso TP 3s)'],
+      ['Q3', 'Cartel luminoso "COMPLETO"'],
+      ['Q4', 'Dispensador de tickets (pulso TP 1s)'],
+      ['C1', 'Contador CTUD (Count-Up/Down: contador bidireccional adelante/atrás 0–50)']
+    ],
     e: 'Contador bidireccional 0–50. I1 suma si no está completo y abre barrera Q1 (3s) y ticket Q4 (1s). I2 resta y abre barrera Q2 (3s). A 50 se enciende Q3 y bloquea entrada.',
     i: [['I1', 'Auto entrada', 'p'], ['I2', 'Auto salida', 'p'], ['I3', 'Reset cupos', 'p']],
     o: ['Q1', 'Q2', 'Q3', 'Q4'],
@@ -96,7 +106,14 @@ export const ejerciciosParte2 = [
     n: '4.9',
     t: 'Automatización de Portón Levadizo',
     q: 'Controlar portón con un único pulsador (I1): Ciclo Abrir - Parar - Cerrar - Parar. Finales de carrera I2 e I3 (ambos N/C) detienen motor en extremos.',
-    io: [['I1', 'Pulsador único N/A'], ['I2', 'Fin carrera ABIERTO N/C'], ['I3', 'Fin carrera CERRADO N/C'], ['Q1', 'Motor abrir'], ['Q2', 'Motor cerrar'], ['M0–M3', 'Etapas']],
+    io: [
+      ['I1', 'Pulsador único de comando N/A (Normal Abierto: avanza la secuencia)'],
+      ['I2', 'Final de carrera FC ABIERTO N/C (Normal Cerrado: abre al llegar al tope superior)'],
+      ['I3', 'Final de carrera FC CERRADO N/C (Normal Cerrado: abre al llegar al tope inferior)'],
+      ['Q1', 'Motor sentido abrir portón'],
+      ['Q2', 'Motor sentido cerrar portón'],
+      ['M0–M3', 'Marcas internas M: etapas secuenciales (0: cerrado, 1: abriendo, 2: abierto, 3: cerrando)']
+    ],
     e: 'Máquina de 4 estados con marcas: 0 (Parado-cerrado), 1 (Abriendo), 2 (Parado-abierto), 3 (Cerrando). Cada flanco de I1 avanza ciclo; finales N/C llevan a paro de extremo.',
     i: [['I1', 'Pulsador portón', 'p'], ['I2', 'Fin ABIERTO', 's', 1], ['I3', 'Fin CERRADO', 's', 1, 1]],
     o: ['Q1', 'Q2'],
@@ -123,7 +140,14 @@ export const ejerciciosParte2 = [
     n: '4.10',
     t: 'Control de Nivel de Tanque con Bombas en Cascada',
     q: 'Tanque con dos bombas (Q1 y Q2). S1 (Nivel mínimo), S2 (Nivel crítico inferior), S3 (Nivel máximo). S1 arranca Q1; si baja a S2 arranca Q2. S3 apaga ambas. PE (I4, N/C) detención instantánea.',
-    io: [['I1', 'S1 Nivel mínimo'], ['I2', 'S2 Crítico inferior'], ['I3', 'S3 Nivel máximo'], ['I4', 'PE Emergencia N/C'], ['Q1', 'Bomba principal'], ['Q2', 'Bomba auxiliar']],
+    io: [
+      ['I1', 'Sensor S1 (Flotante de nivel mínimo: arranca bomba principal Q1)'],
+      ['I2', 'Sensor S2 (Flotante de nivel crítico inferior: suma bomba auxiliar Q2)'],
+      ['I3', 'Sensor S3 (Flotante de nivel máximo: corta ambas bombas)'],
+      ['I4', 'Pulsador PE (Parada de Emergencia tipo hongo N/C: Normal Cerrado fail-safe)'],
+      ['Q1', 'Bomba principal de llenado'],
+      ['Q2', 'Bomba auxiliar de refuerzo']
+    ],
     e: 'Lógica de llenado en cascada: S1 arranca Q1 con autorretención; S2 suma Q2 con autorretención. S3 abre /I3 apagando ambas. PE (I4 N/C) desenergiza todo al instante.',
     i: [['I1', 'S1 Mínimo', 's'], ['I2', 'S2 Crítico', 's'], ['I3', 'S3 Máximo', 's'], ['I4', 'PE Emergencia', 'p', 1]],
     o: ['Q1', 'Q2'],
@@ -142,7 +166,13 @@ export const ejerciciosParte2 = [
     n: '4.11',
     t: 'Alternancia de Bombas para Reparto de Carga',
     q: 'Control de dos bombas (Q1 y Q2) para igualar horas de uso. Entrada I1 (Flotante demanda N/A). Cada ciclo arranca la bomba que no trabajó en el ciclo anterior. Seguridad: PE (I4 N/C).',
-    io: [['I1', 'Flotante demanda N/A'], ['I4', 'PE Emergencia N/C'], ['Q1', 'Bomba 1'], ['Q2', 'Bomba 2'], ['F', 'Relé pulsos toggle']],
+    io: [
+      ['I1', 'Sensor flotante de demanda N/A (Normal Abierto: activa ciclo de bombeo)'],
+      ['I4', 'Pulsador PE (Parada de Emergencia tipo hongo N/C: Normal Cerrado fail-safe)'],
+      ['Q1', 'Bomba 1 de impulsión cloacal'],
+      ['Q2', 'Bomba 2 de impulsión cloacal'],
+      ['F', 'Marca interna Toggle (Relé de impulsos biestable divisor de frecuencia para alternancia)']
+    ],
     e: 'Relé de pulsos conmuta marca F en el flanco descendente de I1 (al finalizar bombeo). Q1 = I1 · /F · I4; Q2 = I1 · F · I4. PE corta ambas.',
     i: [['I1', 'Flotante demanda', 's'], ['I4', 'PE Emergencia', 'p', 1]],
     o: ['Q1', 'Q2'],

@@ -9,7 +9,11 @@ export const ejerciciosParte1 = [
     n: '4.1',
     t: 'Control de Motor con Retención',
     q: 'Implementar el arranque y parada de un motor utilizando lógica de autorretención. Entradas: I1 (Marcha N/A), I2 (Parada N/A). Salida: Q1 (Motor).',
-    io: [['I1', 'Pulsador de marcha N/A'], ['I2', 'Pulsador de parada N/A'], ['Q1', 'Motor']],
+    io: [
+      ['I1', 'Pulsador de marcha N/A (Normal Abierto: 0 en reposo, 1 al presionar)'],
+      ['I2', 'Pulsador de parada N/A (Normal Abierto: 0 en reposo, 1 al presionar)'],
+      ['Q1', 'Motor (Salida a relé / contactor)']
+    ],
     e: 'Q1 se realimenta con contacto propio en paralelo con I1. La parada I2 (N/A) va en serie como contacto invertido (/I2). Parada dominante.',
     i: [['I1', 'Marcha', 'p'], ['I2', 'Parada', 'p']],
     o: ['Q1'],
@@ -23,7 +27,11 @@ export const ejerciciosParte1 = [
     n: '4.2',
     t: 'Control de Motor con Bobina Set-Reset',
     q: 'Realizar la misma función que el ejercicio anterior, pero utilizando un relé autoenclavador (bloque Set-Reset). Entradas: I1 (Arranque N/A), I2 (Detención N/C). Salida: Q1 (Motor).',
-    io: [['I1', 'Arranque N/A'], ['I2', 'Detención N/C (1 en reposo)'], ['Q1', 'Motor']],
+    io: [
+      ['I1', 'Pulsador de arranque N/A (Normal Abierto: 0 en reposo, 1 al presionar)'],
+      ['I2', 'Pulsador de detención N/C (Normal Cerrado: 1 en reposo, 0 al pulsar por seguridad fail-safe)'],
+      ['Q1', 'Motor (Salida comandada por bloque biestable Set-Reset)']
+    ],
     e: 'Relé autoenclavador SR: I1 setea Q1. I2 es N/C (1 en reposo, 0 al pulsar); el contacto invertido /I2 se cierra al pulsar y activa el Reset. Reset dominante.',
     i: [['I1', 'Arranque', 'p'], ['I2', 'Detención', 'p', 1]],
     o: ['Q1'],
@@ -42,7 +50,14 @@ export const ejerciciosParte1 = [
     n: '4.3',
     t: 'Encendido Retardado con Pre-aviso',
     q: 'El motor debe activarse con un retardo de 5 segundos tras la orden de marcha. Entradas: I1 (Arranque N/A), I2 (Parada N/A). Salidas: Q1 (Motor), Q2 (Lámpara de aviso). Q2 enciende únicamente durante el conteo previo.',
-    io: [['I1', 'Arranque N/A'], ['I2', 'Parada N/A'], ['Q1', 'Motor'], ['Q2', 'Lámpara de pre-aviso'], ['M1', 'Marca orden marcha'], ['T1', 'Salida TON 5s']],
+    io: [
+      ['I1', 'Pulsador de arranque N/A (Normal Abierto)'],
+      ['I2', 'Pulsador de parada N/A (Normal Abierto)'],
+      ['Q1', 'Motor (Actuador principal)'],
+      ['Q2', 'Lámpara testigo de pre-aviso de maniobra'],
+      ['M1', 'Marca interna M (Memoria / relé interno de orden de marcha)'],
+      ['T1', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 5 s)']
+    ],
     e: 'M1 memoriza la marcha. El TON de 5s cuenta mientras M1 está activo. Q2 = M1 · /T1 (enciende solo durante el conteo previo). Cumplidos los 5s, T1 enciende Q1 y apaga Q2.',
     i: [['I1', 'Arranque', 'p'], ['I2', 'Parada', 'p']],
     o: ['Q1', 'Q2'],
@@ -64,7 +79,12 @@ export const ejerciciosParte1 = [
     n: '4.4',
     t: 'Temporización de Pasillo (Luz de Cortesía)',
     q: 'Diseñar un sistema de iluminación temporizada. Al presionar I1 (N/A), Q1 se activa por 15 segundos. Pre-aviso: Q2 se enciende 5s antes del apagado y queda encendida hasta reinicio. Reiniciable por I1.',
-    io: [['I1', 'Pulsador N/A'], ['Q1', 'Luz de pasillo'], ['Q2', 'Luz testigo pre-aviso'], ['T2', 'Salida TON 10s']],
+    io: [
+      ['I1', 'Pulsador N/A (Normal Abierto de pasillo / escalera)'],
+      ['Q1', 'Luz principal de pasillo'],
+      ['Q2', 'Luz testigo de pre-aviso en pulsador'],
+      ['T2', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 10 s para pre-aviso)']
+    ],
     e: 'Al pulsar I1 se activa Q1 por 15s. A los 10s (5s antes de apagarse Q1), Q2 enciende y se autorretiene. Pulsar I1 reinicia el conteo y borra Q2.',
     i: [['I1', 'Pulsador pasillo', 'p']],
     o: ['Q1', 'Q2'],
@@ -75,9 +95,7 @@ export const ejerciciosParte1 = [
     ],
     ejecutar: (S, I, dt) => {
       if (I.I1) {
-        S.t = 0;
-        S.activo = true;
-        S.q2 = false;
+        S.t = 0; S.activo = true; S.q2 = false;
       } else if (S.activo) {
         S.t = (S.t || 0) + dt;
         if (S.t >= 10) S.q2 = true;
@@ -91,7 +109,13 @@ export const ejerciciosParte1 = [
     n: '4.5',
     t: 'Desconexión por Conteo de Pulsos',
     q: 'Detener un proceso tras un número determinado de eventos. I1 (N/A): Arranca motor Q1. I2 (N/C): Pulsos de conteo (a 5 pulsos apaga el motor). I3 (N/C): Reset manual del contador.',
-    io: [['I1', 'Arranque N/A'], ['I2', 'Pulsos N/C'], ['I3', 'Reset manual N/C'], ['Q1', 'Motor'], ['C1', 'Salida contador (5)']],
+    io: [
+      ['I1', 'Pulsador de arranque N/A (Normal Abierto)'],
+      ['I2', 'Sensor de pulsos N/C (Normal Cerrado: abre al detectar pieza)'],
+      ['I3', 'Pulsador de Reset manual N/C (Normal Cerrado: restablece contador)'],
+      ['Q1', 'Motor del proceso'],
+      ['C1', 'Contador CTU (Count-Up / Contador ascendente con preselección en 5)']
+    ],
     e: 'CTU cuenta flancos de /I2 y se resetea con /I3. Al alcanzar 5, /C1 corta la autorretención de Q1. No se puede arrancar sin resetear.',
     i: [['I1', 'Arranque', 'p'], ['I2', 'Sensor pulsos', 'p', 1], ['I3', 'Reset contador', 'p', 1]],
     o: ['Q1'],
@@ -111,7 +135,13 @@ export const ejerciciosParte1 = [
     n: '4.6',
     t: 'Secuencia Lógica de Seguridad',
     q: 'Activar Q1 solo si se sigue orden estricto: 1º I2 -> 2º I1 -> 3º I3. Si el orden es incorrecto, el sistema se bloquea. I4 (N/A) resetea bloqueo o secuencia.',
-    io: [['I1–I3', 'Pulsadores secuencia N/A'], ['I4', 'Reset N/A'], ['Q1', 'Salida habilitada'], ['B', 'Marca bloqueo'], ['M1–M3', 'Etapas 1 a 3']],
+    io: [
+      ['I1–I3', 'Pulsadores de secuencia N/A (Normal Abierto: I2 primer paso, I1 segundo, I3 tercero)'],
+      ['I4', 'Pulsador de Reset N/A (Normal Abierto: desbloqueo y puesta a cero)'],
+      ['Q1', 'Salida de autorización segura'],
+      ['B', 'Marca interna de Bloqueo (se activa ante cualquier pulsación fuera de orden)'],
+      ['M1–M3', 'Marcas internas M (Etapas secuenciales de habilitación 1, 2 y 3)']
+    ],
     e: 'M1, M2 y M3 memorizan pasos I2 -> I1 -> I3 con interbloqueo. Pulsar fuera de secuencia energiza B y bloquea todo. I4 resetea.',
     i: [['I1', 'Paso 2 (I1)', 'p'], ['I2', 'Paso 1 (I2)', 'p'], ['I3', 'Paso 3 (I3)', 'p'], ['I4', 'Reset secuencia', 'p']],
     o: ['Q1'],
