@@ -36,6 +36,15 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const cantidadTerminos = await terminosTecnicos.count();
   expect(cantidadTerminos).toBeGreaterThan(5);
 
+  // En escritorio el header del drawer móvil debe estar oculto
+  await expect(page.locator('.sidebar-header-movil')).toBeHidden();
+
+  // Los botones del encabezado en escritorio deben estar contenidos dentro de la altura de la barra (58px)
+  const headerDesktop = await page.locator('header').boundingBox();
+  expect(headerDesktop.height).toBeLessThanOrEqual(60);
+  const controlesDesktop = await page.locator('.header-controles').boundingBox();
+  expect(controlesDesktop.y + controlesDesktop.height).toBeLessThanOrEqual(headerDesktop.y + headerDesktop.height + 2);
+
   // Verificar persistencia de cabecera sticky en escritorio al scrollear
   const card45 = page.locator('#ejercicio-4-5');
   await card45.scrollIntoViewIfNeeded();

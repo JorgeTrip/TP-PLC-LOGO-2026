@@ -89,7 +89,15 @@ header h1 {
 }
 .header-lado-izq { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .titulo-movil { display: none; }
-.header-controles { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+.header-controles { display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+.velocidad-contenedor { display: flex; align-items: center; gap: 8px; }
+.velocidad-texto { font-size: 12px; color: var(--texto-secundario); }
+#selector-velocidad { display: flex; gap: 4px; }
+#selector-velocidad .btn { padding: 6px 12px; font-size: 12px; }
+#btn-tema { display: flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 13px; }
+
+/* En escritorio el header del drawer movil esta oculto */
+.sidebar-header-movil { display: none; }
 
 /* Layout con Sidebar */
 .app-layout {

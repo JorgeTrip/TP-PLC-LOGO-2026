@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.6.0",
+    "fecha": "2026-09-29",
+    "tipo": "fix",
+    "titulo": "Se alinea la barra superior en escritorio y se oculta el header del drawer móvil en el sidebar permanente",
+    "cambios": [
+      "Se organiza la velocidad en fila horizontal flex (display: flex) alineada con el botón de modo oscuro en 58px.",
+      "Se oculta el bloque 'Menú de Navegación ✕' en escritorio para mantener el sidebar limpio y elegante.",
+      "Se verifica mediante prueba E2E que los controles del header no desbordan la altura máxima de la barra."
+    ]
+  },
+  {
     "version": "1.5.0",
     "fecha": "2026-09-29",
     "tipo": "feat",
