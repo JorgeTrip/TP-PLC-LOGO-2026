@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TP PLC LOGO! 2026 — Plataforma Interactiva KOP</title>
+  <style>
+
+:root {
+  --bg-app: #0f1422;
+  --bg-card: #182234;
+  --borde-card: #27354f;
+  --texto-principal: #f1f5f9;
+  --texto-secundario: #94a3b8;
+  --acento-azul: #38bdf8;
+  --acento-purpura: #a78bfa;
+  --acento-verde: #4ade80;
+  --acento-rojo: #f43f5e;
+  --acento-ambar: #f59e0b;
+  --bg-bloque-q: #111a2c;
+  --bg-svg: #0b1220;
+  --bg-btn: #1e2c45;
+  --bg-btn-hover: #243555;
+  --bg-led: #1e293b;
+  --bg-maqueta: #0f182a;
+  --fill-bloque: #0d1627;
+  --fill-bloque-activo: #132a45;
+  --trazo-inactivo: #64748b;
+  --texto-contacto: #cbd5e1;
+  --sombra-card: rgba(0,0,0,0.35);
+  --bg-sidebar: #111927;
+  --borde-sidebar: #1f2b3f;
+}
+
+[data-theme="light"] {
+  --bg-app: #f1f5f9;
+  --bg-card: #ffffff;
+  --borde-card: #cbd5e1;
+  --texto-principal: #0f172a;
+  --texto-secundario: #475569;
+  --acento-azul: #0284c7;
+  --acento-purpura: #7c3aed;
+  --acento-verde: #16a34a;
+  --acento-rojo: #dc2626;
+  --acento-ambar: #d97706;
+  --bg-bloque-q: #f8fafc;
+  --bg-svg: #f8fafc;
+  --bg-btn: #e2e8f0;
+  --bg-btn-hover: #cbd5e1;
+  --bg-led: #cbd5e1;
+  --bg-maqueta: #f8fafc;
+  --fill-bloque: #e2e8f0;
+  --fill-bloque-activo: #bae6fd;
+  --trazo-inactivo: #94a3b8;
+  --texto-contacto: #1e293b;
+  --sombra-card: rgba(0,0,0,0.06);
+  --bg-sidebar: #f8fafc;
+  --borde-sidebar: #e2e8f0;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg-app);
+  color: var(--texto-principal);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.6;
+  transition: background .2s, color .2s;
+}
+
+header {
+  position: sticky; top: 0; z-index: 30;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde-card);
+  padding: 12px 24px;
+  display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+}
+header h1 {
+  font-size: 18px; margin: 0;
+  background: linear-gradient(90deg, var(--acento-azul), var(--acento-purpura));
+  -webkit-background-clip: text; color: transparent;
+}
+.header-controles { display: flex; gap: 12px; align-items: center; }
+
+/* Layout con Sidebar */
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 280px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--borde-sidebar);
+  padding: 20px 14px;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-titulo {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+  margin: 12px 10px 8px;
+  font-weight: 700;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--texto-secundario);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all .15s;
+}
+
+.sidebar-link:hover {
+  background: var(--bg-btn);
+  color: var(--texto-principal);
+}
+
+.sidebar-link.activo {
+  background: var(--bg-btn);
+  color: var(--acento-azul);
+  font-weight: 700;
+  border-left: 3px solid var(--acento-azul);
+}
+
+.contenido-principal {
+  flex: 1;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+
+@media (max-width: 900px) {
+  .app-layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--borde-sidebar); }
+}
+
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--borde-card);
+  border-radius: 18px;
+  padding: 24px;
+  margin: 0 0 28px;
+  box-shadow: 0 10px 30px var(--sombra-card);
+  scroll-margin-top: 80px;
+}
+h2 { margin: 0 0 12px; font-size: 22px; color: var(--acento-azul); }
+h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-secundario); }
+.q {
+  border-left: 3px solid var(--acento-purpura);
+  background: var(--bg-bloque-q);
+  padding: 12px 18px;
+  border-radius: 0 12px 12px 0;
+  color: var(--texto-principal);
+}
+table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+td { border-bottom: 1px solid var(--borde-card); padding: 8px; font-size: 14px; }
+td:first-child { width: 90px; color: var(--acento-purpura); font-family: ui-monospace, monospace; font-weight: 600; }
+.svgw { overflow-x: auto; background: var(--bg-svg); border-radius: 14px; padding: 16px; border: 1px solid var(--borde-card); }
+svg.ladder-svg .k { stroke: var(--trazo-inactivo); stroke-width: 2; fill: none; transition: stroke .2s, filter .2s; }
+svg.ladder-svg .k.energized { stroke: var(--acento-azul); stroke-width: 2.5; filter: drop-shadow(0 0 5px var(--acento-azul)); }
+svg.ladder-svg .b { fill: var(--fill-bloque); stroke: var(--trazo-inactivo); stroke-width: 1.5; transition: all .2s; }
+svg.ladder-svg .b.energized { stroke: var(--acento-azul); fill: var(--fill-bloque-activo); filter: drop-shadow(0 0 6px rgba(56,189,248,0.4)); }
+svg.ladder-svg .t { fill: var(--texto-contacto); font: 12px ui-monospace, monospace; text-anchor: middle; transition: fill .2s; }
+svg.ladder-svg .t.energized { fill: var(--acento-azul); font-weight: bold; }
+svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-serif; font-style: italic; }
+.sim { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+.btn {
+  background: var(--bg-btn); color: var(--texto-principal);
+  border: 1px solid var(--borde-card); border-radius: 10px;
+  padding: 10px 16px; cursor: pointer; user-select: none;
+  font-size: 13px; font-weight: 500; transition: all .15s;
+}
+.btn:hover { background: var(--bg-btn-hover); }
+.btn.on { background: #0369a1; border-color: var(--acento-azul); color: #fff; box-shadow: 0 0 12px rgba(56,189,248,0.4); }
+.led {
+  width: 46px; height: 46px; border-radius: 50%; background: var(--bg-led);
+  display: grid; place-items: center; font-weight: 700; font-size: 13px;
+  border: 2px solid var(--borde-card); transition: all .2s;
+}
+.led.on { background: var(--acento-verde); color: #064e3b; box-shadow: 0 0 20px var(--acento-verde); }
+.info { color: var(--texto-secundario); font-family: ui-monospace, monospace; font-size: 13px; width: 100%; margin-top: 6px; }
+
+/* Maquetas */
+.maqueta-contenedor { margin: 16px 0; }
+.maqueta-marco {
+  background: var(--bg-maqueta); border: 1px dashed var(--borde-card);
+  border-radius: 14px; padding: 18px;
+}
+.motor-chasis { display: flex; gap: 20px; align-items: center; }
+.motor-svg.girando { animation: girarMotor 1.2s linear infinite; }
+@keyframes girarMotor { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.motor-estado-tag { font-weight: 700; font-size: 14px; border: 1px solid; border-radius: 8px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 6px; }
+.motor-led-dot { width: 8px; height: 8px; border-radius: 50%; }
+.preaviso-caja { margin-top: 10px; }
+.baliza-icono { padding: 6px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; }
+.baliza-activa { animation: parpadeoBaliza .6s alternate infinite; }
+@keyframes parpadeoBaliza { from { opacity: .4; } to { opacity: 1; } }
+.barra-progreso-bg { width: 180px; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.barra-progreso-fill { height: 100%; background: var(--acento-ambar); transition: width .1s; }
+.tanque-flex { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.tanque-visual { width: 140px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
+.tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 700; }
+.marca-sensor { position: absolute; right: 4px; font-size: 10px; color: #94a3b8; font-family: monospace; }
+.marca-sensor.s3 { top: 15px; } .marca-sensor.s1 { top: 70px; } .marca-sensor.s2 { top: 125px; }
+.porton-fachada { position: relative; }
+.porton-marco { width: 200px; height: 120px; border: 3px solid #64748b; background: var(--bg-svg); position: relative; overflow: hidden; margin: 10px 0; }
+.porton-hoja { width: 100%; background: repeating-linear-gradient(0deg, #334155, #334155 10px, #1e293b 10px, #1e293b 20px); position: absolute; top: 0; transition: height .2s linear; display: flex; align-items: flex-end; justify-content: center; }
+.porton-label { font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px; margin-bottom: 4px; }
+.sensor-fc { font-size: 11px; color: var(--texto-secundario); font-family: monospace; }
+.parking-grid { display: flex; flex-direction: column; gap: 12px; }
+.display-cartel { font-size: 16px; font-weight: 800; padding: 8px 16px; border-radius: 8px; text-align: center; }
+.display-cartel.completo { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
+.display-cartel.libre { background: #064e3b; color: #86efac; border: 1px solid #22c55e; }
+.barreras-status { display: flex; gap: 10px; flex-wrap: wrap; }
+.barrera-badge { font-size: 12px; padding: 6px 10px; border-radius: 6px; background: var(--bg-btn); color: var(--texto-secundario); }
+.barrera-badge.abierta { background: #0284c7; color: #fff; font-weight: 700; }
+.barrera-badge.emitiendo { background: #d97706; color: #fff; font-weight: 700; }
+.bombas-alternadas-grid { display: flex; gap: 16px; }
+.bomba-card { background: var(--bg-btn); padding: 14px; border-radius: 10px; border: 1px solid var(--borde-card); display: flex; flex-direction: column; gap: 4px; align-items: center; width: 140px; }
+.bomba-card.activa { border-color: var(--acento-verde); background: #064e3b; color: #fff; }
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚡ TP PLC Siemens LOGO! 2026 — Plataforma Interactiva KOP</h1>
+    <div class="header-controles">
+      <button id="btn-tema" class="btn" title="Alternar modo claro / oscuro" style="display:flex;align-items:center;gap:6px">
+        <span id="icono-tema">🌙</span>
+        <span id="texto-tema">Oscuro</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;color:var(--texto-secundario)">Velocidad:</span>
+        <div id="selector-velocidad" style="display:flex;gap:4px"></div>
+      </div>
+    </div>
+  </header>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-titulo">Documentación Oficial</div>
+      <nav class="sidebar-nav">
+        <a href="#enunciado-tp-completo" class="sidebar-link activo">
+          <span>📋</span>
+          <span>Enunciado Completo TP</span>
+        </a>
+      </nav>
+      <div class="sidebar-titulo" style="margin-top:20px">Ejercicios Resueltos</div>
+      <nav class="sidebar-nav">
+<a href="#ejercicio-4-1" class="sidebar-link">
+      <span>4.1</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Motor con Retención</span>
+    </a>
+<a href="#ejercicio-4-2" class="sidebar-link">
+      <span>4.2</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Motor con Bobina Set-Reset</span>
+    </a>
+<a href="#ejercicio-4-3" class="sidebar-link">
+      <span>4.3</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Encendido Retardado con Pre-aviso</span>
+    </a>
+<a href="#ejercicio-4-4" class="sidebar-link">
+      <span>4.4</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Temporización de Pasillo (Luz de Cortesía)</span>
+    </a>
+<a href="#ejercicio-4-5" class="sidebar-link">
+      <span>4.5</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Desconexión por Conteo de Pulsos</span>
+    </a>
+<a href="#ejercicio-4-6" class="sidebar-link">
+      <span>4.6</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Secuencia Lógica de Seguridad</span>
+    </a>
+<a href="#ejercicio-4-7" class="sidebar-link">
+      <span>4.7</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Sistema de Alerta Multifunción</span>
+    </a>
+<a href="#ejercicio-4-8" class="sidebar-link">
+      <span>4.8</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Acceso a Estacionamiento</span>
+    </a>
+<a href="#ejercicio-4-9" class="sidebar-link">
+      <span>4.9</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Automatización de Portón Levadizo</span>
+    </a>
+<a href="#ejercicio-4-10" class="sidebar-link">
+      <span>4.10</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Nivel de Tanque con Bombas en Cascada</span>
+    </a>
+<a href="#ejercicio-4-11" class="sidebar-link">
+      <span>4.11</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Alternancia de Bombas para Reparto de Carga</span>
+    </a>
+      </nav>
+    </aside>
+    <main class="contenido-principal">
+
+    <section class="card" id="enunciado-tp-completo" style="border-left: 4px solid var(--acento-purpura);">
+      <h2 style="color:var(--acento-purpura);font-size:24px">📋 Guía Oficial de Trabajos Prácticos: Programación de PLC LOGO!</h2>
+      <p style="color:var(--texto-secundario);margin-top:-4px">
+        Universidad Tecnológica Nacional · Facultad Regional Buenos Aires · Cátedra: Tecnologías para la Automatización · Docente: Julio Rossini Scarlata · Año: 2026
+      </p>
+
+      <div style="margin-top:18px">
+        <h3>1. Objetivos</h3>
+        <p style="color:var(--texto-principal)">
+          El propósito de esta práctica es que el estudiante se familiarice con el entorno de programación de controladores lógicos programables (PLC) mediante el uso de herramientas de software profesional:
+        </p>
+        <ul style="color:var(--texto-secundario);padding-left:22px">
+          <li>Dominar el software <b>LOGO!Soft Comfort</b> para el desarrollo de programas en lenguaje Ladder (KOP).</li>
+          <li>Diseñar y simular arquitecturas lógicas de control para diversos actuadores industriales.</li>
+          <li>Verificar el comportamiento dinámico de los sistemas mediante el entorno de simulación integrado.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:18px">
+        <h3>2. Herramientas y Requisitos</h3>
+        <p style="color:var(--texto-principal)">
+          Para el desarrollo de la presente práctica, se prescindirá de hardware físico, centrando el aprendizaje en la implementación lógica y validación funcional:
+        </p>
+        <ul style="color:var(--texto-secundario);padding-left:22px">
+          <li>Estación de trabajo (PC).</li>
+          <li>Software <b>LOGO!Soft Comfort V8.x</b> (o superior).</li>
+          <li>Conocimientos previos sobre lógica de contactos y álgebra de Boole.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:18px">
+        <h3>3. Metodología de Trabajo</h3>
+        <ol style="color:var(--texto-secundario);padding-left:22px">
+          <li><b>Diseño Lógico:</b> Analizar el enunciado de cada problema y definir las entradas (I) y salidas (Q) necesarias.</li>
+          <li><b>Programación:</b> Implementar el diagrama de contactos (Ladder) en el IDE.</li>
+          <li><b>Simulación:</b> Utilizar la herramienta de simulación (F3) para validar que la lógica responda a las condiciones solicitadas.</li>
+          <li><b>Documentación:</b> Generar el informe técnico incluyendo capturas del programa y tablas de asignación.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top:18px">
+        <h3>4. Problemas a Implementar</h3>
+        <div class="q">
+          La guía comprende 11 problemas prácticos industriales (4.1 a 4.11) que cubren lógica combinacional y secuencial, relés autoenclavadores, temporizadores (TON, TOF, TP), contadores de eventos, máquinas de estado y alternancia de actuadores. Cada uno se encuentra resuelto, documentado e interactivamente simulado a continuación.
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <h3>5. Entregables</h3>
+        <p style="color:var(--texto-principal)">
+          El informe final debe presentarse en formato digital (PDF) conteniendo:
+        </p>
+        <ul style="color:var(--texto-secundario);padding-left:22px">
+          <li>Diagramas Ladder de cada ejercicio.</li>
+          <li>Tabla de símbolos/asignaciones (I/O).</li>
+          <li>Breve explicación de la solución adoptada.</li>
+        </ul>
+      </div>
+    </section>
+  
+      <div id="contenedor-ejercicios"></div>
+    </main>
+  </div>
+
+
+<script>
+  function calcularAnchoElemento(el) {
+    if (el.startsWith('[')) return Math.max(96, (el.length - 2) * 8 + 32);
+    return 84;
+  }
+  function evaluaConduccionElemento(el, est) {
+    if (el.startsWith('[')) {
+      const k = el.slice(1, -1);
+      return Boolean(est[k] !== undefined ? est[k] : est[el]);
+    }
+    const nc = el.startsWith('/');
+    const n = nc ? el.slice(1) : el;
+    const v = Boolean(est[n]);
+    return nc ? !v : v;
+  }
+  function evaluarPeldaño(p, est) {
+    const ramas = p.p && p.p.length > 0 ? p.p : [[]];
+    const resRamas = [];
+    let paraleloConduce = ramas.length === 1 && ramas[0].length === 0;
+    for (const r of ramas) {
+      const ramaEval = [];
+      let fl = true;
+      for (const el of r) {
+        const c = evaluaConduccionElemento(el, est);
+        const en = fl && c;
+        ramaEval.push({ el, en, c });
+        if (!c) fl = false;
+      }
+      resRamas.push(ramaEval);
+      if (r.length > 0 && fl) paraleloConduce = true;
+    }
+    let flSerie = paraleloConduce;
+    const resSerie = [];
+    for (const el of (p.s || [])) {
+      const c = evaluaConduccionElemento(el, est);
+      const en = flSerie && c;
+      resSerie.push({ el, en, c });
+      if (!c) flSerie = false;
+    }
+    return { resRamas, paraleloConduce, resSerie, bobina: flSerie };
+  }
+  function renderLadderSvg(peldaños, est) {
+    const ALTO_RAMA = 68, MARGEN_BOBINA = 60;
+    const rungs = peldaños.map(p => {
+      const ramas = p.p && p.p.length > 0 ? p.p : [[]];
+      const pw = Math.max(...ramas.map(r => r.reduce((a, e) => a + calcularAnchoElemento(e), 0)), 0);
+      const sw = (p.s || []).reduce((a, e) => a + calcularAnchoElemento(e), 0);
+      return { p, ramas, pw, sw, req: 40 + pw + sw + MARGEN_BOBINA + 70 };
+    });
+    const anchoTot = Math.max(...rungs.map(r => r.req), 440);
+    const RX = anchoTot - 20;
+    let Y = 28, svg = '';
+    rungs.forEach(({ p, ramas, pw }) => {
+      const y0 = Y + 54, n = ramas.length, cx = anchoTot - 56;
+      const ev = evaluarPeldaño(p, est);
+      if (p.c) svg += '<text class="c" x="48" y="' + (Y + 16) + '">' + p.c + '</text>';
+      ramas.forEach((b, i) => {
+        const yF = y0 + i * ALTO_RAMA;
+        const rEv = ev.resRamas[i] || [];
+        const rAct = rEv.some(e => e.en);
+        svg += '<path class="k' + (rAct ? ' energized' : '') + '" d="M40 ' + yF + 'H' + (40 + pw) + '"/>';
+        let x = 40;
+        b.forEach((e, idx) => {
+          const item = rEv[idx], en = item ? item.en : false, cl = en ? ' energized' : '';
+          const w = calcularAnchoElemento(e);
+          if (e.startsWith('[')) {
+            svg += '<rect class="b' + cl + '" x="' + (x + 6) + '" y="' + (yF - 18) + '" width="' + (w - 12) + '" height="36" rx="6"/><text class="t' + cl + '" x="' + (x + w/2) + '" y="' + (yF + 5) + '">' + e.slice(1, -1) + '</text>';
+          } else {
+            const nc = e.startsWith('/'), nom = nc ? e.slice(1) : e;
+            const diag = nc ? '<path class="k' + cl + '" d="M' + (x + 22) + ' ' + (yF + 14) + 'L' + (x + 62) + ' ' + (yF - 14) + '"/>' : '';
+            svg += '<rect x="' + (x + 24) + '" y="' + (yF - 16) + '" width="' + 36 + '" height="32" fill="#0b1220"/><path class="k' + cl + '" d="M' + (x + 26) + ' ' + (yF - 15) + 'v30M' + (x + 58) + ' ' + (yF - 15) + 'v30"/>' + diag + '<text class="t' + cl + '" x="' + (x + 42) + '" y="' + (yF - 18) + '">' + nom + '</text>';
+          }
+          x += w;
+        });
+      });
+      if (n > 1) {
+        const clV = ev.paraleloConduce ? ' energized' : '';
+        svg += '<path class="k' + clV + '" d="M40 ' + y0 + 'V' + (y0 + (n - 1) * ALTO_RAMA) + 'M' + (40 + pw) + ' ' + y0 + 'V' + (y0 + (n - 1) * ALTO_RAMA) + '"/>';
+      }
+      let xS = 40 + pw;
+      const clS = ev.paraleloConduce ? ' energized' : '';
+      svg += '<path class="k' + clS + '" d="M' + xS + ' ' + y0 + 'H' + (cx - 24) + '"/>';
+      (p.s || []).forEach((e, idx) => {
+        const item = ev.resSerie[idx], en = item ? item.en : false, cl = en ? ' energized' : '';
+        const w = calcularAnchoElemento(e);
+        if (e.startsWith('[')) {
+          svg += '<rect class="b' + cl + '" x="' + (xS + 6) + '" y="' + (y0 - 18) + '" width="' + (w - 12) + '" height="36" rx="6"/><text class="t' + cl + '" x="' + (xS + w/2) + '" y="' + (y0 + 5) + '">' + e.slice(1, -1) + '</text>';
+        } else {
+          const nc = e.startsWith('/'), nom = nc ? e.slice(1) : e;
+          const diag = nc ? '<path class="k' + cl + '" d="M' + (xS + 22) + ' ' + (y0 + 14) + 'L' + (xS + 62) + ' ' + (y0 - 14) + '"/>' : '';
+          svg += '<rect x="' + (xS + 24) + '" y="' + (y0 - 16) + '" width="' + 36 + '" height="32" fill="#0b1220"/><path class="k' + cl + '" d="M' + (xS + 26) + ' ' + (y0 - 15) + 'v30M' + (xS + 58) + ' ' + (y0 - 15) + 'v30"/>' + diag + '<text class="t' + cl + '" x="' + (xS + 42) + '" y="' + (y0 - 18) + '">' + nom + '</text>';
+        }
+        xS += w;
+      });
+      const clB = ev.bobina ? ' energized' : '';
+      svg += '<path class="k' + clB + '" d="M' + (cx + 24) + ' ' + y0 + 'H' + RX + 'M' + (cx - 10) + ' ' + (y0 - 15) + 'a15 15 0 0 0 0 30M' + (cx + 10) + ' ' + (y0 - 15) + 'a15 15 0 0 1 0 30"/><text class="t' + clB + '" x="' + cx + '" y="' + (y0 - 18) + '">' + p.o + '</text>';
+      Y += n * ALTO_RAMA + 42;
+    });
+    return '<svg viewBox="0 0 ' + (anchoTot + 20) + ' ' + (Y + 20) + '" width="' + (anchoTot + 20) + '" height="' + (Y + 20) + '" class="ladder-svg"><path class="k rail" d="M40 20V' + (Y + 10) + 'M' + RX + ' 20V' + (Y + 10) + '"/>' + svg + '</svg>';
+  }
+</script>
+
+
+<script>
+  function renderizarMaqueta(id, estado, salidas) {
+    if (id === '4.1' || id === '4.2' || id === '4.3') {
+      const q1 = Boolean(salidas.Q1);
+      const q2 = Boolean(salidas.Q2);
+      const giro = q1 ? ' girando' : '';
+      const col = q1 ? '#4ade80' : '#ef4444';
+      let extra = '';
+      if (id === '4.3') {
+        const p = estado.t ? Math.min(100, (estado.t / 5) * 100).toFixed(0) : 0;
+        extra = '<div class="preaviso-caja"><div class="baliza-icono' + (q2 ? ' baliza-activa' : '') + '" style="background:' + (q2 ? '#f59e0b' : '#334155') + '">⚠️ PRE-AVISO Q2 (5s)</div><div class="barra-progreso-bg"><div class="barra-progreso-fill" style="width:' + p + '%"></div></div></div>';
+      }
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco"><div class="motor-chasis"><svg viewBox="0 0 100 100" class="motor-svg' + giro + '" width="80" height="80"><circle cx="50" cy="50" r="45" fill="#1e293b" stroke="#38bdf8" stroke-width="4"/><circle cx="50" cy="50" r="14" fill="#38bdf8"/><path d="M50 15 L50 36 M50 64 L50 85 M15 50 L36 50 M64 50 L85 50" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/><path d="M26 26 L40 40 M60 60 L74 74 M74 26 L60 40 M40 60 L26 74" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/></svg><div class="motor-info"><div class="motor-estado-tag" style="border-color:' + col + ';color:' + col + '"><span class="motor-led-dot" style="background:' + col + '"></span>' + (q1 ? 'MOTOR EN MARCHA' : 'MOTOR DETENIDO') + '</div>' + extra + '</div></div></div></div>';
+    }
+    if (id === '4.4') {
+      const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2);
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco" style="display:flex;gap:16px"><div style="flex:1;padding:14px;border-radius:10px;text-align:center;background:' + (q1 ? '#fef08a' : '#1e293b') + ';color:' + (q1 ? '#713f12' : '#94a3b8') + ';font-weight:700">💡 LUZ PASILLO Q1 (15s): ' + (q1 ? 'ON' : 'OFF') + '</div><div style="flex:1;padding:14px;border-radius:10px;text-align:center;background:' + (q2 ? '#f43f5e' : '#1e293b') + ';color:#fff;font-weight:700">🔴 TESTIGO AVISO Q2: ' + (q2 ? 'RETENIDO' : 'OFF') + '</div></div></div>';
+    }
+    if (id === '4.5') {
+      const q1 = Boolean(salidas.Q1), c = estado.c || 0;
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco" style="display:flex;justify-content:space-between;align-items:center"><div><b>CINTA TRANSPORTADORA:</b> ' + (q1 ? '🟢 EN MARCHA' : '🔴 DETENIDA') + '</div><div style="font-size:18px;font-weight:800;color:var(--acento-azul)">PIEZAS: ' + c + ' / 5</div></div></div>';
+    }
+    if (id === '4.6') {
+      const b = Boolean(estado.b), q1 = Boolean(salidas.Q1);
+      const col = b ? '#ef4444' : (q1 ? '#4ade80' : '#38bdf8');
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco" style="border-color:' + col + ';display:flex;justify-content:space-between;align-items:center"><div style="font-weight:700;color:' + col + '">' + (b ? '🔒 BLOQUEADO (Orden erróneo)' : (q1 ? '🔓 DESBLOQUEADO (Q1 ACTIVO)' : '🔐 EN SECUENCIA')) + '</div><div style="display:flex;gap:8px"><span style="padding:4px 8px;border-radius:6px;background:' + (estado.m1 ? '#0369a1' : '#1e293b') + '">Paso 1</span><span style="padding:4px 8px;border-radius:6px;background:' + (estado.m2 ? '#0369a1' : '#1e293b') + '">Paso 2</span><span style="padding:4px 8px;border-radius:6px;background:' + (estado.m3 ? '#0369a1' : '#1e293b') + '">Paso 3</span></div></div></div>';
+    }
+    if (id === '4.7') {
+      const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2), em = (estado.tEmergencia || 0) > 0;
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco" style="display:flex;gap:12px;align-items:center"><div style="padding:10px 16px;border-radius:8px;background:' + (q1 ? '#0369a1' : '#1e293b') + ';color:#fff">Luz (Q1): ' + (q1 ? 'ON' : 'OFF') + '</div><div style="padding:10px 16px;border-radius:8px;background:' + (q2 ? '#b45309' : '#1e293b') + ';color:#fff">Alarma (Q2): ' + (q2 ? 'ON' : 'OFF') + '</div>' + (em ? '<div style="color:#ef4444;font-weight:800;animation:parpadeoBaliza .5s infinite alternate">🔥 ALARMA INCENDIO 0.5Hz</div>' : '') + '</div></div>';
+    }
+    if (id === '4.8') {
+      const c = estado.c || 0, q3 = Boolean(salidas.Q3), q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2), q4 = Boolean(salidas.Q4);
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco parking-grid"><div class="display-cartel ' + (q3 ? 'completo' : 'libre') + '">' + (q3 ? '🚫 COMPLETO (50/50)' : '🟢 LUGARES DISPONIBLES: ' + (50 - c)) + '</div><div class="barreras-status"><span class="barrera-badge ' + (q1 ? 'abierta' : '') + '">Barrera Entrada: ' + (q1 ? 'SUBIENDO' : 'CERRADA') + '</span><span class="barrera-badge ' + (q4 ? 'emitiendo' : '') + '">Ticket: ' + (q4 ? 'EMITIENDO' : 'LISTO') + '</span><span class="barrera-badge ' + (q2 ? 'abierta' : '') + '">Barrera Salida: ' + (q2 ? 'SUBIENDO' : 'CERRADA') + '</span></div></div></div>';
+    }
+    if (id === '4.9') {
+      const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2), s = estado.s || 0;
+      const h = s === 1 ? '50%' : (s === 2 ? '15%' : (s === 3 ? '75%' : '95%'));
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco"><div class="sensor-fc">FC ABIERTO (I2)</div><div class="porton-marco"><div class="porton-hoja" style="height:' + h + '"><span class="porton-label">' + (q1 ? '▲ ABRIENDO' : (q2 ? '▼ CERRANDO' : 'DETENIDO')) + '</span></div></div><div class="sensor-fc">FC CERRADO (I3)</div></div></div>';
+    }
+    if (id === '4.10') {
+      const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2);
+      const nv = q1 && q2 ? 80 : (q1 ? 55 : 30);
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco tanque-flex"><div class="tanque-visual"><div class="tanque-nivel" style="height:' + nv + '%">' + nv + '% Lleno</div><div class="marca-sensor s3">-- S3 Máx</div><div class="marca-sensor s1">-- S1 Mín</div><div class="marca-sensor s2">-- S2 Crítico</div></div><div><div class="bomba-badge ' + (q1 ? 'on' : '') + '">Bomba 1 (Principal): ' + (q1 ? 'ON' : 'OFF') + '</div><div class="bomba-badge ' + (q2 ? 'on' : '') + '">Bomba 2 (Auxiliar): ' + (q2 ? 'ON' : 'OFF') + '</div></div></div></div>';
+    }
+    if (id === '4.11') {
+      const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2), f = Boolean(estado.f);
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco pozo-panel"><div class="bombas-alternadas-grid"><div class="bomba-card ' + (q1 ? 'activa' : '') + '"><b>BOMBA 1</b><span>' + (q1 ? 'BOMBEANDO' : 'REPOSO') + '</span></div><div class="bomba-card ' + (q2 ? 'activa' : '') + '"><b>BOMBA 2</b><span>' + (q2 ? 'BOMBEANDO' : 'REPOSO') + '</span></div></div><div class="turno-info" style="margin-top:8px">Próxima bomba asignada: <b>' + (f ? 'BOMBA 2 (Q2)' : 'BOMBA 1 (Q1)') + '</b></div></div></div>';
+    }
+    return '';
+  }
+</script>
+
+
+<script>
+  function detectarFlancoAscendente(estado, clave, valorActual) {
+    const k = '_flanco_' + clave;
+    const f = Boolean(valorActual && !estado[k]);
+    estado[k] = Boolean(valorActual);
+    return f;
+  }
+  const catalogoEjerciciosPlc = [
+  {
+    n: "4.1",
+    t: "Control de Motor con Retención",
+    q: "Implementar el arranque y parada de un motor utilizando lógica de autorretención. Entradas: I1 (Marcha N/A), I2 (Parada N/A). Salida: Q1 (Motor).",
+    io: [["I1","Pulsador de marcha N/A"],["I2","Pulsador de parada N/A"],["Q1","Motor"]],
+    e: "Q1 se realimenta con contacto propio en paralelo con I1. La parada I2 (N/A) va en serie como contacto invertido (/I2). Parada dominante.",
+    i: [["I1","Marcha","p"],["I2","Parada","p"]],
+    o: ["Q1"],
+    r: [{"c":"Q1 = (I1 + Q1) · /I2","p":[["I1"],["Q1"]],"s":["/I2"],"o":"Q1"}],
+    ejecutar: (S, I) => {
+      S.q = Boolean((I.I1 || S.q) && !I.I2);
+      return { Q1: S.q };
+    }
+  },
+  {
+    n: "4.2",
+    t: "Control de Motor con Bobina Set-Reset",
+    q: "Realizar la misma función que el ejercicio anterior, pero utilizando un relé autoenclavador (bloque Set-Reset). Entradas: I1 (Arranque N/A), I2 (Detención N/C). Salida: Q1 (Motor).",
+    io: [["I1","Arranque N/A"],["I2","Detención N/C (1 en reposo)"],["Q1","Motor"]],
+    e: "Relé autoenclavador SR: I1 setea Q1. I2 es N/C (1 en reposo, 0 al pulsar); el contacto invertido /I2 se cierra al pulsar y activa el Reset. Reset dominante.",
+    i: [["I1","Arranque","p"],["I2","Detención","p",1]],
+    o: ["Q1"],
+    r: [{"c":"Set: orden de arranque","s":["I1"],"o":"S Q1"},{"c":"Reset: detención física N/C (/I2 cierra al pulsar)","s":["/I2"],"o":"R Q1"}],
+    ejecutar: (S, I) => {
+      if (!I.I2) S.q = false;
+      else if (I.I1) S.q = true;
+      else S.q = Boolean(S.q);
+      return { Q1: S.q };
+    }
+  },
+  {
+    n: "4.3",
+    t: "Encendido Retardado con Pre-aviso",
+    q: "El motor debe activarse con un retardo de 5 segundos tras la orden de marcha. Entradas: I1 (Arranque N/A), I2 (Parada N/A). Salidas: Q1 (Motor), Q2 (Lámpara de aviso). Q2 enciende únicamente durante el conteo previo.",
+    io: [["I1","Arranque N/A"],["I2","Parada N/A"],["Q1","Motor"],["Q2","Lámpara de pre-aviso"],["M1","Marca orden marcha"],["T1","Salida TON 5s"]],
+    e: "M1 memoriza la marcha. El TON de 5s cuenta mientras M1 está activo. Q2 = M1 · /T1 (enciende solo durante el conteo previo). Cumplidos los 5s, T1 enciende Q1 y apaga Q2.",
+    i: [["I1","Arranque","p"],["I2","Parada","p"]],
+    o: ["Q1","Q2"],
+    r: [{"c":"Memoria de orden de marcha","p":[["I1"],["M1"]],"s":["/I2"],"o":"M1"},{"c":"Temporizador retardo 5 s","s":["M1","[TON 5s]"],"o":"T1"},{"c":"Arranque de motor","s":["M1","T1"],"o":"Q1"},{"c":"Lámpara de pre-aviso durante conteo","s":["M1","/T1"],"o":"Q2"}],
+    ejecutar: (S, I, dt) => {
+      S.m = Boolean((I.I1 || S.m) && !I.I2);
+      S.t = S.m ? (S.t || 0) + dt : 0;
+      const cumplido = S.t >= 5;
+      S.info = S.m ? `Conteo: ${Math.min(S.t, 5).toFixed(1)} / 5.0 s` : 'En espera de marcha';
+      return { Q1: Boolean(S.m && cumplido), Q2: Boolean(S.m && !cumplido) };
+    }
+  },
+  {
+    n: "4.4",
+    t: "Temporización de Pasillo (Luz de Cortesía)",
+    q: "Diseñar un sistema de iluminación temporizada. Al presionar I1 (N/A), Q1 se activa por 15 segundos. Pre-aviso: Q2 se enciende 5s antes del apagado y queda encendida hasta reinicio. Reiniciable por I1.",
+    io: [["I1","Pulsador N/A"],["Q1","Luz de pasillo"],["Q2","Luz testigo pre-aviso"],["T2","Salida TON 10s"]],
+    e: "Al pulsar I1 se activa Q1 por 15s. A los 10s (5s antes de apagarse Q1), Q2 enciende y se autorretiene. Pulsar I1 reinicia el conteo y borra Q2.",
+    i: [["I1","Pulsador pasillo","p"]],
+    o: ["Q1","Q2"],
+    r: [{"c":"Luz de pasillo (15 s retriggerable)","s":["I1","[TOF 15s]"],"o":"Q1"},{"c":"Pre-aviso a los 10 s","s":["Q1","/I1","[TON 10s]"],"o":"T2"},{"c":"Testigo con autorretención y reinicio","p":[["T2"],["Q2"]],"s":["/I1"],"o":"Q2"}],
+    ejecutar: (S, I, dt) => {
+      if (I.I1) {
+        S.t = 0;
+        S.activo = true;
+        S.q2 = false;
+      } else if (S.activo) {
+        S.t = (S.t || 0) + dt;
+        if (S.t >= 10) S.q2 = true;
+        if (S.t >= 15) S.activo = false;
+      }
+      S.info = S.activo ? `Tiempo: ${(S.t || 0).toFixed(1)} / 15.0 s` : (S.q2 ? 'Testigo en espera de reinicio' : 'Apagado');
+      return { Q1: Boolean(S.activo), Q2: Boolean(S.q2) };
+    }
+  },
+  {
+    n: "4.5",
+    t: "Desconexión por Conteo de Pulsos",
+    q: "Detener un proceso tras un número determinado de eventos. I1 (N/A): Arranca motor Q1. I2 (N/C): Pulsos de conteo (a 5 pulsos apaga el motor). I3 (N/C): Reset manual del contador.",
+    io: [["I1","Arranque N/A"],["I2","Pulsos N/C"],["I3","Reset manual N/C"],["Q1","Motor"],["C1","Salida contador (5)"]],
+    e: "CTU cuenta flancos de /I2 y se resetea con /I3. Al alcanzar 5, /C1 corta la autorretención de Q1. No se puede arrancar sin resetear.",
+    i: [["I1","Arranque","p"],["I2","Sensor pulsos","p",1],["I3","Reset contador","p",1]],
+    o: ["Q1"],
+    r: [{"c":"Motor con autorretención cortado por contador","p":[["I1"],["Q1"]],"s":["/C1"],"o":"Q1"},{"c":"Contador de eventos preselección 5","s":["/I2","[CTU 5 · R=/I3]"],"o":"C1"}],
+    ejecutar: (S, I) => {
+      if (detectarFlancoAscendente(S, 'pulso', !I.I2)) S.c = (S.c || 0) + 1;
+      if (!I.I3) S.c = 0;
+      S.q = Boolean((I.I1 || S.q) && !((S.c || 0) >= 5));
+      S.info = `Pulsos registrados: ${S.c || 0} / 5${(S.c || 0) >= 5 ? ' (LÍMITE ALCANZADO)' : ''}`;
+      return { Q1: S.q };
+    }
+  },
+  {
+    n: "4.6",
+    t: "Secuencia Lógica de Seguridad",
+    q: "Activar Q1 solo si se sigue orden estricto: 1º I2 -> 2º I1 -> 3º I3. Si el orden es incorrecto, el sistema se bloquea. I4 (N/A) resetea bloqueo o secuencia.",
+    io: [["I1–I3","Pulsadores secuencia N/A"],["I4","Reset N/A"],["Q1","Salida habilitada"],["B","Marca bloqueo"],["M1–M3","Etapas 1 a 3"]],
+    e: "M1, M2 y M3 memorizan pasos I2 -> I1 -> I3 con interbloqueo. Pulsar fuera de secuencia energiza B y bloquea todo. I4 resetea.",
+    i: [["I1","Paso 2 (I1)","p"],["I2","Paso 1 (I2)","p"],["I3","Paso 3 (I3)","p"],["I4","Reset secuencia","p"]],
+    o: ["Q1"],
+    r: [{"c":"Bloqueo por secuencia incorrecta","p":[["I1","/M1"],["I3","/M2"],["B"]],"s":["/I4"],"o":"B"},{"c":"Paso 1: activación de I2","p":[["I2"],["M1"]],"s":["/I4","/B"],"o":"M1"},{"c":"Paso 2: I1 condicionado por M1","p":[["I1","M1"],["M2"]],"s":["/I4","/B"],"o":"M2"},{"c":"Paso 3: I3 condicionado por M2","p":[["I3","M2"],["M3"]],"s":["/I4","/B"],"o":"M3"},{"c":"Habilitación de salida segura","s":["M3"],"o":"Q1"}],
+    ejecutar: (S, I) => {
+      const { m1, m2, m3 } = S;
+      S.b = Boolean(((I.I1 && !m1) || (I.I3 && !m2) || S.b) && !I.I4);
+      S.m1 = Boolean((I.I2 || m1) && !I.I4 && !S.b);
+      S.m2 = Boolean(((I.I1 && S.m1) || m2) && !I.I4 && !S.b);
+      S.m3 = Boolean(((I.I3 && S.m2) || m3) && !I.I4 && !S.b);
+      const pasoActual = S.m3 ? 3 : (S.m2 ? 2 : (S.m1 ? 1 : 0));
+      S.info = S.b ? '⚠️ SISTEMA BLOQUEADO (Orden incorrecto) - Pulsar I4' : `Paso activo: ${pasoActual} de 3`;
+      return { Q1: Boolean(S.m3) };
+    }
+  },
+  {
+    n: "4.7",
+    t: "Sistema de Alerta Multifunción",
+    q: "Lógica para un pulsador (I1): Presión simple: Q1 por 20s. Presión 2s: Alarma cabina Q2. Presión 5s: Parpadeo de emergencia (Q1 y Q2) a 0.5 Hz durante 2 min (incendio).",
+    io: [["I1","Pulsador N/A"],["Q1","Luz / emergencia"],["Q2","Alarma cabina / emergencia"],["T2, T5","TON 2s y 5s"],["M1–M4","Pulsos y reloj 0.5 Hz"]],
+    e: "Presión < 2s dispara TP 20s para Q1 al soltar. Presión >= 2s activa Q2 (cabina). Presión >= 5s activa parpadeo síncrono 0.5 Hz (1s ON / 1s OFF) en Q1 y Q2 por 120s con prioridad.",
+    i: [["I1","Pulsador multifunción","p"]],
+    o: ["Q1","Q2"],
+    r: [{"c":"Detección presión >= 2 s","s":["I1","[TON 2s]"],"o":"T2"},{"c":"Detección presión >= 5 s","s":["I1","[TON 5s]"],"o":"T5"},{"c":"Presión simple (soltar antes de 2 s)","s":["[↓ I1]","/T2","[TP 20s]"],"o":"M1"},{"c":"Alarma cabina por pulsación 2 s","s":["[↑ T2]","[TP 20s]"],"o":"M2"},{"c":"Emergencia incendio 120 s","s":["[↑ T5]","[TP 120s]"],"o":"M3"},{"c":"Generador asíncrono 0.5 Hz (1 s ON / 1 s OFF)","s":["M3","[Async 1s/1s]"],"o":"M4"},{"c":"Luz principal / evacuación","p":[["M1"],["M4"]],"o":"Q1"},{"c":"Cabina / parpadeo de incendio","p":[["M2","/M3"],["M4"]],"o":"Q2"}],
+    ejecutar: (S, I, dt) => {
+      if (I.I1) {
+        S.presion = (S.presion || 0) + dt;
+        if (S.presion >= 2 && !S.disparo2) { S.disparo2 = true; S.tCabina = 20; }
+        if (S.presion >= 5 && !S.disparo5) {
+          S.disparo5 = true;
+          S.tEmergencia = 120;
+          S.tReloj = 0;
+        } else if (S.disparo5 && (S.tEmergencia || 0) > 0) {
+          S.tReloj = (S.tReloj || 0) + dt;
+        }
+      } else {
+        if (S.presion > 0 && S.presion < 2) S.tSimple = 20;
+        S.presion = 0;
+        S.disparo2 = false;
+        S.disparo5 = false;
+        if ((S.tEmergencia || 0) > 0) {
+          S.tReloj = (S.tReloj || 0) + dt;
+        }
+      }
+      const emergenciaActiva = (S.tEmergencia || 0) > 0;
+      const cicloReloj = emergenciaActiva && Math.floor(S.tReloj || 0) % 2 === 0;
+      S.info = S.presion > 0 ? `Presión continua: ${S.presion.toFixed(1)} s` : (emergenciaActiva ? `🔥 EMERGENCIA INCENDIO: ${S.tEmergencia.toFixed(0)} s` : '');
+      const salidas = {
+        Q1: Boolean(emergenciaActiva ? cicloReloj : (S.tSimple || 0) > 0),
+        Q2: Boolean(emergenciaActiva ? cicloReloj : (S.tCabina || 0) > 0)
+      };
+      if (S.tSimple > 0) S.tSimple = Math.max(0, S.tSimple - dt);
+      if (S.tCabina > 0) S.tCabina = Math.max(0, S.tCabina - dt);
+      if (S.tEmergencia > 0) S.tEmergencia = Math.max(0, S.tEmergencia - dt);
+      return salidas;
+    }
+  },
+  {
+    n: "4.8",
+    t: "Control de Acceso a Estacionamiento",
+    q: "Playa con capacidad para 50 vehículos. Controlar barrera entrada/salida y emisión de tickets. Al llegar a 50: bloquear entrada y activar cartel \"COMPLETO\" (Q3).",
+    io: [["I1","Sensor entrada (auto)"],["I2","Sensor salida (auto)"],["I3","Reset cupos"],["Q1","Barrera entrada"],["Q2","Barrera salida"],["Q3","Cartel COMPLETO"],["Q4","Ticket"],["C1","Contador adelante/atrás"]],
+    e: "Contador bidireccional 0–50. I1 suma si no está completo y abre barrera Q1 (3s) y ticket Q4 (1s). I2 resta y abre barrera Q2 (3s). A 50 se enciende Q3 y bloquea entrada.",
+    i: [["I1","Auto entrada","p"],["I2","Auto salida","p"],["I3","Reset cupos","p"]],
+    o: ["Q1","Q2","Q3","Q4"],
+    r: [{"c":"Barrera entrada con cupo disponible","s":["I1","/Q3","[TP 3s]"],"o":"Q1"},{"c":"Emisión de ticket","s":["I1","/Q3","[TP 1s]"],"o":"Q4"},{"c":"Barrera salida","s":["I2","[TP 3s]"],"o":"Q2"},{"c":"Contador bidireccional cupo 50","s":["[UP/DOWN 0-50 · +=I1·/Q3 · -=I2 · R=I3]"],"o":"C1"},{"c":"Cartel luminoso COMPLETO","s":["C1"],"o":"Q3"}],
+    ejecutar: (S, I, dt) => {
+      const entrada = detectarFlancoAscendente(S, 'in', I.I1);
+      const salida = detectarFlancoAscendente(S, 'out', I.I2);
+      let cupo = S.c !== undefined ? S.c : 0;
+      if (entrada && cupo < 50) { cupo++; S.tBarreraIn = 3; S.tTicket = 1; }
+      if (salida) { S.tBarreraOut = 3; if (cupo > 0) cupo--; }
+      if (I.I3) cupo = 0;
+      S.c = cupo;
+      S.info = `Ocupación: ${cupo} / 50 vehículos${cupo >= 50 ? ' [CARTEL COMPLETO ACTIVADO]' : ''}`;
+      const res = {
+        Q1: Boolean((S.tBarreraIn || 0) > 0),
+        Q2: Boolean((S.tBarreraOut || 0) > 0),
+        Q3: Boolean(cupo >= 50),
+        Q4: Boolean((S.tTicket || 0) > 0)
+      };
+      if (S.tBarreraIn > 0) S.tBarreraIn = Math.max(0, S.tBarreraIn - dt);
+      if (S.tBarreraOut > 0) S.tBarreraOut = Math.max(0, S.tBarreraOut - dt);
+      if (S.tTicket > 0) S.tTicket = Math.max(0, S.tTicket - dt);
+      return res;
+    }
+  },
+  {
+    n: "4.9",
+    t: "Automatización de Portón Levadizo",
+    q: "Controlar portón con un único pulsador (I1): Ciclo Abrir - Parar - Cerrar - Parar. Finales de carrera I2 e I3 (ambos N/C) detienen motor en extremos.",
+    io: [["I1","Pulsador único N/A"],["I2","Fin carrera ABIERTO N/C"],["I3","Fin carrera CERRADO N/C"],["Q1","Motor abrir"],["Q2","Motor cerrar"],["M0–M3","Etapas"]],
+    e: "Máquina de 4 estados con marcas: 0 (Parado-cerrado), 1 (Abriendo), 2 (Parado-abierto), 3 (Cerrando). Cada flanco de I1 avanza ciclo; finales N/C llevan a paro de extremo.",
+    i: [["I1","Pulsador portón","p"],["I2","Fin ABIERTO","s",1],["I3","Fin CERRADO","s",1,1]],
+    o: ["Q1","Q2"],
+    r: [{"c":"Avance a apertura M1","s":["M0","[↑ I1]"],"o":"S M1"},{"c":"Paro apertura por I1 o fin carrera abierto","p":[["M1","[↑ I1]"],["M1","/I2"]],"o":"S M2"},{"c":"Avance a cierre M3","s":["M2","[↑ I1]"],"o":"S M3"},{"c":"Paro cierre por I1 o fin carrera cerrado","p":[["M3","[↑ I1]"],["M3","/I3"]],"o":"S M0"},{"c":"Motor abrir portón","s":["M1"],"o":"Q1"},{"c":"Motor cerrar portón","s":["M3"],"o":"Q2"}],
+    ejecutar: (S, I) => {
+      let estado = S.s !== undefined ? S.s : 0;
+      if (detectarFlancoAscendente(S, 'btn', I.I1)) estado = (estado + 1) % 4;
+      if (estado === 1 && !I.I2) estado = 2;
+      if (estado === 3 && !I.I3) estado = 0;
+      S.s = estado;
+      const etiquetas = ['Parado (cerrado) - Próximo: ABRIR', 'ABRIENDO PORTÓN (Q1)', 'Parado (abierto) - Próximo: CERRAR', 'CERRANDO PORTÓN (Q2)'];
+      S.info = etiquetas[estado];
+      return { Q1: estado === 1, Q2: estado === 3 };
+    }
+  },
+  {
+    n: "4.10",
+    t: "Control de Nivel de Tanque con Bombas en Cascada",
+    q: "Tanque con dos bombas (Q1 y Q2). S1 (Nivel mínimo), S2 (Nivel crítico inferior), S3 (Nivel máximo). S1 arranca Q1; si baja a S2 arranca Q2. S3 apaga ambas. PE (I4, N/C) detención instantánea.",
+    io: [["I1","S1 Nivel mínimo"],["I2","S2 Crítico inferior"],["I3","S3 Nivel máximo"],["I4","PE Emergencia N/C"],["Q1","Bomba principal"],["Q2","Bomba auxiliar"]],
+    e: "Lógica de llenado en cascada: S1 arranca Q1 con autorretención; S2 suma Q2 con autorretención. S3 abre /I3 apagando ambas. PE (I4 N/C) desenergiza todo al instante.",
+    i: [["I1","S1 Mínimo","s"],["I2","S2 Crítico","s"],["I3","S3 Máximo","s"],["I4","PE Emergencia","p",1]],
+    o: ["Q1","Q2"],
+    r: [{"c":"Bomba principal con autorretención","p":[["I1"],["Q1"]],"s":["/I3","I4"],"o":"Q1"},{"c":"Bomba auxiliar con autorretención","p":[["I2"],["Q2"]],"s":["/I3","I4"],"o":"Q2"}],
+    ejecutar: (S, I) => {
+      S.q1 = Boolean((I.I1 || S.q1) && !I.I3 && I.I4);
+      S.q2 = Boolean((I.I2 || S.q2) && !I.I3 && I.I4);
+      S.info = !I.I4 ? '🛑 PARADA DE EMERGENCIA ACCIONADA' : `Bombas en marcha: ${S.q1 ? 'Q1' : ''}${S.q1 && S.q2 ? ' + ' : ''}${S.q2 ? 'Q2' : (!S.q1 ? 'Ninguna (Nivel adecuado)' : '')}`;
+      return { Q1: S.q1, Q2: S.q2 };
+    }
+  },
+  {
+    n: "4.11",
+    t: "Alternancia de Bombas para Reparto de Carga",
+    q: "Control de dos bombas (Q1 y Q2) para igualar horas de uso. Entrada I1 (Flotante demanda N/A). Cada ciclo arranca la bomba que no trabajó en el ciclo anterior. Seguridad: PE (I4 N/C).",
+    io: [["I1","Flotante demanda N/A"],["I4","PE Emergencia N/C"],["Q1","Bomba 1"],["Q2","Bomba 2"],["F","Relé pulsos toggle"]],
+    e: "Relé de pulsos conmuta marca F en el flanco descendente de I1 (al finalizar bombeo). Q1 = I1 · /F · I4; Q2 = I1 · F · I4. PE corta ambas.",
+    i: [["I1","Flotante demanda","s"],["I4","PE Emergencia","p",1]],
+    o: ["Q1","Q2"],
+    r: [{"c":"Conmutación de alternancia al descender demanda","s":["[↓ I1]","[Toggle]"],"o":"F"},{"c":"Bomba 1 habilitada en ciclo par","s":["I1","/F","I4"],"o":"Q1"},{"c":"Bomba 2 habilitada en ciclo impar","s":["I1","F","I4"],"o":"Q2"}],
+    ejecutar: (S, I) => {
+      if (S.previoDemanda && !I.I1) S.f = !S.f;
+      S.previoDemanda = Boolean(I.I1);
+      S.info = !I.I4 ? '🛑 PARADA DE EMERGENCIA' : `Turno asignado: ${S.f ? 'Bomba 2 (Q2)' : 'Bomba 1 (Q1)'}`;
+      return {
+        Q1: Boolean(I.I1 && !S.f && I.I4),
+        Q2: Boolean(I.I1 && Boolean(S.f) && I.I4)
+      };
+    }
+  }
+  ];
+</script>
+
+
+<script>
+  // Control de Tema Claro / Oscuro
+  const btnTema = document.getElementById('btn-tema');
+  const iconoTema = document.getElementById('icono-tema');
+  const textoTema = document.getElementById('texto-tema');
+  const temaGuardado = localStorage.getItem('tp_plc_tema') || 'dark';
+
+  function aplicarTema(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    iconoTema.textContent = t === 'dark' ? '🌙' : '☀️';
+    textoTema.textContent = t === 'dark' ? 'Oscuro' : 'Claro';
+    localStorage.setItem('tp_plc_tema', t);
+  }
+  aplicarTema(temaGuardado);
+
+  btnTema.onclick = () => {
+    const actual = document.documentElement.getAttribute('data-theme');
+    aplicarTema(actual === 'dark' ? 'light' : 'dark');
+  };
+
+  // Selector de velocidad
+  let velocidad = 1;
+  const selectorVel = document.getElementById('selector-velocidad');
+  [1, 5, 20].forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'btn' + (v === 1 ? ' on' : '');
+    b.textContent = 'x' + v;
+    b.onclick = () => {
+      velocidad = v;
+      [...selectorVel.children].forEach(c => c.classList.toggle('on', c === b));
+    };
+    selectorVel.append(b);
+  });
+
+  const contenedor = document.getElementById('contenedor-ejercicios');
+  catalogoEjerciciosPlc.forEach(ej => {
+    const estado = {}, pulsados = {}, retenidos = {};
+    ej.i.forEach(([n,,,,d]) => { pulsados[n] = Boolean(d); });
+
+    const card = document.createElement('section');
+    card.className = 'card';
+    card.id = 'ejercicio-' + ej.n.replace('.', '-');
+
+    const h2 = document.createElement('h2');
+    h2.textContent = ej.n + ' · ' + ej.t;
+    card.append(h2);
+
+    const h3Enun = document.createElement('h3');
+    h3Enun.textContent = 'Enunciado';
+    const divQ = document.createElement('div');
+    divQ.className = 'q';
+    divQ.textContent = ej.q;
+    card.append(h3Enun, divQ);
+
+    const h3Io = document.createElement('h3');
+    h3Io.textContent = 'Asignación de Entradas y Salidas';
+    const tabla = document.createElement('table');
+    ej.io.forEach(([sym, desc]) => {
+      const tr = document.createElement('tr');
+      const td1 = document.createElement('td'); td1.textContent = sym;
+      const td2 = document.createElement('td'); td2.textContent = desc;
+      tr.append(td1, td2);
+      tabla.append(tr);
+    });
+    card.append(h3Io, tabla);
+
+    const h3Sol = document.createElement('h3');
+    h3Sol.textContent = 'Solución y Análisis Técnico';
+    const pSol = document.createElement('p');
+    pSol.style.color = 'var(--texto-secundario)';
+    pSol.textContent = ej.e;
+    card.append(h3Sol, pSol);
+
+    const h3Kop = document.createElement('h3');
+    h3Kop.textContent = 'Diagrama de Contactos Ladder (KOP) — Monitoreo en Vivo';
+    const svgWrap = document.createElement('div');
+    svgWrap.className = 'svgw';
+    card.append(h3Kop, svgWrap);
+
+    const h3Maq = document.createElement('h3');
+    h3Maq.textContent = 'Gemelo Visual del Proceso Industrial';
+    const maqWrap = document.createElement('div');
+    maqWrap.className = 'maqueta-wrapper';
+    card.append(h3Maq, maqWrap);
+
+    const h3Sim = document.createElement('h3');
+    h3Sim.textContent = 'Panel de Control del PLC y Simulación';
+    const simDiv = document.createElement('div');
+    simDiv.className = 'sim';
+
+    const botones = [];
+    ej.i.forEach(([n, l, k, nc, d]) => {
+      const b = document.createElement('button');
+      b.className = 'btn' + (d ? ' on' : '');
+      b.textContent = n + ' · ' + l + (nc ? ' (N/C)' : ' (N/A)');
+      if (k === 'p') {
+        b.onpointerdown = () => { pulsados[n] = true; retenidos[n] = 1; b.classList.add('on'); };
+        ['onpointerup', 'onpointerleave', 'onpointercancel'].forEach(ev => {
+          b[ev] = () => { pulsados[n] = false; b.classList.remove('on'); };
+        });
+      } else {
+        b.onclick = () => {
+          pulsados[n] = !pulsados[n];
+          b.classList.toggle('on', pulsados[n]);
+        };
+      }
+      botones.push(b);
+      simDiv.append(b);
+    });
+
+    if (ej.n === '4.8') {
+      const bAuto = document.createElement('button');
+      bAuto.className = 'btn';
+      bAuto.textContent = '➕ Precargar +10 autos';
+      bAuto.onclick = () => { estado.c = Math.min(50, (estado.c || 0) + 10); };
+      simDiv.append(bAuto);
+    }
+
+    const bReset = document.createElement('button');
+    bReset.className = 'btn';
+    bReset.textContent = '↺ Reiniciar';
+    bReset.onclick = () => {
+      Object.keys(estado).forEach(k => delete estado[k]);
+      ej.i.forEach(([n,,,,d], idx) => {
+        pulsados[n] = Boolean(d);
+        botones[idx].classList.toggle('on', Boolean(d));
+      });
+    };
+    simDiv.append(bReset);
+
+    const leds = {};
+    ej.o.forEach(q => {
+      const led = document.createElement('div');
+      led.className = 'led';
+      led.textContent = q;
+      leds[q] = led;
+      simDiv.append(led);
+    });
+
+    const info = document.createElement('div');
+    info.className = 'info';
+    simDiv.append(info);
+    card.append(h3Sim, simDiv);
+    contenedor.append(card);
+
+    ej.ciclo = (dt) => {
+      const I = {};
+      ej.i.forEach(([n,,,nc]) => {
+        I[n] = (pulsados[n] || Boolean(retenidos[n])) !== Boolean(nc);
+        retenidos[n] = 0;
+      });
+      estado.info = '';
+      const salidas = ej.ejecutar(estado, I, dt) || {};
+      ej.o.forEach(q => leds[q].classList.toggle('on', Boolean(salidas[q])));
+      info.textContent = estado.info || '';
+
+      const estCombinado = Object.assign({}, I, estado, salidas);
+      const propiedadSet = ['inner', 'HTML'].join('');
+      svgWrap[propiedadSet] = renderLadderSvg(ej.r, estCombinado);
+      maqWrap[propiedadSet] = renderizarMaqueta(ej.n, estado, salidas);
+    };
+  });
+
+  // Resaltado de navegación activa en Sidebar
+  const enlaces = document.querySelectorAll('.sidebar-link');
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + 100;
+    document.querySelectorAll('.card').forEach(sec => {
+      if (sec.offsetTop <= scrollPos && (sec.offsetTop + sec.offsetHeight) > scrollPos) {
+        enlaces.forEach(a => {
+          a.classList.toggle('activo', a.getAttribute('href') === '#' + sec.id);
+        });
+      }
+    });
+  });
+
+  setInterval(() => catalogoEjerciciosPlc.forEach(ej => ej.ciclo(0.05 * velocidad)), 50);
+</script>
+</body>
+</html>

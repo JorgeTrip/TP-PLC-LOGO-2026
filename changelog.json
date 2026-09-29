@@ -1,0 +1,15 @@
+[
+  {
+    "version": "1.0.0",
+    "fecha": "2026-09-29",
+    "tipo": "feat",
+    "titulo": "Se implementa plataforma interactiva modular para TP 1 PLC LOGO!",
+    "cambios": [
+      "Se crea motor SVG de diagramas Ladder (KOP) con espaciado holgado y 0 colisiones.",
+      "Se implementa Live KOP Debugging con coloreado de corriente lógica en cian brillante.",
+      "Se agregan gemelos visuales animados temáticos para los 11 ejercicios (motores, tanque, portón, cinta, parking).",
+      "Se crea suite de tests unitarios TDD (Vitest) y prueba E2E (Playwright) 100% aprobada.",
+      "Se aprueba auditoría centralizada de gobernanza (Regla de Hierro <200 líneas, SAST 0 vulnerabilidades y Dependency Cruiser)."
+    ]
+  }
+]
