@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.5.0",
+    "fecha": "2026-09-29",
+    "tipo": "feat",
+    "titulo": "Se independiza escala de sensores en tanque, reactiva cabeceras sticky e incorpora FAB volver al top",
+    "cambios": [
+      "Se extraen las marcas de los sensores S1, S2 y S3 fuera del tanque en una escala graduada externa sin colisiones.",
+      "Se reactiva la inmovilización de las cabeceras de enunciados al scrollear en escritorio y móviles (overflow-x: clip).",
+      "Se implementa botón flotante (FAB) en la esquina inferior derecha con aparición reactiva y scroll suave hacia el top."
+    ]
+  },
+  {
     "version": "1.4.0",
     "fecha": "2026-09-29",
     "tipo": "fix",

@@ -50,19 +50,22 @@ export function maquetaPorton4_9(estado, salidas) {
 export function maquetaTanque4_10(estado, salidas) {
   const q1 = Boolean(salidas.Q1);
   const q2 = Boolean(salidas.Q2);
-  // Simular nivel visual estimado
   const nivel = q1 && q2 ? 80 : (q1 ? 55 : 30);
 
   return `
     <div class="maqueta-contenedor">
-      <div class="maqueta-marco tanque-flex">
-        <div class="tanque-visual">
-          <div class="tanque-nivel" style="height:${nivel}%">
-            <span class="nivel-texto">${nivel}% Lleno</span>
+      <div class="maqueta-marco tanque-sistema-wrap">
+        <div class="tanque-con-escala">
+          <div class="escala-sensores">
+            <div class="marca-sensor s3">S3 (Máx) ──►</div>
+            <div class="marca-sensor s1">S1 (Mín) ──►</div>
+            <div class="marca-sensor s2">S2 (Crítico) ──►</div>
           </div>
-          <div class="marca-sensor s3">--- S3 (Máx)</div>
-          <div class="marca-sensor s1">--- S1 (Mín)</div>
-          <div class="marca-sensor s2">--- S2 (Crítico)</div>
+          <div class="tanque-visual">
+            <div class="tanque-nivel" style="height:${nivel}%">
+              <span class="nivel-texto">${nivel}% Lleno</span>
+            </div>
+          </div>
         </div>
         <div class="bombas-panel">
           <div class="bomba-badge ${q1 ? 'on' : ''}">Bomba Principal Q1: ${q1 ? 'BOMBEANDO' : 'OFF'}</div>

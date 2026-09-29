@@ -69,5 +69,6 @@ ${seccionEnunciado}
       <div id="contenedor-ejercicios"></div>
     </main>
   </div>
+  <button id="btn-fab-top" class="fab-top" aria-label="Volver arriba" title="Volver al inicio">↑</button>
 `;
 }

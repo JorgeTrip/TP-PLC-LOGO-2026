@@ -60,5 +60,16 @@ export function generarScriptInteraccionesUi() {
       if (window.innerWidth <= 900) alternarSidebar(false);
     });
   });
+
+  // Botón flotante Volver al Top (FAB)
+  const fabTop = document.getElementById('btn-fab-top');
+  if (fabTop) {
+    window.addEventListener('scroll', () => {
+      fabTop.classList.toggle('visible', window.scrollY > 250);
+    });
+    fabTop.onclick = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  }
 `;
 }

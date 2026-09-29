@@ -48,7 +48,7 @@ export function generarCodigoMaquetasCliente() {
     if (id === '4.10') {
       const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2);
       const nv = q1 && q2 ? 80 : (q1 ? 55 : 30);
-      return '<div class="maqueta-contenedor"><div class="maqueta-marco tanque-flex"><div class="tanque-visual"><div class="tanque-nivel" style="height:' + nv + '%">' + nv + '% Lleno</div><div class="marca-sensor s3">-- S3 Máx</div><div class="marca-sensor s1">-- S1 Mín</div><div class="marca-sensor s2">-- S2 Crítico</div></div><div><div class="bomba-badge ' + (q1 ? 'on' : '') + '">Bomba 1 (Principal): ' + (q1 ? 'ON' : 'OFF') + '</div><div class="bomba-badge ' + (q2 ? 'on' : '') + '">Bomba 2 (Auxiliar): ' + (q2 ? 'ON' : 'OFF') + '</div></div></div></div>';
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco tanque-sistema-wrap"><div class="tanque-con-escala"><div class="escala-sensores"><div class="marca-sensor s3">S3 (Máx) ──►</div><div class="marca-sensor s1">S1 (Mín) ──►</div><div class="marca-sensor s2">S2 (Crítico) ──►</div></div><div class="tanque-visual"><div class="tanque-nivel" style="height:' + nv + '%">' + nv + '% Lleno</div></div></div><div class="bombas-panel"><div class="bomba-badge ' + (q1 ? 'on' : '') + '">Bomba 1 (Principal): ' + (q1 ? 'ON' : 'OFF') + '</div><div class="bomba-badge ' + (q2 ? 'on' : '') + '">Bomba 2 (Auxiliar): ' + (q2 ? 'ON' : 'OFF') + '</div></div></div></div>';
     }
     if (id === '4.11') {
       const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2), f = Boolean(estado.f);

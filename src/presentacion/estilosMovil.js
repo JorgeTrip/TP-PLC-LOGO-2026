@@ -112,7 +112,6 @@ export const estilosMovilCss = `
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    overflow-x: hidden;
   }
   .card {
     padding: 14px 10px;

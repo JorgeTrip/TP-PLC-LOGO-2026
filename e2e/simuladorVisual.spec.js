@@ -35,6 +35,13 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const terminosTecnicos = page.locator('.termino-tecnico');
   const cantidadTerminos = await terminosTecnicos.count();
   expect(cantidadTerminos).toBeGreaterThan(5);
+
+  // Verificar persistencia de cabecera sticky en escritorio al scrollear
+  const card45 = page.locator('#ejercicio-4-5');
+  await card45.scrollIntoViewIfNeeded();
+  await page.mouse.wheel(0, 100);
+  const sticky45 = card45.locator('.cabecera-ejercicio-sticky');
+  await expect(sticky45).toBeVisible();
 });
 
 test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {
@@ -75,5 +82,19 @@ test('Debe optimizar la experiencia en móvil con drawer lateral y controles tá
   await page.waitForTimeout(100);
   const sticky410 = card410.locator('.cabecera-ejercicio-sticky');
   await expect(sticky410).toBeVisible();
+
+  // Verificar que en el Ejercicio 4.10 los sensores estan fuera del tanque
+  const sensoresFuera = card410.locator('.tanque-visual .marca-sensor');
+  await expect(sensoresFuera).toHaveCount(0);
+  const escalaExterna = card410.locator('.escala-sensores');
+  await expect(escalaExterna).toBeVisible();
+
+  // Verificar FAB volver al top
+  const fabTop = page.locator('#btn-fab-top');
+  await expect(fabTop).toHaveClass(/visible/);
+  await fabTop.click();
+  await page.waitForFunction(() => window.scrollY < 500, null, { timeout: 3000 }).catch(() => {});
+  const scrollY = await page.evaluate(() => window.scrollY);
+  expect(scrollY).toBeLessThan(1000);
 });
 

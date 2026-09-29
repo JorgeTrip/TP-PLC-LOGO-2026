@@ -91,11 +91,43 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 @keyframes parpadeoBaliza { from { opacity: .4; } to { opacity: 1; } }
 .barra-progreso-bg { width: 180px; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-top: 6px; }
 .barra-progreso-fill { height: 100%; background: var(--acento-ambar); transition: width .1s; }
-.tanque-flex { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-.tanque-visual { width: 140px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
-.tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 700; }
-.marca-sensor { position: absolute; right: 4px; font-size: 10px; color: #94a3b8; font-family: monospace; }
-.marca-sensor.s3 { top: 15px; } .marca-sensor.s1 { top: 70px; } .marca-sensor.s2 { top: 125px; }
+.tanque-sistema-wrap { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%; }
+.tanque-con-escala { display: flex; align-items: flex-end; gap: 8px; position: relative; }
+.escala-sensores { position: relative; width: 110px; height: 160px; }
+.escala-sensores .marca-sensor { position: absolute; right: 0; font-size: 11px; font-weight: 700; font-family: monospace; white-space: nowrap; }
+.escala-sensores .marca-sensor.s3 { top: 18px; color: var(--acento-azul); }
+.escala-sensores .marca-sensor.s1 { top: 70px; color: var(--acento-purpura); }
+.escala-sensores .marca-sensor.s2 { top: 122px; color: var(--acento-rojo); }
+.tanque-visual { width: 130px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
+.tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+/* FAB Volver al Top */
+.fab-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--acento-azul);
+  border: 1px solid var(--borde-card);
+  box-shadow: 0 8px 24px var(--sombra-card);
+  backdrop-filter: blur(12px);
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .25s ease, transform .25s ease, background .15s, color .15s;
+  z-index: 99;
+}
+.fab-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.fab-top:hover { background: var(--bg-btn-hover); color: var(--texto-principal); transform: translateY(-2px); }
 .porton-fachada { position: relative; }
 .porton-marco { width: 200px; height: 120px; border: 3px solid #64748b; background: var(--bg-svg); position: relative; overflow: hidden; margin: 10px 0; }
 .porton-hoja { width: 100%; background: repeating-linear-gradient(0deg, #334155, #334155 10px, #1e293b 10px, #1e293b 20px); position: absolute; top: 0; transition: height .2s linear; display: flex; align-items: flex-end; justify-content: center; }

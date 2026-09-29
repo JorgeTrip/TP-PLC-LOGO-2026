@@ -59,14 +59,13 @@ export const estilosCss = `
   --borde-sidebar: #e2e8f0;
 }
 
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
+html {
+  overflow-x: clip;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--bg-app);
   color: var(--texto-principal);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
@@ -98,9 +97,7 @@ header h1 {
   display: flex;
   min-height: calc(100vh - 58px);
   width: 100%;
-  max-width: 100vw;
   min-width: 0;
-  overflow-x: hidden;
 }
 
 .sidebar {
@@ -163,7 +160,6 @@ header h1 {
   margin: 0 auto;
   padding: 24px 24px 80px;
   box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 ${estilosComponentesCss}

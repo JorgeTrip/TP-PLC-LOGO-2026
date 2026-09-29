@@ -58,14 +58,13 @@
   --borde-sidebar: #e2e8f0;
 }
 
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
+html {
+  overflow-x: clip;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--bg-app);
   color: var(--texto-principal);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
@@ -97,9 +96,7 @@ header h1 {
   display: flex;
   min-height: calc(100vh - 58px);
   width: 100%;
-  max-width: 100vw;
   min-width: 0;
-  overflow-x: hidden;
 }
 
 .sidebar {
@@ -162,7 +159,6 @@ header h1 {
   margin: 0 auto;
   padding: 24px 24px 80px;
   box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 
@@ -253,11 +249,43 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 @keyframes parpadeoBaliza { from { opacity: .4; } to { opacity: 1; } }
 .barra-progreso-bg { width: 180px; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-top: 6px; }
 .barra-progreso-fill { height: 100%; background: var(--acento-ambar); transition: width .1s; }
-.tanque-flex { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-.tanque-visual { width: 140px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
-.tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 700; }
-.marca-sensor { position: absolute; right: 4px; font-size: 10px; color: #94a3b8; font-family: monospace; }
-.marca-sensor.s3 { top: 15px; } .marca-sensor.s1 { top: 70px; } .marca-sensor.s2 { top: 125px; }
+.tanque-sistema-wrap { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%; }
+.tanque-con-escala { display: flex; align-items: flex-end; gap: 8px; position: relative; }
+.escala-sensores { position: relative; width: 110px; height: 160px; }
+.escala-sensores .marca-sensor { position: absolute; right: 0; font-size: 11px; font-weight: 700; font-family: monospace; white-space: nowrap; }
+.escala-sensores .marca-sensor.s3 { top: 18px; color: var(--acento-azul); }
+.escala-sensores .marca-sensor.s1 { top: 70px; color: var(--acento-purpura); }
+.escala-sensores .marca-sensor.s2 { top: 122px; color: var(--acento-rojo); }
+.tanque-visual { width: 130px; height: 160px; border: 3px solid var(--acento-azul); border-radius: 0 0 12px 12px; position: relative; background: var(--bg-svg); overflow: hidden; }
+.tanque-nivel { position: absolute; bottom: 0; width: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7); opacity: .85; transition: height .3s; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+/* FAB Volver al Top */
+.fab-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--acento-azul);
+  border: 1px solid var(--borde-card);
+  box-shadow: 0 8px 24px var(--sombra-card);
+  backdrop-filter: blur(12px);
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .25s ease, transform .25s ease, background .15s, color .15s;
+  z-index: 99;
+}
+.fab-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.fab-top:hover { background: var(--bg-btn-hover); color: var(--texto-principal); transform: translateY(-2px); }
 .porton-fachada { position: relative; }
 .porton-marco { width: 200px; height: 120px; border: 3px solid #64748b; background: var(--bg-svg); position: relative; overflow: hidden; margin: 10px 0; }
 .porton-hoja { width: 100%; background: repeating-linear-gradient(0deg, #334155, #334155 10px, #1e293b 10px, #1e293b 20px); position: absolute; top: 0; transition: height .2s linear; display: flex; align-items: flex-end; justify-content: center; }
@@ -447,7 +475,6 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    overflow-x: hidden;
   }
   .card {
     padding: 14px 10px;
@@ -642,6 +669,7 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
       <div id="contenedor-ejercicios"></div>
     </main>
   </div>
+  <button id="btn-fab-top" class="fab-top" aria-label="Volver arriba" title="Volver al inicio">↑</button>
 
 
 <script>
@@ -790,7 +818,7 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     if (id === '4.10') {
       const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2);
       const nv = q1 && q2 ? 80 : (q1 ? 55 : 30);
-      return '<div class="maqueta-contenedor"><div class="maqueta-marco tanque-flex"><div class="tanque-visual"><div class="tanque-nivel" style="height:' + nv + '%">' + nv + '% Lleno</div><div class="marca-sensor s3">-- S3 Máx</div><div class="marca-sensor s1">-- S1 Mín</div><div class="marca-sensor s2">-- S2 Crítico</div></div><div><div class="bomba-badge ' + (q1 ? 'on' : '') + '">Bomba 1 (Principal): ' + (q1 ? 'ON' : 'OFF') + '</div><div class="bomba-badge ' + (q2 ? 'on' : '') + '">Bomba 2 (Auxiliar): ' + (q2 ? 'ON' : 'OFF') + '</div></div></div></div>';
+      return '<div class="maqueta-contenedor"><div class="maqueta-marco tanque-sistema-wrap"><div class="tanque-con-escala"><div class="escala-sensores"><div class="marca-sensor s3">S3 (Máx) ──►</div><div class="marca-sensor s1">S1 (Mín) ──►</div><div class="marca-sensor s2">S2 (Crítico) ──►</div></div><div class="tanque-visual"><div class="tanque-nivel" style="height:' + nv + '%">' + nv + '% Lleno</div></div></div><div class="bombas-panel"><div class="bomba-badge ' + (q1 ? 'on' : '') + '">Bomba 1 (Principal): ' + (q1 ? 'ON' : 'OFF') + '</div><div class="bomba-badge ' + (q2 ? 'on' : '') + '">Bomba 2 (Auxiliar): ' + (q2 ? 'ON' : 'OFF') + '</div></div></div></div>';
     }
     if (id === '4.11') {
       const q1 = Boolean(salidas.Q1), q2 = Boolean(salidas.Q2), f = Boolean(estado.f);
@@ -1096,6 +1124,17 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
       if (window.innerWidth <= 900) alternarSidebar(false);
     });
   });
+
+  // Botón flotante Volver al Top (FAB)
+  const fabTop = document.getElementById('btn-fab-top');
+  if (fabTop) {
+    window.addEventListener('scroll', () => {
+      fabTop.classList.toggle('visible', window.scrollY > 250);
+    });
+    fabTop.onclick = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  }
 
 
   const glosarioTerminosPlc = {"Siemens LOGO!":"Micro-PLC modular para automatización básica de relés, temporizadores y contadores.","LOGO!":"Microcontrolador lógico programable de Siemens para aplicaciones industriales y edilicias.","KOP":"Diagrama de Contactos o Ladder (escalera), lenguaje gráfico basado en relés eléctricos.","Ladder":"Lenguaje de contactos en escalera (KOP) estandarizado por la norma IEC 61131-3.","FBD":"Diagrama de Bloques de Funciones (FUP en alemán), lenguaje gráfico de compuertas lógicas.","AWL":"Lista de Instrucciones (IL), lenguaje de programación de bajo nivel tipo ensamblador.","TON":"Timer On-Delay: Temporizador con retardo a la conexión. Cuenta mientras la entrada esté activa.","TOF":"Timer Off-Delay: Temporizador con retardo a la desconexión. Mantiene encendida la salida un tiempo extra.","TP":"Pulse Timer: Temporizador de impulso. Emite un pulso de duración calibrada ante un flanco.","CTU":"Count-Up: Contador ascendente por flancos de entrada hasta alcanzar el valor prefijado.","CTUD":"Count Up/Down: Contador bidireccional ascendente y descendente con reset y dirección.","Autorretención":"Circuito de sello donde un contacto auxiliar de la bobina sostiene su propia energización.","Latching":"Término en inglés para autorretención o memoria biestable de un relé.","Relé autoenclavador":"Bloque de función RS de LOGO! con memoria interna no volátil y reset prioritario.","Enclavamiento":"Interlock: Bloqueo eléctrico o lógico que impide la activación simultánea de salidas opuestas.","N/A":"Normalmente Abierto: Contacto que solo conduce corriente cuando su actuador está energizado.","N/C":"Normalmente Cerrado: Contacto que conduce en reposo y corta el paso al ser presionado.","PE":"Parada de Emergencia: Botonera tipo hongo con apertura forzada para corte seguro inmediato.","Flanco positivo":"Transición de estado bajo (0) a estado alto (1) en un ciclo de escaneo del PLC."};
