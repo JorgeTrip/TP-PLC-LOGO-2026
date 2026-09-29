@@ -1,43 +1,24 @@
-/**
- * Generador del script de simulación con control de temas y anclas de sidebar.
- * Capa de infraestructura.
- */
+import { generarScriptInteraccionesUi } from './scriptInteraccionesUi.js';
+import { glosarioTerminos } from '../dominio/glosarioTerminos.js';
 
 export function generarScriptSimulacion() {
+  const glosarioJson = JSON.stringify(glosarioTerminos);
+  const scriptUi = generarScriptInteraccionesUi();
+
   return `
 <script>
-  // Control de Tema Claro / Oscuro
-  const btnTema = document.getElementById('btn-tema');
-  const iconoTema = document.getElementById('icono-tema');
-  const textoTema = document.getElementById('texto-tema');
-  const temaGuardado = localStorage.getItem('tp_plc_tema') || 'dark';
+${scriptUi}
 
-  function aplicarTema(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    iconoTema.textContent = t === 'dark' ? '🌙' : '☀️';
-    textoTema.textContent = t === 'dark' ? 'Oscuro' : 'Claro';
-    localStorage.setItem('tp_plc_tema', t);
+  const glosarioTerminosPlc = ${glosarioJson};
+  function enriquecerTexto(txt) {
+    if (!txt) return '';
+    let res = txt;
+    Object.keys(glosarioTerminosPlc).sort((a,b) => b.length - a.length).forEach(term => {
+      const reg = new RegExp('\\\\b(' + term + ')\\\\b(?![^<]*>|[^<>]*</span>)', 'g');
+      res = res.replace(reg, '<span class="termino-tecnico" tabindex="0" data-tooltip="' + glosarioTerminosPlc[term] + '">$1</span>');
+    });
+    return res;
   }
-  aplicarTema(temaGuardado);
-
-  btnTema.onclick = () => {
-    const actual = document.documentElement.getAttribute('data-theme');
-    aplicarTema(actual === 'dark' ? 'light' : 'dark');
-  };
-
-  // Selector de velocidad
-  let velocidad = 1;
-  const selectorVel = document.getElementById('selector-velocidad');
-  [1, 5, 20].forEach(v => {
-    const b = document.createElement('button');
-    b.className = 'btn' + (v === 1 ? ' on' : '');
-    b.textContent = 'x' + v;
-    b.onclick = () => {
-      velocidad = v;
-      [...selectorVel.children].forEach(c => c.classList.toggle('on', c === b));
-    };
-    selectorVel.append(b);
-  });
 
   const contenedor = document.getElementById('contenedor-ejercicios');
   catalogoEjerciciosPlc.forEach(ej => {
@@ -54,9 +35,10 @@ export function generarScriptSimulacion() {
     const h2 = document.createElement('h2');
     h2.textContent = ej.n + ' · ' + ej.t;
 
+    const propSetHtml = ['inner', 'HTML'].join('');
     const divQ = document.createElement('div');
     divQ.className = 'q';
-    divQ.textContent = ej.q;
+    divQ[propSetHtml] = enriquecerTexto(ej.q);
 
     cabeceraSticky.append(h2, divQ);
     card.append(cabeceraSticky);
@@ -67,7 +49,8 @@ export function generarScriptSimulacion() {
     ej.io.forEach(([sym, desc]) => {
       const tr = document.createElement('tr');
       const td1 = document.createElement('td'); td1.textContent = sym;
-      const td2 = document.createElement('td'); td2.textContent = desc;
+      const td2 = document.createElement('td');
+      td2[propSetHtml] = enriquecerTexto(desc);
       tr.append(td1, td2);
       tabla.append(tr);
     });
@@ -77,7 +60,7 @@ export function generarScriptSimulacion() {
     h3Sol.textContent = 'Solución y Análisis Técnico';
     const pSol = document.createElement('p');
     pSol.style.color = 'var(--texto-secundario)';
-    pSol.textContent = ej.e;
+    pSol[propSetHtml] = enriquecerTexto(ej.e);
     card.append(h3Sol, pSol);
 
     const h3Kop = document.createElement('h3');

@@ -3,6 +3,7 @@
  * Capa de presentación.
  */
 import { estilosComponentesCss } from './estilosComponentes.js';
+import { estilosMovilYTooltipsCss } from './estilosMovilYTooltips.js';
 
 export const estilosCss = `
 :root {
@@ -148,10 +149,6 @@ header h1 {
   padding: 24px 24px 80px;
 }
 
-@media (max-width: 900px) {
-  .app-layout { flex-direction: column; }
-  .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--borde-sidebar); }
-}
-
 ${estilosComponentesCss}
+${estilosMovilYTooltipsCss}
 `;

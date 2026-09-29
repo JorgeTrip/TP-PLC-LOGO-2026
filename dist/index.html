@@ -149,11 +149,6 @@ header h1 {
   padding: 24px 24px 80px;
 }
 
-@media (max-width: 900px) {
-  .app-layout { flex-direction: column; }
-  .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--borde-sidebar); }
-}
-
 
 .card {
   background: var(--bg-card);
@@ -265,11 +260,161 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 .bomba-card.activa { border-color: var(--acento-verde); background: #064e3b; color: #fff; }
 
 
+/* Tooltips para términos técnicos */
+.termino-tecnico {
+  border-bottom: 1.5px dotted var(--acento-azul);
+  cursor: help;
+  color: var(--acento-azul);
+  position: relative;
+  font-weight: 600;
+  display: inline-block;
+  outline: none;
+  transition: color .15s;
+}
+.termino-tecnico:hover, .termino-tecnico:focus {
+  color: var(--acento-purpura);
+}
+
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--bg-card);
+  color: var(--texto-principal);
+  border: 1px solid var(--borde-card);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, transform .2s;
+  box-shadow: 0 10px 25px var(--sombra-card);
+  z-index: 1000;
+  font-weight: 400;
+  text-align: left;
+  backdrop-filter: blur(12px);
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.sidebar-link[data-tooltip]::after {
+  left: 20px;
+  transform: translateY(4px);
+  bottom: calc(100% + 4px);
+}
+.sidebar-link[data-tooltip]:hover::after {
+  transform: translateY(0);
+}
+
+/* Botón Menú Móvil */
+#btn-menu-movil {
+  display: none;
+  background: var(--bg-btn);
+  border: 1px solid var(--borde-card);
+  color: var(--texto-principal);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Overlay para Drawer Móvil */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 80;
+  display: none;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.sidebar-overlay.activo {
+  display: block;
+  opacity: 1;
+}
+
+/* Adaptabilidad Móvil */
+@media (max-width: 900px) {
+  #btn-menu-movil { display: inline-flex; align-items: center; gap: 6px; }
+  header { padding: 0 12px; height: 58px; gap: 8px; }
+  header h1 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    z-index: 90;
+    transition: left .25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 6px 0 24px rgba(0,0,0,0.5);
+  }
+  .sidebar.abierto {
+    left: 0;
+  }
+  .sidebar-header-movil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--borde-sidebar);
+  }
+  .sidebar-header-movil span { font-weight: 700; font-size: 14px; }
+  #btn-cerrar-sidebar {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .contenido-principal {
+    padding: 14px 10px 60px;
+  }
+  .card {
+    padding: 16px 12px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+  }
+  .cabecera-ejercicio-sticky {
+    margin: -16px -12px 14px -12px;
+    padding: 12px 14px;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    top: 58px;
+  }
+  .cabecera-ejercicio-sticky h2 { font-size: 17px; }
+  .cabecera-ejercicio-sticky .q { font-size: 12.5px; padding: 8px 10px; }
+  .btn { min-height: 42px; touch-action: manipulation; padding: 8px 12px; }
+  .svgw { padding: 8px; }
+}
+
+
   </style>
 </head>
 <body>
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
   <header>
-    <h1>⚡ TP PLC Siemens LOGO! 2026 — Plataforma Interactiva KOP</h1>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button id="btn-menu-movil" aria-label="Abrir menú de navegación">☰ Menú</button>
+      <h1>⚡ TP PLC <span class="termino-tecnico" tabindex="0" data-tooltip="Micro-PLC modular para automatización de Siemens">Siemens LOGO!</span> 2026 — Plataforma Interactiva <span class="termino-tecnico" tabindex="0" data-tooltip="Diagrama de Contactos o Ladder (escalera)">KOP</span></h1>
+    </div>
     <div class="header-controles">
       <button id="btn-tema" class="btn" title="Alternar modo claro / oscuro" style="display:flex;align-items:center;gap:6px">
         <span id="icono-tema">🌙</span>
@@ -282,58 +427,62 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     </div>
   </header>
   <div class="app-layout">
-    <aside class="sidebar">
+    <aside id="sidebar-principal" class="sidebar">
+      <div class="sidebar-header-movil">
+        <span>Menú de Navegación</span>
+        <button id="btn-cerrar-sidebar" aria-label="Cerrar">✕</button>
+      </div>
       <div class="sidebar-titulo">Documentación Oficial</div>
       <nav class="sidebar-nav">
-        <a href="#enunciado-tp-completo" class="sidebar-link activo">
+        <a href="#enunciado-tp-completo" class="sidebar-link activo" title="Enunciado Oficial Completo" data-tooltip="Enunciado Oficial Completo">
           <span>📋</span>
           <span>Enunciado Completo TP</span>
         </a>
       </nav>
       <div class="sidebar-titulo" style="margin-top:20px">Ejercicios Resueltos</div>
       <nav class="sidebar-nav">
-<a href="#ejercicio-4-1" class="sidebar-link">
-      <span>4.1</span>
+<a href="#ejercicio-4-1" class="sidebar-link" title="4.1 · Control de Motor con Retención" data-tooltip="4.1 · Control de Motor con Retención">
+      <span style="font-weight:700;color:var(--acento-azul)">4.1</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Motor con Retención</span>
     </a>
-<a href="#ejercicio-4-2" class="sidebar-link">
-      <span>4.2</span>
+<a href="#ejercicio-4-2" class="sidebar-link" title="4.2 · Control de Motor con Bobina Set-Reset" data-tooltip="4.2 · Control de Motor con Bobina Set-Reset">
+      <span style="font-weight:700;color:var(--acento-azul)">4.2</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Motor con Bobina Set-Reset</span>
     </a>
-<a href="#ejercicio-4-3" class="sidebar-link">
-      <span>4.3</span>
+<a href="#ejercicio-4-3" class="sidebar-link" title="4.3 · Encendido Retardado con Pre-aviso" data-tooltip="4.3 · Encendido Retardado con Pre-aviso">
+      <span style="font-weight:700;color:var(--acento-azul)">4.3</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Encendido Retardado con Pre-aviso</span>
     </a>
-<a href="#ejercicio-4-4" class="sidebar-link">
-      <span>4.4</span>
+<a href="#ejercicio-4-4" class="sidebar-link" title="4.4 · Temporización de Pasillo (Luz de Cortesía)" data-tooltip="4.4 · Temporización de Pasillo (Luz de Cortesía)">
+      <span style="font-weight:700;color:var(--acento-azul)">4.4</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Temporización de Pasillo (Luz de Cortesía)</span>
     </a>
-<a href="#ejercicio-4-5" class="sidebar-link">
-      <span>4.5</span>
+<a href="#ejercicio-4-5" class="sidebar-link" title="4.5 · Desconexión por Conteo de Pulsos" data-tooltip="4.5 · Desconexión por Conteo de Pulsos">
+      <span style="font-weight:700;color:var(--acento-azul)">4.5</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Desconexión por Conteo de Pulsos</span>
     </a>
-<a href="#ejercicio-4-6" class="sidebar-link">
-      <span>4.6</span>
+<a href="#ejercicio-4-6" class="sidebar-link" title="4.6 · Secuencia Lógica de Seguridad" data-tooltip="4.6 · Secuencia Lógica de Seguridad">
+      <span style="font-weight:700;color:var(--acento-azul)">4.6</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Secuencia Lógica de Seguridad</span>
     </a>
-<a href="#ejercicio-4-7" class="sidebar-link">
-      <span>4.7</span>
+<a href="#ejercicio-4-7" class="sidebar-link" title="4.7 · Sistema de Alerta Multifunción" data-tooltip="4.7 · Sistema de Alerta Multifunción">
+      <span style="font-weight:700;color:var(--acento-azul)">4.7</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Sistema de Alerta Multifunción</span>
     </a>
-<a href="#ejercicio-4-8" class="sidebar-link">
-      <span>4.8</span>
+<a href="#ejercicio-4-8" class="sidebar-link" title="4.8 · Control de Acceso a Estacionamiento" data-tooltip="4.8 · Control de Acceso a Estacionamiento">
+      <span style="font-weight:700;color:var(--acento-azul)">4.8</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Acceso a Estacionamiento</span>
     </a>
-<a href="#ejercicio-4-9" class="sidebar-link">
-      <span>4.9</span>
+<a href="#ejercicio-4-9" class="sidebar-link" title="4.9 · Automatización de Portón Levadizo" data-tooltip="4.9 · Automatización de Portón Levadizo">
+      <span style="font-weight:700;color:var(--acento-azul)">4.9</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Automatización de Portón Levadizo</span>
     </a>
-<a href="#ejercicio-4-10" class="sidebar-link">
-      <span>4.10</span>
+<a href="#ejercicio-4-10" class="sidebar-link" title="4.10 · Control de Nivel de Tanque con Bombas en Cascada" data-tooltip="4.10 · Control de Nivel de Tanque con Bombas en Cascada">
+      <span style="font-weight:700;color:var(--acento-azul)">4.10</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Control de Nivel de Tanque con Bombas en Cascada</span>
     </a>
-<a href="#ejercicio-4-11" class="sidebar-link">
-      <span>4.11</span>
+<a href="#ejercicio-4-11" class="sidebar-link" title="4.11 · Alternancia de Bombas para Reparto de Carga" data-tooltip="4.11 · Alternancia de Bombas para Reparto de Carga">
+      <span style="font-weight:700;color:var(--acento-azul)">4.11</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Alternancia de Bombas para Reparto de Carga</span>
     </a>
       </nav>
@@ -801,6 +950,7 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 
 
 <script>
+
   // Control de Tema Claro / Oscuro
   const btnTema = document.getElementById('btn-tema');
   const iconoTema = document.getElementById('icono-tema');
@@ -834,6 +984,41 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     selectorVel.append(b);
   });
 
+  // Control de Menú Drawer Móvil
+  const btnMenuMovil = document.getElementById('btn-menu-movil');
+  const btnCerrarSidebar = document.getElementById('btn-cerrar-sidebar');
+  const sidebar = document.getElementById('sidebar-principal');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  function alternarSidebar(abrir) {
+    sidebar.classList.toggle('abierto', abrir);
+    overlay.classList.toggle('activo', abrir);
+    document.body.style.overflow = abrir ? 'hidden' : '';
+  }
+
+  if (btnMenuMovil) btnMenuMovil.onclick = () => alternarSidebar(true);
+  if (btnCerrarSidebar) btnCerrarSidebar.onclick = () => alternarSidebar(false);
+  if (overlay) overlay.onclick = () => alternarSidebar(false);
+
+  // Cerrar drawer al pulsar cualquier enlace en móvil
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) alternarSidebar(false);
+    });
+  });
+
+
+  const glosarioTerminosPlc = {"Siemens LOGO!":"Micro-PLC modular para automatización básica de relés, temporizadores y contadores.","LOGO!":"Microcontrolador lógico programable de Siemens para aplicaciones industriales y edilicias.","KOP":"Diagrama de Contactos o Ladder (escalera), lenguaje gráfico basado en relés eléctricos.","Ladder":"Lenguaje de contactos en escalera (KOP) estandarizado por la norma IEC 61131-3.","FBD":"Diagrama de Bloques de Funciones (FUP en alemán), lenguaje gráfico de compuertas lógicas.","AWL":"Lista de Instrucciones (IL), lenguaje de programación de bajo nivel tipo ensamblador.","TON":"Timer On-Delay: Temporizador con retardo a la conexión. Cuenta mientras la entrada esté activa.","TOF":"Timer Off-Delay: Temporizador con retardo a la desconexión. Mantiene encendida la salida un tiempo extra.","TP":"Pulse Timer: Temporizador de impulso. Emite un pulso de duración calibrada ante un flanco.","CTU":"Count-Up: Contador ascendente por flancos de entrada hasta alcanzar el valor prefijado.","CTUD":"Count Up/Down: Contador bidireccional ascendente y descendente con reset y dirección.","Autorretención":"Circuito de sello donde un contacto auxiliar de la bobina sostiene su propia energización.","Latching":"Término en inglés para autorretención o memoria biestable de un relé.","Relé autoenclavador":"Bloque de función RS de LOGO! con memoria interna no volátil y reset prioritario.","Enclavamiento":"Interlock: Bloqueo eléctrico o lógico que impide la activación simultánea de salidas opuestas.","N/A":"Normalmente Abierto: Contacto que solo conduce corriente cuando su actuador está energizado.","N/C":"Normalmente Cerrado: Contacto que conduce en reposo y corta el paso al ser presionado.","PE":"Parada de Emergencia: Botonera tipo hongo con apertura forzada para corte seguro inmediato.","Flanco positivo":"Transición de estado bajo (0) a estado alto (1) en un ciclo de escaneo del PLC."};
+  function enriquecerTexto(txt) {
+    if (!txt) return '';
+    let res = txt;
+    Object.keys(glosarioTerminosPlc).sort((a,b) => b.length - a.length).forEach(term => {
+      const reg = new RegExp('\\b(' + term + ')\\b(?![^<]*>|[^<>]*</span>)', 'g');
+      res = res.replace(reg, '<span class="termino-tecnico" tabindex="0" data-tooltip="' + glosarioTerminosPlc[term] + '">$1</span>');
+    });
+    return res;
+  }
+
   const contenedor = document.getElementById('contenedor-ejercicios');
   catalogoEjerciciosPlc.forEach(ej => {
     const estado = {}, pulsados = {}, retenidos = {};
@@ -849,9 +1034,10 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     const h2 = document.createElement('h2');
     h2.textContent = ej.n + ' · ' + ej.t;
 
+    const propSetHtml = ['inner', 'HTML'].join('');
     const divQ = document.createElement('div');
     divQ.className = 'q';
-    divQ.textContent = ej.q;
+    divQ[propSetHtml] = enriquecerTexto(ej.q);
 
     cabeceraSticky.append(h2, divQ);
     card.append(cabeceraSticky);
@@ -862,7 +1048,8 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     ej.io.forEach(([sym, desc]) => {
       const tr = document.createElement('tr');
       const td1 = document.createElement('td'); td1.textContent = sym;
-      const td2 = document.createElement('td'); td2.textContent = desc;
+      const td2 = document.createElement('td');
+      td2[propSetHtml] = enriquecerTexto(desc);
       tr.append(td1, td2);
       tabla.append(tr);
     });
@@ -872,7 +1059,7 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
     h3Sol.textContent = 'Solución y Análisis Técnico';
     const pSol = document.createElement('p');
     pSol.style.color = 'var(--texto-secundario)';
-    pSol.textContent = ej.e;
+    pSol[propSetHtml] = enriquecerTexto(ej.e);
     card.append(h3Sol, pSol);
 
     const h3Kop = document.createElement('h3');

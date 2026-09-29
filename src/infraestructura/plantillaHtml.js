@@ -7,8 +7,8 @@ import { renderizarEnunciadoCompletoHtml } from '../presentacion/seccionEnunciad
 
 export function generarEncabezadoHtml(estilosCss) {
   const enlacesSidebar = catalogoEjercicios.map(ej => {
-    return `<a href="#ejercicio-${ej.n.replace('.', '-')}" class="sidebar-link">
-      <span>${ej.n}</span>
+    return `<a href="#ejercicio-${ej.n.replace('.', '-')}" class="sidebar-link" title="${ej.n} · ${ej.t}" data-tooltip="${ej.n} · ${ej.t}">
+      <span style="font-weight:700;color:var(--acento-azul)">${ej.n}</span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ej.t}</span>
     </a>`;
   }).join('\n');
@@ -26,8 +26,12 @@ ${estilosCss}
   </style>
 </head>
 <body>
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
   <header>
-    <h1>⚡ TP PLC Siemens LOGO! 2026 — Plataforma Interactiva KOP</h1>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button id="btn-menu-movil" aria-label="Abrir menú de navegación">☰ Menú</button>
+      <h1>⚡ TP PLC <span class="termino-tecnico" tabindex="0" data-tooltip="Micro-PLC modular para automatización de Siemens">Siemens LOGO!</span> 2026 — Plataforma Interactiva <span class="termino-tecnico" tabindex="0" data-tooltip="Diagrama de Contactos o Ladder (escalera)">KOP</span></h1>
+    </div>
     <div class="header-controles">
       <button id="btn-tema" class="btn" title="Alternar modo claro / oscuro" style="display:flex;align-items:center;gap:6px">
         <span id="icono-tema">🌙</span>
@@ -40,10 +44,14 @@ ${estilosCss}
     </div>
   </header>
   <div class="app-layout">
-    <aside class="sidebar">
+    <aside id="sidebar-principal" class="sidebar">
+      <div class="sidebar-header-movil">
+        <span>Menú de Navegación</span>
+        <button id="btn-cerrar-sidebar" aria-label="Cerrar">✕</button>
+      </div>
       <div class="sidebar-titulo">Documentación Oficial</div>
       <nav class="sidebar-nav">
-        <a href="#enunciado-tp-completo" class="sidebar-link activo">
+        <a href="#enunciado-tp-completo" class="sidebar-link activo" title="Enunciado Oficial Completo" data-tooltip="Enunciado Oficial Completo">
           <span>📋</span>
           <span>Enunciado Completo TP</span>
         </a>

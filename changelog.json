@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.3.0",
+    "fecha": "2026-09-29",
+    "tipo": "feat",
+    "titulo": "Se implementa drawer móvil táctil y sistema de tooltips para términos técnicos y barra lateral",
+    "cambios": [
+      "Se agregan tooltips en la barra lateral para visualizar el nombre completo de cualquier ejercicio truncado.",
+      "Se crea glosario interactivo con tooltips didácticos para Siemens LOGO!, KOP, Ladder, TON, TOF, TP, CTU, CTUD, etc.",
+      "Se optimiza la experiencia en móviles mediante drawer lateral slide-in, overlay desenfocado y botones táctiles de 42px."
+    ]
+  },
+  {
     "version": "1.2.0",
     "fecha": "2026-09-29",
     "tipo": "feat",

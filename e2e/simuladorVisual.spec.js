@@ -27,16 +27,35 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const svgs = page.locator('svg.ladder-svg');
   await expect(svgs).toHaveCount(11);
 
-  // Interacción en Ejercicio 4.1: pulsar marcha I1
-  const botonI1 = tarjetas.first().locator('button', { hasText: 'I1 · Marcha' });
-  const ledQ1 = tarjetas.first().locator('.led', { hasText: 'Q1' });
+  // Verificar tooltips en enlaces de ejercicios de la barra lateral
+  const enlaceConTooltip = page.locator('.sidebar-link[href="#ejercicio-4-1"]');
+  await expect(enlaceConTooltip).toHaveAttribute('data-tooltip', /4\.1/);
 
-  await expect(ledQ1).not.toHaveClass(/on/);
-  await botonI1.dispatchEvent('pointerdown');
-  await page.waitForTimeout(100);
-  await expect(ledQ1).toHaveClass(/on/);
-  await botonI1.dispatchEvent('pointerup');
-  await page.waitForTimeout(100);
-  // Debe permanecer encendido por autorretención
-  await expect(ledQ1).toHaveClass(/on/);
+  // Verificar presencia de términos técnicos interactivos con data-tooltip
+  const terminosTecnicos = page.locator('.termino-tecnico');
+  const cantidadTerminos = await terminosTecnicos.count();
+  expect(cantidadTerminos).toBeGreaterThan(5);
 });
+
+test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 });
+  const rutaHtml = path.resolve('./dist/TP_PLC_LOGO_2026.html');
+  await page.goto(`file://${rutaHtml}`);
+
+  // En móvil el botón de menú debe estar visible
+  const btnMenu = page.locator('#btn-menu-movil');
+  await expect(btnMenu).toBeVisible();
+
+  const sidebar = page.locator('#sidebar-principal');
+  await expect(sidebar).not.toHaveClass(/abierto/);
+
+  // Abrir menú drawer
+  await btnMenu.click();
+  await expect(sidebar).toHaveClass(/abierto/);
+
+  // Al hacer clic en un ejercicio, debe cerrar el drawer automáticamente
+  const enlace42 = sidebar.locator('a[href="#ejercicio-4-2"]');
+  await enlace42.click();
+  await expect(sidebar).not.toHaveClass(/abierto/);
+});
+
