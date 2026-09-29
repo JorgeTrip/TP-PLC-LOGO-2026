@@ -3,7 +3,8 @@
  * Capa de presentación.
  */
 import { estilosComponentesCss } from './estilosComponentes.js';
-import { estilosMovilYTooltipsCss } from './estilosMovilYTooltips.js';
+import { estilosTooltipsCss } from './estilosTooltips.js';
+import { estilosMovilCss } from './estilosMovil.js';
 
 export const estilosCss = `
 :root {
@@ -58,6 +59,11 @@ export const estilosCss = `
   --borde-sidebar: #e2e8f0;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -75,19 +81,26 @@ header {
   border-bottom: 1px solid var(--borde-card);
   padding: 0 24px;
   height: 58px;
-  display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: nowrap;
 }
 header h1 {
   font-size: 18px; margin: 0;
   background: linear-gradient(90deg, var(--acento-azul), var(--acento-purpura));
   -webkit-background-clip: text; color: transparent;
+  white-space: nowrap;
 }
-.header-controles { display: flex; gap: 12px; align-items: center; }
+.header-lado-izq { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.titulo-movil { display: none; }
+.header-controles { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
 
 /* Layout con Sidebar */
 .app-layout {
   display: flex;
   min-height: calc(100vh - 58px);
+  width: 100%;
+  max-width: 100vw;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -145,10 +158,15 @@ header h1 {
 .contenido-principal {
   flex: 1;
   max-width: 1050px;
+  width: 100%;
+  min-width: 0;
   margin: 0 auto;
   padding: 24px 24px 80px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 ${estilosComponentesCss}
-${estilosMovilYTooltipsCss}
+${estilosTooltipsCss}
+${estilosMovilCss}
 `;

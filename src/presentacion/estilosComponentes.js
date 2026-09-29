@@ -109,7 +109,10 @@ svg.ladder-svg .c { fill: var(--texto-secundario); font: 11px system-ui, sans-se
 .barrera-badge { font-size: 12px; padding: 6px 10px; border-radius: 6px; background: var(--bg-btn); color: var(--texto-secundario); }
 .barrera-badge.abierta { background: #0284c7; color: #fff; font-weight: 700; }
 .barrera-badge.emitiendo { background: #d97706; color: #fff; font-weight: 700; }
-.bombas-alternadas-grid { display: flex; gap: 16px; }
+.bombas-alternadas-grid { display: flex; gap: 16px; flex-wrap: wrap; }
 .bomba-card { background: var(--bg-btn); padding: 14px; border-radius: 10px; border: 1px solid var(--borde-card); display: flex; flex-direction: column; gap: 4px; align-items: center; width: 140px; }
 .bomba-card.activa { border-color: var(--acento-verde); background: #064e3b; color: #fff; }
+.bombas-panel { display: flex; flex-direction: column; gap: 8px; flex: 1 1 140px; max-width: 100%; }
+.bomba-badge { font-size: 12px; padding: 6px 10px; border-radius: 6px; background: var(--bg-btn); color: var(--texto-secundario); border: 1px solid var(--borde-card); word-break: break-word; }
+.bomba-badge.on { background: #064e3b; color: #86efac; border-color: #22c55e; }
 `;

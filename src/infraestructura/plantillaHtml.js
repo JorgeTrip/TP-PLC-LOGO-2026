@@ -28,18 +28,21 @@ ${estilosCss}
 <body>
   <div id="sidebar-overlay" class="sidebar-overlay"></div>
   <header>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div class="header-lado-izq">
       <button id="btn-menu-movil" aria-label="Abrir menú de navegación">☰ Menú</button>
-      <h1>⚡ TP PLC <span class="termino-tecnico" tabindex="0" data-tooltip="Micro-PLC modular para automatización de Siemens">Siemens LOGO!</span> 2026 — Plataforma Interactiva <span class="termino-tecnico" tabindex="0" data-tooltip="Diagrama de Contactos o Ladder (escalera)">KOP</span></h1>
+      <h1>
+        <span class="titulo-desktop">⚡ TP PLC <span class="termino-tecnico" tabindex="0" data-tooltip="Micro-PLC modular para automatización de Siemens">Siemens LOGO!</span> 2026 — Plataforma Interactiva <span class="termino-tecnico" tabindex="0" data-tooltip="Diagrama de Contactos o Ladder (escalera)">KOP</span></span>
+        <span class="titulo-movil">⚡ LOGO! 2026</span>
+      </h1>
     </div>
     <div class="header-controles">
-      <button id="btn-tema" class="btn" title="Alternar modo claro / oscuro" style="display:flex;align-items:center;gap:6px">
+      <button id="btn-tema" class="btn" title="Alternar modo claro / oscuro">
         <span id="icono-tema">🌙</span>
-        <span id="texto-tema">Oscuro</span>
+        <span id="texto-tema" class="texto-tema-label">Oscuro</span>
       </button>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:12px;color:var(--texto-secundario)">Velocidad:</span>
-        <div id="selector-velocidad" style="display:flex;gap:4px"></div>
+      <div class="velocidad-contenedor">
+        <span class="velocidad-texto">Velocidad:</span>
+        <div id="selector-velocidad"></div>
       </div>
     </div>
   </header>

@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.4.0",
+    "fecha": "2026-09-29",
+    "tipo": "fix",
+    "titulo": "Se corrigen desbordamientos horizontales, solapamiento del encabezado y visibilidad sticky en móviles",
+    "cambios": [
+      "Se fija la barra superior en una sola fila compacta de 54px sin wrapping ni desbordes en pantallas móviles.",
+      "Se calibra el anclaje sticky del enunciado a exactamente top: 54px para máxima legibilidad durante el scroll vertical.",
+      "Se eliminan los desbordes laterales mediante min-width: 0, overflow-x: hidden y ajuste al 100% del viewport en maquetas, tablas y botones."
+    ]
+  },
+  {
     "version": "1.3.0",
     "fecha": "2026-09-29",
     "tipo": "feat",

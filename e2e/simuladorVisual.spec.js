@@ -57,5 +57,23 @@ test('Debe optimizar la experiencia en móvil con drawer lateral y controles tá
   const enlace42 = sidebar.locator('a[href="#ejercicio-4-2"]');
   await enlace42.click();
   await expect(sidebar).not.toHaveClass(/abierto/);
+
+  // Verificar que el ancho de la página no desborda los 375px (sin scroll lateral)
+  const noDesbordaHorizontal = await page.evaluate(() => {
+    return document.documentElement.scrollWidth <= window.innerWidth;
+  });
+  expect(noDesbordaHorizontal).toBe(true);
+
+  // Verificar altura exacta no colapsada del header (54px)
+  const headerBox = await page.locator('header').boundingBox();
+  expect(headerBox.height).toBeLessThanOrEqual(56);
+
+  // Al hacer scroll hacia abajo en el ejercicio 4.10, la cabecera sticky debe ser visible
+  const card410 = page.locator('#ejercicio-4-10');
+  await card410.scrollIntoViewIfNeeded();
+  await page.mouse.wheel(0, 150);
+  await page.waitForTimeout(100);
+  const sticky410 = card410.locator('.cabecera-ejercicio-sticky');
+  await expect(sticky410).toBeVisible();
 });
 
