@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.9.0",
+    "fecha": "2026-09-29",
+    "tipo": "feat",
+    "titulo": "Se implementa layout de 2 columnas en escritorio con diagrama Ladder a la izquierda y gemelo visual con controles a la derecha",
+    "cambios": [
+      "Se optimiza el ancho de los diagramas Ladder en escritorio agrupándolos en una columna dedicada a la izquierda (.col-ladder).",
+      "Se ubican el Gemelo Visual y el Panel de Control del PLC en una columna adyacente a la derecha (.col-interactiva), permitiendo operar y monitorear la energización en tiempo real sin desplazamientos verticales.",
+      "Se mantiene la disposición responsiva apilada en pantallas móviles para garantizar navegación táctil fluida."
+    ]
+  },
+  {
     "version": "1.8.1",
     "fecha": "2026-09-29",
     "tipo": "fix",

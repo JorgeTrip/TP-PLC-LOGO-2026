@@ -179,7 +179,7 @@ header h1 {
 
 .contenido-principal {
   flex: 1;
-  max-width: 1050px;
+  max-width: 1140px;
   width: 100%;
   min-width: 0;
   margin: 0 auto;

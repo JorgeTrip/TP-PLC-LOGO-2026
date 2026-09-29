@@ -69,6 +69,12 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   // Verificar z-index del botón FAB flotante
   const zIndexFab = await page.locator('#btn-fab-top').evaluate(el => window.getComputedStyle(el).zIndex);
   expect(Number(zIndexFab)).toBeGreaterThanOrEqual(9999);
+
+  // Verificar disposición horizontal de 2 columnas en banco de simulación (Ladder a la izq, Gemelo y controles a la der)
+  const primerBanco = page.locator('.banco-simulacion').first();
+  const boxLadder = await primerBanco.locator('.col-ladder').boundingBox();
+  const boxInteractiva = await primerBanco.locator('.col-interactiva').boundingBox();
+  expect(boxInteractiva.x).toBeGreaterThan(boxLadder.x);
 });
 
 test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {

@@ -49,7 +49,28 @@ h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .08em; text-transform:
 table { border-collapse: collapse; width: 100%; margin: 8px 0; }
 td { border-bottom: 1px solid var(--borde-card); padding: 8px; font-size: 14px; }
 td:first-child { width: 90px; color: var(--acento-purpura); font-family: ui-monospace, monospace; font-weight: 600; }
-.svgw { overflow-x: auto; background: var(--bg-svg); border-radius: 14px; padding: 16px; border: 1px solid var(--borde-card); }
+.banco-simulacion {
+  display: grid;
+  grid-template-columns: minmax(450px, 1.15fr) minmax(320px, 1fr);
+  gap: 20px;
+  align-items: start;
+  margin-top: 16px;
+}
+.col-ladder, .col-interactiva { min-width: 0; display: flex; flex-direction: column; }
+.col-ladder h3, .col-interactiva h3 { margin: 0 0 8px; }
+.svgw {
+  overflow-x: auto;
+  background: var(--bg-svg);
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid var(--borde-card);
+  display: flex;
+  justify-content: center;
+}
+.col-interactiva { gap: 14px; }
+.col-interactiva .maqueta-contenedor { margin: 0; }
+.col-interactiva .sim { margin-top: 0; }
+svg.ladder-svg { max-width: 100%; height: auto; }
 svg.ladder-svg .k { stroke: var(--trazo-inactivo); stroke-width: 2; fill: none; transition: stroke .2s, filter .2s; }
 svg.ladder-svg .k.energized { stroke: var(--acento-azul); stroke-width: 2.5; filter: drop-shadow(0 0 5px var(--acento-azul)); }
 svg.ladder-svg .b { fill: var(--fill-bloque); stroke: var(--trazo-inactivo); stroke-width: 1.5; transition: all .2s; }

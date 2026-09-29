@@ -63,17 +63,23 @@ ${scriptUi}
     pSol[propSetHtml] = enriquecerTexto(ej.e);
     card.append(h3Sol, pSol);
 
+    const banco = document.createElement('div');
+    banco.className = 'banco-simulacion';
+
+    const colLadder = document.createElement('div');
+    colLadder.className = 'col-ladder';
     const h3Kop = document.createElement('h3');
     h3Kop.textContent = 'Diagrama de Contactos Ladder (KOP) — Monitoreo en Vivo';
     const svgWrap = document.createElement('div');
     svgWrap.className = 'svgw';
-    card.append(h3Kop, svgWrap);
+    colLadder.append(h3Kop, svgWrap);
 
+    const colDer = document.createElement('div');
+    colDer.className = 'col-interactiva';
     const h3Maq = document.createElement('h3');
     h3Maq.textContent = 'Gemelo Visual del Proceso Industrial';
     const maqWrap = document.createElement('div');
     maqWrap.className = 'maqueta-wrapper';
-    card.append(h3Maq, maqWrap);
 
     const h3Sim = document.createElement('h3');
     h3Sim.textContent = 'Panel de Control del PLC y Simulación';
@@ -132,7 +138,9 @@ ${scriptUi}
     const info = document.createElement('div');
     info.className = 'info';
     simDiv.append(info);
-    card.append(h3Sim, simDiv);
+    colDer.append(h3Maq, maqWrap, h3Sim, simDiv);
+    banco.append(colLadder, colDer);
+    card.append(banco);
     contenedor.append(card);
 
     ej.ciclo = (dt) => {

@@ -138,6 +138,8 @@ export const estilosMovilCss = `
   .cabecera-ejercicio-sticky h2 { font-size: 15px; margin: 0 0 4px; }
   .cabecera-ejercicio-sticky .q { font-size: 12px; padding: 6px 8px; line-height: 1.4; }
   
+  .banco-simulacion { display: flex; flex-direction: column; gap: 16px; }
+  .col-ladder h3, .col-interactiva h3 { margin: 10px 0 6px; }
   .sim { gap: 6px; width: 100%; max-width: 100%; }
   .sim .btn {
     min-height: 40px;
