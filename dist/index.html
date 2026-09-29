@@ -294,9 +294,9 @@ netlify-drawer-root,
 #netlify-drawer,
 div[class*="netlify-badge"],
 div[class*="netlify-drawer"],
-a[href*="netlify.com"][style*="position: fixed"],
-div[style*="position: fixed"]:has(a[href*="netlify.com"]),
-div[style*="position:fixed"]:has(a[href*="netlify.com"]) {
+a[href*="netlify.com"],
+div:has(> a[href*="netlify.com"]),
+div:has(a[href*="netlify.com"]) {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -309,8 +309,8 @@ div[style*="position:fixed"]:has(a[href*="netlify.com"]) {
 /* FAB Volver al Top */
 .fab-top {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 84px;
+  right: 24px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -521,7 +521,7 @@ header .header-controles [data-tooltip]:focus::after {
     box-shadow: 6px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.abierto { left: 0; }
-  .fab-top { bottom: 20px; right: 16px; width: 44px; height: 44px; font-size: 20px; }
+  .fab-top { bottom: 80px; right: 18px; width: 44px; height: 44px; font-size: 20px; }
   .sidebar-header-movil {
     display: flex;
     justify-content: space-between;
@@ -1211,14 +1211,20 @@ header .header-controles [data-tooltip]:focus::after {
     const selectores = [
       '[data-netlify-badge]', '.netlify-badge', '#netlify-badge',
       'iframe#netlify-badge', 'iframe[src*="netlify"]', 'netlify-drawer-root',
-      '#netlify-drawer', '[class*="netlify-badge"]', '[class*="netlify-drawer"]'
+      '#netlify-drawer', '[class*="netlify"]', 'a[href*="netlify.com"]'
     ];
     selectores.forEach(sel => {
-      document.querySelectorAll(sel).forEach(el => el.remove());
+      document.querySelectorAll(sel).forEach(el => {
+        const contenedor = el.closest('div[style*="fixed"], div[style*="absolute"]') || el;
+        contenedor.remove();
+      });
     });
-    document.querySelectorAll('a[href*="netlify.com"]').forEach(enlace => {
-      const contenedor = enlace.closest('div[style*="fixed"]') || enlace;
-      contenedor.remove();
+    document.querySelectorAll('body *').forEach(nodo => {
+      if ((nodo.textContent || '').includes('Powered by Netlify') && nodo.children.length <= 1) {
+        const caja = nodo.closest('div[style*="fixed"], a, div') || nodo;
+        caja.style.setProperty('display', 'none', 'important');
+        caja.remove();
+      }
     });
   }
   suprimirBadgeNetlify();

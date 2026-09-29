@@ -111,9 +111,9 @@ netlify-drawer-root,
 #netlify-drawer,
 div[class*="netlify-badge"],
 div[class*="netlify-drawer"],
-a[href*="netlify.com"][style*="position: fixed"],
-div[style*="position: fixed"]:has(a[href*="netlify.com"]),
-div[style*="position:fixed"]:has(a[href*="netlify.com"]) {
+a[href*="netlify.com"],
+div:has(> a[href*="netlify.com"]),
+div:has(a[href*="netlify.com"]) {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -126,8 +126,8 @@ div[style*="position:fixed"]:has(a[href*="netlify.com"]) {
 /* FAB Volver al Top */
 .fab-top {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 84px;
+  right: 24px;
   width: 48px;
   height: 48px;
   border-radius: 50%;

@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.8.1",
+    "fecha": "2026-09-29",
+    "tipo": "fix",
+    "titulo": "Se eleva el FAB a 84px de separación vertical para evitar colisión con badges o barras inferiores",
+    "cambios": [
+      "Se reubica el botón flotante (FAB) a bottom: 84px (escritorio) y bottom: 80px (móvil) despegándolo completamente del área inferior donde se ubican badges o barras del navegador.",
+      "Se amplía el filtro dinámico de supresión de Netlify para detectar contenedores con texto 'Powered by Netlify' o enlaces directos a netlify.com."
+    ]
+  },
+  {
     "version": "1.8.0",
     "fecha": "2026-09-29",
     "tipo": "fix",

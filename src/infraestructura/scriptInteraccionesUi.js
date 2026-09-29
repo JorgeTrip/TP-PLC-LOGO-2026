@@ -77,14 +77,20 @@ export function generarScriptInteraccionesUi() {
     const selectores = [
       '[data-netlify-badge]', '.netlify-badge', '#netlify-badge',
       'iframe#netlify-badge', 'iframe[src*="netlify"]', 'netlify-drawer-root',
-      '#netlify-drawer', '[class*="netlify-badge"]', '[class*="netlify-drawer"]'
+      '#netlify-drawer', '[class*="netlify"]', 'a[href*="netlify.com"]'
     ];
     selectores.forEach(sel => {
-      document.querySelectorAll(sel).forEach(el => el.remove());
+      document.querySelectorAll(sel).forEach(el => {
+        const contenedor = el.closest('div[style*="fixed"], div[style*="absolute"]') || el;
+        contenedor.remove();
+      });
     });
-    document.querySelectorAll('a[href*="netlify.com"]').forEach(enlace => {
-      const contenedor = enlace.closest('div[style*="fixed"]') || enlace;
-      contenedor.remove();
+    document.querySelectorAll('body *').forEach(nodo => {
+      if ((nodo.textContent || '').includes('Powered by Netlify') && nodo.children.length <= 1) {
+        const caja = nodo.closest('div[style*="fixed"], a, div') || nodo;
+        caja.style.setProperty('display', 'none', 'important');
+        caja.remove();
+      }
     });
   }
   suprimirBadgeNetlify();

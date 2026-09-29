@@ -89,7 +89,7 @@ export const estilosMovilCss = `
     box-shadow: 6px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.abierto { left: 0; }
-  .fab-top { bottom: 20px; right: 16px; width: 44px; height: 44px; font-size: 20px; }
+  .fab-top { bottom: 80px; right: 18px; width: 44px; height: 44px; font-size: 20px; }
   .sidebar-header-movil {
     display: flex;
     justify-content: space-between;
