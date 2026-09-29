@@ -62,4 +62,26 @@ export const estilosTooltipsCss = `
 .sidebar-link[data-tooltip]:hover::after {
   transform: translateY(0);
 }
+
+/* Tooltips en el encabezado: abrir hacia abajo para permanecer 100% visibles dentro del viewport */
+header [data-tooltip]::after {
+  bottom: auto;
+  top: calc(100% + 10px);
+  left: 0;
+  transform: translateY(-4px);
+}
+header [data-tooltip]:hover::after,
+header [data-tooltip]:focus::after {
+  transform: translateY(0);
+}
+
+header .header-controles [data-tooltip]::after {
+  left: auto;
+  right: 0;
+  transform: translateY(-4px);
+}
+header .header-controles [data-tooltip]:hover::after,
+header .header-controles [data-tooltip]:focus::after {
+  transform: translateY(0);
+}
 `;

@@ -40,7 +40,6 @@ export const estilosMovilCss = `
     padding: 0 8px;
     gap: 6px;
     flex-wrap: nowrap;
-    overflow: hidden;
   }
   .header-lado-izq {
     display: flex;

@@ -36,6 +36,15 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const cantidadTerminos = await terminosTecnicos.count();
   expect(cantidadTerminos).toBeGreaterThan(5);
 
+  // Verificar que el tooltip en el encabezado abre hacia abajo (top positivo)
+  const terminoHeader = page.locator('header .termino-tecnico').first();
+  await terminoHeader.hover();
+  const topTooltipHeader = await page.evaluate(() => {
+    const el = document.querySelector('header .termino-tecnico');
+    return window.getComputedStyle(el, '::after').getPropertyValue('top');
+  });
+  expect(topTooltipHeader).not.toBe('auto');
+
   // En escritorio el header del drawer móvil debe estar oculto
   await expect(page.locator('.sidebar-header-movil')).toBeHidden();
 

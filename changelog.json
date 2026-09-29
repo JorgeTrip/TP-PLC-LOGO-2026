@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.7.0",
+    "fecha": "2026-09-29",
+    "tipo": "fix",
+    "titulo": "Se configuran tooltips del encabezado para desplegarse hacia abajo dentro del viewport visible",
+    "cambios": [
+      "Se orienta la apertura de tooltips en el header hacia abajo (top: calc(100% + 10px)) para evitar que se pierdan fuera del marco superior.",
+      "Se alinea lateralmente el tooltip con el borde de su contenedor evitando desbordes horizontales fuera de la pantalla.",
+      "Se remueve overflow: hidden de la barra superior en móviles para permitir su visibilidad sin recorte."
+    ]
+  },
+  {
     "version": "1.6.0",
     "fecha": "2026-09-29",
     "tipo": "fix",
