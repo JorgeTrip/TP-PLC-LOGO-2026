@@ -39,7 +39,7 @@ export const ejerciciosBloque1 = [
       ['Q1', 'Contactor de motor principal', 'Digital / Relé', 'Salida energizada (bloque RS en Set)']
     ],
     soft: [
-      ['RS_Q1', 'Relé autoenclavador (RS)', 'Memoria biestable con prioridad a la desconexión']
+      ['RS_Q1', 'Relé RS', 'Memoria con Reset dominante (/I2)']
     ],
     eq: [
       'Set(RS_Q1) = I1',
@@ -74,7 +74,7 @@ export const ejerciciosBloque1 = [
     ],
     soft: [
       ['M1', 'Marca interna', 'Memoriza la orden de marcha general'],
-      ['T1', 'Retardo a la conexión (TON, 5 s)', 'Temporiza el retardo previo al arranque del motor']
+      ['T1', 'TON (5 s)', 'Retardo previo al arranque del motor']
     ],
     eq: [
       'M1 = (I1 + M1) · NOT(I2)',

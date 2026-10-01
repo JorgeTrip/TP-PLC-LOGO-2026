@@ -15,9 +15,9 @@ export const ejerciciosBloque2 = [
       ['Q2', 'Testigo de pre-aviso', 'Digital / Relé', 'Salida energizada desde t=10s hasta el reinicio']
     ],
     soft: [
-      ['T1', 'Pulso redisparable (TP Retrig, 15 s)', 'Temporización de iluminación principal Q1'],
-      ['T2', 'Retardo a la conexión (TON, 10 s)', 'Detecta la ventana de aviso a los 10 s de encendido'],
-      ['M1', 'Relé autoenclavador (RS)', 'Retiene encendido el testigo Q2 hasta el rearme']
+      ['T1', 'TP Retrig (15 s)', 'Temporización iluminación principal Q1'],
+      ['T2', 'TON (10 s)', 'Detección de aviso previo a los 10 s'],
+      ['M1', 'Relé RS', 'Enclava testigo Q2 hasta rearme I1']
     ],
     eq: [
       'T1 = TP_Retrig(I1, 15 s)',
@@ -66,7 +66,7 @@ export const ejerciciosBloque2 = [
       ['Q1', 'Motor de proceso productivo', 'Digital / Relé', 'Salida energizada durante el ciclo']
     ],
     soft: [
-      ['C1', 'Contador ascendente (CTU, PV=5)', 'Acumula 5 eventos y abre el lazo de marcha']
+      ['C1', 'CTU (PV=5)', 'Acumula 5 piezas y corta marcha de Q1']
     ],
     eq: [
       'C1_CU = Flanco_Ascendente(NOT(I2))',
@@ -102,10 +102,10 @@ export const ejerciciosBloque2 = [
       ['Q1', 'Salida de habilitación segura', 'Digital / Relé', 'Salida energizada tras secuencia exitosa']
     ],
     soft: [
-      ['M1', 'Relé autoenclavador (RS)', 'Memoriza la ejecución válida del Paso 1 (I2)'],
-      ['M2', 'Relé autoenclavador (RS)', 'Memoriza la ejecución válida del Paso 2 (I1 con M1)'],
-      ['M3', 'Relé autoenclavador (RS)', 'Memoriza la ejecución válida del Paso 3 (I3 con M2)'],
-      ['B', 'Relé autoenclavador (RS)', 'Bandera de bloqueo general ante maniobra en falso']
+      ['M1', 'Relé RS', 'Memoriza ejecución válida Paso 1 (I2)'],
+      ['M2', 'Relé RS', 'Memoriza Paso 2 (I1 con M1)'],
+      ['M3', 'Relé RS', 'Memoriza Paso 3 (I3) y habilita Q1'],
+      ['B', 'Relé RS', 'Bandera de bloqueo ante error']
     ],
     eq: [
       'Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2))',
@@ -120,7 +120,7 @@ export const ejerciciosBloque2 = [
     i: [['I1', 'Paso 2 (I1)', 'p'], ['I2', 'Paso 1 (I2)', 'p'], ['I3', 'Paso 3 (I3)', 'p'], ['I4', 'Reset secuencia', 'p']],
     o: ['Q1'],
     r: [
-      { c: 'R1: Detección y memoria de bloqueo B ante error de secuencia', p: [['I1', '/M1'], ['I3', '/M2'], ['B']], s: ['/I4'], o: 'B' },
+      { c: 'R1: Detección y memoria de bloqueo B ante error de secuencia', p: [['I1', '/M1'], ['I3', '/M2']], s: ['/I4'], o: 'B' },
       { c: 'R2: Paso 1: habilitación de marca M1 al pulsar I2', p: [['I2'], ['M1']], s: ['/I4', '/B'], o: 'M1' },
       { c: 'R3: Paso 2: habilitación de marca M2 por I1 condicionada a M1', p: [['I1', 'M1'], ['M2']], s: ['/I4', '/B'], o: 'M2' },
       { c: 'R4: Paso 3: habilitación de marca M3 por I3 condicionada a M2', p: [['I3', 'M2'], ['M3']], s: ['/I4', '/B'], o: 'M3' },

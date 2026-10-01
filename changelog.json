@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.12.1",
+    "fecha": "2026-09-30",
+    "tipo": "fix",
+    "titulo": "Se ajustan textos y estilos de la tabla de Recursos de Software para eliminar el scroll horizontal",
+    "cambios": [
+      "Se sintetizan los textos de la columna 'Tipo de bloque' adoptando nomenclatura estándar industrial concisa (ej. TON (5 s), TP Retrig (15 s), CTU (PV=5), Relé RS, Toggle).",
+      "Se optimizan las descripciones de 'Función lógica' para evitar desbordes y permitir lectura completa de un solo vistazo.",
+      "Se aplica table-layout: fixed con anchos calibrados para columnas de software (70px ID, 110px Tipo de bloque) y padding compacto (8px 6px).",
+      "Se verifica mediante aserciones automatizadas de Playwright que ninguna tabla presenta desplazamiento lateral en pantallas de escritorio (scrollWidth === clientWidth)."
+    ]
+  },
+  {
     "version": "1.12.0",
     "fecha": "2026-09-30",
     "tipo": "feat",

@@ -15,12 +15,12 @@ export const ejerciciosBloque3 = [
       ['Q2', 'Alarma en cabina de control', 'Digital / Relé', 'Salida energizada (fija en 2s o parpadeo)']
     ],
     soft: [
-      ['T2', 'Retardo a la conexión (TON, 2 s)', 'Umbral de discriminación para cabina de control'],
-      ['T5', 'Retardo a la conexión (TON, 5 s)', 'Umbral de discriminación para alarma de incendio'],
-      ['M1', 'Temporizador de pulso (TP, 20 s)', 'Pulso de 20 s para iluminación ante presión simple'],
-      ['M2', 'Relé autoenclavador (RS)', 'Enclavamiento de alarma fija en cabina de control'],
-      ['M3', 'Temporizador de pulso (TP, 120 s)', 'Ventana de emergencia de incendio de 2 minutos'],
-      ['M4', 'Generador de pulsos asíncrono', 'Oscilador simétrico a 0.5 Hz (1 s ON / 1 s OFF)']
+      ['T2', 'TON (2 s)', 'Alarma cabina (presión >= 2 s)'],
+      ['T5', 'TON (5 s)', 'Alarma incendio (presión >= 5 s)'],
+      ['M1', 'TP (20 s)', 'Pulso de luz ante presión simple'],
+      ['M2', 'Relé RS', 'Enclavamiento de alarma en cabina'],
+      ['M3', 'TP (120 s)', 'Emergencia incendio (2 minutos)'],
+      ['M4', 'Async (0.5 Hz)', 'Parpadeo simétrico de emergencia']
     ],
     eq: [
       'T2_IN = I1 (TON, 2 s) ; T5_IN = I1 (TON, 5 s)',
@@ -85,10 +85,10 @@ export const ejerciciosBloque3 = [
       ['Q4', 'Dispensador de tickets', 'Digital / Relé', 'Salida energizada (emite ticket por 1 s)']
     ],
     soft: [
-      ['C1', 'Contador bidireccional (CTUD, PV=50)', 'Registra el balance neto vehicular (0 a 50)'],
-      ['TP1', 'Temporizador de pulso (TP, 3 s)', 'Temporiza apertura de barrera de entrada Q1'],
-      ['TP2', 'Temporizador de pulso (TP, 3 s)', 'Temporiza apertura de barrera de salida Q2'],
-      ['TP3', 'Temporizador de pulso (TP, 1 s)', 'Temporiza la expulsión de ticket de ingreso Q4']
+      ['C1', 'CTUD (PV=50)', 'Balance vehicular neto (0 a 50 autos)'],
+      ['TP1', 'TP (3 s)', 'Temporiza apertura barrera entrada Q1'],
+      ['TP2', 'TP (3 s)', 'Temporiza apertura barrera salida Q2'],
+      ['TP3', 'TP (1 s)', 'Temporiza emisión de ticket Q4']
     ],
     eq: [
       'C1_CU = Flanco_Ascendente(I1 · NOT(Q3))',
@@ -152,9 +152,9 @@ export const ejerciciosBloque3 = [
     ],
     soft: [
       ['M0', 'Marca de estado', 'Estado 0: Portón detenido cerrado'],
-      ['M1', 'Marca de estado', 'Estado 1: Portón abriendo (motor subida Q1)'],
-      ['M2', 'Marca de estado', 'Estado 2: Portón detenido abierto o en pausa'],
-      ['M3', 'Marca de estado', 'Estado 3: Portón cerrando (motor bajada Q2)']
+      ['M1', 'Marca de estado', 'Estado 1: Portón abriendo (subida Q1)'],
+      ['M2', 'Marca de estado', 'Estado 2: Portón detenido abierto / pausa'],
+      ['M3', 'Marca de estado', 'Estado 3: Portón cerrando (bajada Q2)']
     ],
     eq: [
       'Paso = Flanco_Ascendente(I1)',

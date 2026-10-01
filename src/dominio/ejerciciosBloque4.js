@@ -47,7 +47,7 @@ export const ejerciciosBloque4 = [
       ['Q2', 'Bomba de impulsión cloacal 2', 'Digital / Relé', 'Salida energizada en turnos impares']
     ],
     soft: [
-      ['B001', 'Relé de impulsos (Toggle biestable)', 'Conmuta su estado en cada vaciado del pozo']
+      ['B001', 'Relé de impulsos', 'Conmuta turno de bomba en cada vaciado']
     ],
     eq: [
       'B001_Trg = Flanco_Descendente(I1)',

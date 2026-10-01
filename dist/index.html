@@ -192,11 +192,11 @@ header h1 {
   margin: 16px 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: 16px;
   align-items: start;
 }
 .bloque-tablas-asignacion.con-software {
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
 }
 .contenedor-tabla-grupo {
   min-width: 0;
@@ -210,8 +210,8 @@ header h1 {
 }
 .subtitulo-seccion-tecnica {
   margin: 12px 0 6px;
-  font-size: 13px;
-  letter-spacing: .08em;
+  font-size: 12.5px;
+  letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--texto-secundario);
   font-weight: 700;
@@ -227,23 +227,23 @@ header h1 {
 .tabla-tecnica {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.4;
   text-align: left;
 }
 .tabla-tecnica thead th {
   background: var(--bg-btn);
   color: var(--acento-azul);
   font-weight: 700;
-  padding: 10px 14px;
-  font-size: 11.5px;
-  letter-spacing: .05em;
+  padding: 8px 10px;
+  font-size: 11px;
+  letter-spacing: .04em;
   text-transform: uppercase;
   border-bottom: 2px solid var(--borde-card);
   white-space: nowrap;
 }
 .tabla-tecnica tbody td {
-  padding: 10px 14px;
+  padding: 8px 10px;
   border-bottom: 1px solid var(--borde-card);
   color: var(--texto-principal);
   vertical-align: middle;
@@ -264,19 +264,49 @@ header h1 {
   color: var(--acento-purpura);
   font-family: ui-monospace, monospace;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12.5px;
   white-space: nowrap;
 }
 .tabla-tecnica .col-tipo {
   font-family: ui-monospace, monospace;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--acento-ambar);
   white-space: nowrap;
 }
 .tabla-tecnica .col-senal {
   font-weight: 600;
   color: var(--texto-principal);
+}
+.tabla-software {
+  table-layout: fixed;
+  width: 100%;
+}
+.tabla-software thead th {
+  padding: 8px 6px;
+  font-size: 11px;
+}
+.tabla-software tbody td {
+  padding: 8px 6px;
+  font-size: 12px;
+}
+.tabla-software .col-soft-id-th,
+.tabla-software .col-soft-id {
+  width: 70px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tabla-software .col-soft-tipo-th,
+.tabla-software .col-soft-tipo {
+  width: 110px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.tabla-software .col-soft-func {
+  font-size: 12px;
+  line-height: 1.35;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .bloque-detalle-tecnico {
@@ -1098,7 +1128,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Control de Motor con Bobina Set-Reset",
     q: "Realizar la misma función que el ejercicio anterior, pero utilizando un relé autoenclavador (bloque Set-Reset). Entradas: I1 (Arranque N/A), I2 (Detención N/C). Salida: Q1 (Motor).",
     io: [["I1","Pulsador de arranque","NA","Se presiona el pulsador"],["I2","Pulsador de detención de seguridad","NC","En reposo (abre a 0 al pulsarlo por seguridad fail-safe)"],["Q1","Contactor de motor principal","Digital / Relé","Salida energizada (bloque RS en Set)"]],
-    soft: [["RS_Q1","Relé autoenclavador (RS)","Memoria biestable con prioridad a la desconexión"]],
+    soft: [["RS_Q1","Relé RS","Memoria con Reset dominante (/I2)"]],
     eq: ["Set(RS_Q1) = I1","Reset(RS_Q1) = NOT(I2)","Q1 = RS_Q1"],
     sol: "Circuito biestable resuelto mediante un relé autoenclavador con prioridad al Reset. El pulsador de arranque I1 excita el terminal Set. Por criterios de seguridad funcional, el pulsador de parada I2 posee contacto físico NC y entrega señal continua en reposo; se programa un contacto negado en el renglón correspondiente para enviar nivel 1 al terminal Reset únicamente cuando la línea física se abre al accionarlo o por corte de cable.",
     e: "¿Qué es un relé autoenclavador (bloque Set-Reset)? Es una función de memoria biestable con entradas independientes: S (Set: activa la salida en 1 de forma memorizada) y R (Reset: apaga la salida a 0). El reset es dominante (R > S). ¿Por qué el botón de detención físico es Normal Cerrado (N/C)? Por normativa de seguridad industrial (fail-safe): si el cable se corta o desconecta, la señal cae a 0 y la máquina se detiene sola. En la programación Ladder KOP, se debe colocar un contacto invertido (/I2), ya que al pulsar la detención la entrada física pasa de 1 a 0, haciendo que /I2 se cierre y envíe el pulso de 1 lógico al borne Reset.",
@@ -1117,7 +1147,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Encendido Retardado con Pre-aviso",
     q: "El motor debe activarse con un retardo de 5 segundos tras la orden de marcha. Entradas: I1 (Arranque N/A), I2 (Parada N/A). Salidas: Q1 (Motor), Q2 (Lámpara de aviso). Condición: Q2 debe permanecer encendida únicamente durante el conteo de los 5 segundos previos al arranque de Q1.",
     io: [["I1","Pulsador de arranque","NA","Se presiona el pulsador"],["I2","Pulsador de parada","NA","Se presiona el pulsador"],["Q1","Contactor de motor principal","Digital / Relé","Salida energizada tras cumplirse el retardo"],["Q2","Lámpara de pre-aviso","Digital / Relé","Salida energizada durante el conteo de 5 s"]],
-    soft: [["M1","Marca interna","Memoriza la orden de marcha general"],["T1","Retardo a la conexión (TON, 5 s)","Temporiza el retardo previo al arranque del motor"]],
+    soft: [["M1","Marca interna","Memoriza la orden de marcha general"],["T1","TON (5 s)","Retardo previo al arranque del motor"]],
     eq: ["M1 = (I1 + M1) · NOT(I2)","T1_IN = M1","Q1 = M1 · T1","Q2 = M1 · NOT(T1)"],
     sol: "Control temporizado articulado mediante una marca interna M1 retenida por autorretención desde I1 y desenergizada por I2. M1 habilita en paralelo un bloque TON de 5 segundos y la señalización Q2 mediante un contacto cerrado del propio temporizador. Durante los primeros 5 segundos, Q2 permanece activa y Q1 inhibida. Vencido el tiempo, T1 conmuta: abre el paso hacia la lámpara Q2 y cierra la alimentación al contactor Q1.",
     e: "¿Cómo opera el temporizador TON (Timer On-Delay / Retardo a la conexión)? Es un bloque que retrasa el encendido. Cuando su entrada recibe señal 1, el reloj comienza a contar; transcurrido el tiempo prefijado (5 segundos), su salida pasa a 1. Si la entrada se corta antes, el conteo se reinicia a 0. ¿Cómo se logra el pre-aviso? La marca interna M1 memoriza la pulsación de I1. Durante los primeros 5 segundos, M1 está activa pero el temporizador aún no venció: la condición (M1 · /T1) energiza la lámpara de aviso Q2. Cumplidos los 5 segundos, la salida T1 conmuta: abre /T1 (apagando la lámpara Q2) y cierra T1 (poniendo en marcha el motor Q1). Pulsar I2 en cualquier instante borra M1 y detiene todo.",
@@ -1137,7 +1167,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Temporización de Pasillo (Luz de Cortesía)",
     q: "Diseñar un sistema de iluminación temporizada. Al presionar I1 (N/A), la salida Q1 se activa por 15 segundos. Pre-aviso: Una luz testigo (Q2) se enciende 5 segundos antes de que Q1 se apague y queda encendida hasta que el sistema se reinicie. Reiniciable: Si se presiona I1 durante el ciclo, el tiempo vuelve a empezar.",
     io: [["I1","Pulsador de pasillo / escalera","NA","Se presiona el pulsador"],["Q1","Luminaria principal de pasillo","Digital / Relé","Salida energizada durante 15 s"],["Q2","Testigo de pre-aviso","Digital / Relé","Salida energizada desde t=10s hasta el reinicio"]],
-    soft: [["T1","Pulso redisparable (TP Retrig, 15 s)","Temporización de iluminación principal Q1"],["T2","Retardo a la conexión (TON, 10 s)","Detecta la ventana de aviso a los 10 s de encendido"],["M1","Relé autoenclavador (RS)","Retiene encendido el testigo Q2 hasta el rearme"]],
+    soft: [["T1","TP Retrig (15 s)","Temporización iluminación principal Q1"],["T2","TON (10 s)","Detección de aviso previo a los 10 s"],["M1","Relé RS","Enclava testigo Q2 hasta rearme I1"]],
     eq: ["T1 = TP_Retrig(I1, 15 s)","Q1 = T1","T2_IN = Q1  (TON, PT = 10 s)","Set(M1) = T2","Reset(M1) = I1","Q2 = M1"],
     sol: "Automatismo basado en un temporizador de pulso redisparable parametrizado en 15 segundos para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. La energización de Q1 comanda en paralelo un temporizador TON calibrado en 10 segundos, determinando la ventana previa de 5 segundos respecto del apagado. Cumplido este plazo, T2 enclava la marca M1 encendiendo el testigo Q2, el cual permanece encendido tras extinguirse Q1 hasta que una nueva pulsación en I1 resetea M1 y reinicia el ciclo.",
     e: "¿Qué es un temporizador de pulso redisparable (relé de escalera)? Es una función donde cada pulso de entrada reinicia el tiempo fijado desde cero, garantizando que mantener presionado el pulsador no distorsione el intervalo total de 15 segundos. ¿Cómo se articula el pre-aviso de 5 segundos antes del corte? La propia salida Q1 excita un bloque TON calibrado a 10 segundos (15 s - 5 s). Al vencer los 10 s, T2 enclava la marca RS M1 encendiendo el testigo Q2. Cuando Q1 se apaga a los 15 s, Q2 permanece encendida de forma memorizada hasta que un nuevo usuario presiona I1, reseteando M1 e iniciando un nuevo ciclo.",
@@ -1165,7 +1195,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Desconexión por Conteo de Pulsos",
     q: "Implementar un sistema que detenga un proceso tras un número determinado de eventos. I1 (N/A): Arranca el motor (Q1). I2 (N/C): Genera pulsos de conteo. Tras 5 pulsos, el motor se apaga. I3 (N/C): Reset manual del contador.",
     io: [["I1","Pulsador de arranque","NA","Se presiona el pulsador"],["I2","Sensor de conteo de piezas","NC","En reposo (abre a 0 ante el paso de cada pieza)"],["I3","Pulsador de reset manual","NC","En reposo (abre a 0 al pulsarlo por seguridad)"],["Q1","Motor de proceso productivo","Digital / Relé","Salida energizada durante el ciclo"]],
-    soft: [["C1","Contador ascendente (CTU, PV=5)","Acumula 5 eventos y abre el lazo de marcha"]],
+    soft: [["C1","CTU (PV=5)","Acumula 5 piezas y corta marcha de Q1"]],
     eq: ["C1_CU = Flanco_Ascendente(NOT(I2))","C1_R = NOT(I3)","Q1 = (I1 + Q1) · NOT(C1)"],
     sol: "Proceso productivo gobernado por autorretención combinada con corte automático por límite de eventos. El pulsador I1 energiza el motor Q1 en serie con un contacto cerrado del contador C1. Los pulsos generados por el captor de paso I2 (físicamente NC) ingresan al borne de conteo CU mediante lectura negada que conmuta a 1 ante cada apertura. Al alcanzar 5 registros, la salida C1 conmuta a nivel alto, interrumpe la autorretención de Q1 y detiene el proceso. El sistema queda bloqueado frente a nuevas órdenes de arranque hasta que el operario acciona el pulsador de rearme I3 (NC).",
     e: "¿Qué es un contador CTU y cómo interactúa con entradas NC? El captor de piezas I2 es físicamente normal cerrado por seguridad (1 en reposo); cada paso de pieza interrumpe el circuito pasando a 0. En Ladder se programa el contacto invertido /I2 en la entrada de conteo CU del bloque CTU. Al alcanzar 5 pulsos (PV=5), la salida del contador conmuta a 1 lógico. Su contacto /C1 en la línea de marcha se abre, extinguiendo la autorretención de Q1 e impidiendo arranques posteriores hasta que el rearme /I3 limpie el contador.",
@@ -1186,13 +1216,13 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Secuencia Lógica de Seguridad",
     q: "Activar la salida Q1 solo si se sigue un orden estricto de activación de entradas: 1. Primero Entrada 2 (I2). 2. Luego Entrada 1 (I1). 3. Finalmente Entrada 3 (I3). Si el orden es incorrecto, el sistema se bloquea. Se requiere un pulsador I4 (N/A) para resetear el bloqueo o la secuencia en cualquier momento.",
     io: [["I1","Pulsador Paso 2 de secuencia","NA","Se presiona el pulsador"],["I2","Pulsador Paso 1 de secuencia","NA","Se presiona el pulsador"],["I3","Pulsador Paso 3 de secuencia","NA","Se presiona el pulsador"],["I4","Pulsador de reset general / desbloqueo","NA","Se presiona el pulsador"],["Q1","Salida de habilitación segura","Digital / Relé","Salida energizada tras secuencia exitosa"]],
-    soft: [["M1","Relé autoenclavador (RS)","Memoriza la ejecución válida del Paso 1 (I2)"],["M2","Relé autoenclavador (RS)","Memoriza la ejecución válida del Paso 2 (I1 con M1)"],["M3","Relé autoenclavador (RS)","Memoriza la ejecución válida del Paso 3 (I3 con M2)"],["B","Relé autoenclavador (RS)","Bandera de bloqueo general ante maniobra en falso"]],
+    soft: [["M1","Relé RS","Memoriza ejecución válida Paso 1 (I2)"],["M2","Relé RS","Memoriza Paso 2 (I1 con M1)"],["M3","Relé RS","Memoriza Paso 3 (I3) y habilita Q1"],["B","Relé RS","Bandera de bloqueo ante error"]],
     eq: ["Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2))","Reset(B) = I4","Set(M1) = I2 · NOT(B) ; Reset(M1) = I4 + B","Set(M2) = I1 · M1 · NOT(B) ; Reset(M2) = I4 + B","Set(M3) = I3 · M2 · NOT(B) ; Reset(M3) = I4 + B","Q1 = M3"],
     sol: "Máquina secuencial escalonada con lazo de interbloqueo preventivo. Cada etapa condiciona estrictamente el acceso a la siguiente: M1 memoriza la pulsación inicial de I2; M2 requiere M1 activo al presionar I1; y M3 exige M2 activo al presionar I3, habilitando la salida segura Q1. Cualquier accionamiento irregular (presionar I1 sin M1, o I3 sin M2) activa la marca de bloqueo B, la cual abre sus contactos normalmente cerrados en todas las líneas funcionales e inmoviliza el control. El pulsador I4 restablece las marcas de etapa y extingue el bloqueo.",
     e: "¿Qué es una secuencia con enclavamiento escalonado? Cada etapa requiere que la anterior esté formalmente fijada en memoria. Si un operario pulsa I1 sin estar activo M1, o I3 sin estar activo M2, la lógica bifurca inmediatamente energizando la marca de bloqueo B. El contacto /B corta todas las ramas de habilitación impidiendo que se prosiga. Solo el rearme voluntario mediante I4 resetea el bloqueo y limpia las memorias para reiniciar la maniobra desde el Paso 1.",
     i: [["I1","Paso 2 (I1)","p"],["I2","Paso 1 (I2)","p"],["I3","Paso 3 (I3)","p"],["I4","Reset secuencia","p"]],
     o: ["Q1"],
-    r: [{"c":"R1: Detección y memoria de bloqueo B ante error de secuencia","p":[["I1","/M1"],["I3","/M2"],["B"]],"s":["/I4"],"o":"B"},{"c":"R2: Paso 1: habilitación de marca M1 al pulsar I2","p":[["I2"],["M1"]],"s":["/I4","/B"],"o":"M1"},{"c":"R3: Paso 2: habilitación de marca M2 por I1 condicionada a M1","p":[["I1","M1"],["M2"]],"s":["/I4","/B"],"o":"M2"},{"c":"R4: Paso 3: habilitación de marca M3 por I3 condicionada a M2","p":[["I3","M2"],["M3"]],"s":["/I4","/B"],"o":"M3"},{"c":"R5: Salida de habilitación segura Q1 gobernada por etapa M3","s":["M3"],"o":"Q1"}],
+    r: [{"c":"R1: Detección y memoria de bloqueo B ante error de secuencia","p":[["I1","/M1"],["I3","/M2"]],"s":["/I4"],"o":"B"},{"c":"R2: Paso 1: habilitación de marca M1 al pulsar I2","p":[["I2"],["M1"]],"s":["/I4","/B"],"o":"M1"},{"c":"R3: Paso 2: habilitación de marca M2 por I1 condicionada a M1","p":[["I1","M1"],["M2"]],"s":["/I4","/B"],"o":"M2"},{"c":"R4: Paso 3: habilitación de marca M3 por I3 condicionada a M2","p":[["I3","M2"],["M3"]],"s":["/I4","/B"],"o":"M3"},{"c":"R5: Salida de habilitación segura Q1 gobernada por etapa M3","s":["M3"],"o":"Q1"}],
     ejecutar: (S, I) => {
       const { m1, m2, m3 } = S;
       S.b = Boolean(((I.I1 && !m1) || (I.I3 && !m2) || S.b) && !I.I4);
@@ -1209,7 +1239,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Sistema de Alerta Multifunción",
     q: "Diseñar una lógica para un pulsador (I1) con tres funciones según el tiempo de presión: Presión simple: Enciende Q1 por 20 segundos. Presión 2 segundos: Activa alarma en cabina de seguridad (Q2). Presión 5 segundos: Activa parpadeo de emergencia (Q1 y Q2) a 0.5 Hz durante 2 minutos (Alarma de Incendio).",
     io: [["I1","Pulsador multifunción de operador","NA","Se presiona el pulsador"],["Q1","Luminaria general / evacuación","Digital / Relé","Salida energizada (20 s fija o parpadeo)"],["Q2","Alarma en cabina de control","Digital / Relé","Salida energizada (fija en 2s o parpadeo)"]],
-    soft: [["T2","Retardo a la conexión (TON, 2 s)","Umbral de discriminación para cabina de control"],["T5","Retardo a la conexión (TON, 5 s)","Umbral de discriminación para alarma de incendio"],["M1","Temporizador de pulso (TP, 20 s)","Pulso de 20 s para iluminación ante presión simple"],["M2","Relé autoenclavador (RS)","Enclavamiento de alarma fija en cabina de control"],["M3","Temporizador de pulso (TP, 120 s)","Ventana de emergencia de incendio de 2 minutos"],["M4","Generador de pulsos asíncrono","Oscilador simétrico a 0.5 Hz (1 s ON / 1 s OFF)"]],
+    soft: [["T2","TON (2 s)","Alarma cabina (presión >= 2 s)"],["T5","TON (5 s)","Alarma incendio (presión >= 5 s)"],["M1","TP (20 s)","Pulso de luz ante presión simple"],["M2","Relé RS","Enclavamiento de alarma en cabina"],["M3","TP (120 s)","Emergencia incendio (2 minutos)"],["M4","Async (0.5 Hz)","Parpadeo simétrico de emergencia"]],
     eq: ["T2_IN = I1 (TON, 2 s) ; T5_IN = I1 (TON, 5 s)","M1 = TP(Flanco_Descendente(I1) · NOT(T2), 20 s)","Set(M2) = Flanco_Ascendente(T2) · NOT(T5) ; Reset(M2) = M3","M3 = TP(Flanco_Ascendente(T5), 120 s)","M4 = M3 · Oscilador(1 s ON / 1 s OFF)","Q1 = M1 + M4","Q2 = (M2 · NOT(M3)) + M4"],
     sol: "Discriminación de consignas por medición de tiempo continuo de entrada mediante dos bloques TON regulados a 2 y 5 segundos. La liberación de I1 antes de los 2 segundos genera un flanco descendente condicionado por NOT(T2) que activa el temporizador M1 gobernando la iluminación Q1 durante 20 segundos. Sostener la presión entre 2 y 5 segundos activa T2 y enclava la alarma fija de cabina M2 (Q2). Superar los 5 segundos acciona el temporizador de incendio M3 durante 120 segundos: resetea la alarma simple de cabina y habilita el oscilador simétrico M4 a 0.5 Hz comandando de forma simultánea e intermitente Q1 y Q2 con prioridad máxima.",
     e: "¿Cómo discrimina un único pulsador entre tres funciones distintas? Se usan dos temporizadores TON conectados a I1: T2 (2 segundos) y T5 (5 segundos). 1) Presión simple: si se suelta antes de los 2 s (flanco descendente con /T2 activo), se dispara un pulso fijo TP de 20 s hacia Q1. 2) Presión de 2 s: al mantener pulsado 2 s continuos, T2 conmuta y enclava la alarma fija de cabina M2 (Q2). 3) Presión de 5 s (Incendio): al alcanzar 5 s continuos, T5 conmuta y dispara la emergencia M3 por 2 minutos (120 s), reseteando la alarma simple y habilitando un oscilador asíncrono de 0.5 Hz comandando sincrónicamente Q1 y Q2.",
@@ -1247,7 +1277,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Control de Acceso a Estacionamiento",
     q: "Gestionar una playa con capacidad para 50 vehículos. Controlar barrera de entrada/salida y emisión de tickets. Al llegar a 50, bloquear entrada y activar cartel \"COMPLETO\" (Q3).",
     io: [["I1","Sensor de carril de entrada","NA","Vehículo posicionado en la entrada"],["I2","Sensor de carril de salida","NA","Vehículo posicionado en la salida"],["I3","Pulsador de reset manual de cupos","NA","Se presiona el pulsador"],["Q1","Motor de barrera de entrada","Digital / Relé","Salida energizada (abre barrera por 3 s)"],["Q2","Motor de barrera de salida","Digital / Relé","Salida energizada (abre barrera por 3 s)"],["Q3","Cartel luminoso \"COMPLETO\"","Digital / Relé","Salida energizada al alcanzar 50 vehículos"],["Q4","Dispensador de tickets","Digital / Relé","Salida energizada (emite ticket por 1 s)"]],
-    soft: [["C1","Contador bidireccional (CTUD, PV=50)","Registra el balance neto vehicular (0 a 50)"],["TP1","Temporizador de pulso (TP, 3 s)","Temporiza apertura de barrera de entrada Q1"],["TP2","Temporizador de pulso (TP, 3 s)","Temporiza apertura de barrera de salida Q2"],["TP3","Temporizador de pulso (TP, 1 s)","Temporiza la expulsión de ticket de ingreso Q4"]],
+    soft: [["C1","CTUD (PV=50)","Balance vehicular neto (0 a 50 autos)"],["TP1","TP (3 s)","Temporiza apertura barrera entrada Q1"],["TP2","TP (3 s)","Temporiza apertura barrera salida Q2"],["TP3","TP (1 s)","Temporiza emisión de ticket Q4"]],
     eq: ["C1_CU = Flanco_Ascendente(I1 · NOT(Q3))","C1_CD = Flanco_Ascendente(I2)","C1_R = I3","Q3 = C1  (Activo cuando valor actual >= 50)","Q1 = TP(I1 · NOT(Q3), 3 s)","Q4 = TP(I1 · NOT(Q3), 1 s)","Q2 = TP(I2, 3 s)"],
     sol: "Gestión de capacidad mediante un contador ascendente/descendente CTUD prefijado en 50 unidades. La detección de un vehículo en I1 con cupo disponible (contacto cerrado NOT Q3) incrementa el conteo y dispara dos temporizadores de pulso: TP1 para levantar la barrera de entrada Q1 por 3 segundos y TP3 para emitir el ticket Q4 por 1 segundo. El sensor de egreso I2 descuenta unidades del acumulador mediante el borne CD y habilita la barrera de salida Q2 por 3 segundos a través de TP2. Al llegar a 50 rodados, la salida C1 enciende el cartel Q3 y abre su contacto normalmente cerrado en la entrada, inhibiendo el acceso y la expedición de tickets.",
     e: "¿Qué es un contador bidireccional CTUD? Es un bloque capaz de sumar y restar eventos según la entrada excitada. Cada vehículo en I1 (con /Q3 disponible) suma 1 al contador C1, activa la barrera de entrada Q1 por 3 s y expide un ticket Q4 por 1 s. Cada vehículo detectado al egresar por I2 resta 1 y abre la barrera de salida Q2 por 3 s. Al alcanzar 50 rodados, la salida C1 enciende el cartel Q3 y abre su contacto normalmente cerrado en la entrada, inhibiendo el acceso.",
@@ -1285,7 +1315,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Automatización de Portón Levadizo",
     q: "Controlar un portón con un único pulsador (I1): El ciclo debe ser: Abrir - Parar - Cerrar - Parar. Utilizar finales de carrera (I2 e I3, ambos N/C) para detener el motor en los extremos.",
     io: [["I1","Pulsador de comando paso a paso","NA","Se presiona el pulsador"],["I2","Fin de carrera superior (tope abierto)","NC","Portón fuera de tope (abre a 0 en tope alto)"],["I3","Fin de carrera inferior (tope cerrado)","NC","Portón fuera de tope (abre a 0 en tope bajo)"],["Q1","Contactor de motor - Sentido Abrir","Digital / Relé","Salida energizada (portón en ascenso)"],["Q2","Contactor de motor - Sentido Cerrar","Digital / Relé","Salida energizada (portón en descenso)"]],
-    soft: [["M0","Marca de estado","Estado 0: Portón detenido cerrado"],["M1","Marca de estado","Estado 1: Portón abriendo (motor subida Q1)"],["M2","Marca de estado","Estado 2: Portón detenido abierto o en pausa"],["M3","Marca de estado","Estado 3: Portón cerrando (motor bajada Q2)"]],
+    soft: [["M0","Marca de estado","Estado 0: Portón detenido cerrado"],["M1","Marca de estado","Estado 1: Portón abriendo (subida Q1)"],["M2","Marca de estado","Estado 2: Portón detenido abierto / pausa"],["M3","Marca de estado","Estado 3: Portón cerrando (bajada Q2)"]],
     eq: ["Paso = Flanco_Ascendente(I1)","Tope_Abierto = NOT(I2) ; Tope_Cerrado = NOT(I3)","Transición_M0_a_M1 = M0 · Paso","Transición_M1_a_M2 = M1 · (Paso + Tope_Abierto)","Transición_M2_a_M3 = M2 · Paso","Transición_M3_a_M0 = M3 · (Paso + Tope_Cerrado)","Q1 = M1 · NOT(Q2)","Q2 = M3 · NOT(Q1)"],
     sol: "Autómata secuencial cíclico de cuatro estados resuelto mediante marcas de memoria interbloqueadas. El ciclo operativo sigue la secuencia M0 (parado cerrado) -> M1 (abriendo) -> M2 (parado intermedio/abierto) -> M3 (cerrando) -> M0. Cada flanco de subida de I1 avanza una etapa y apaga la previa. Los finales de carrera físicos NC conmutan a 0 al ser pisados por el mecanismo; su lectura negada fuerza el paso inmediato al estado de detención correspondiente (Tope superior I2 detiene M1 pasando a M2; tope inferior I3 detiene M3 pasando a M0). Ambas salidas de potencia disponen de contactos cruzados de enclavamiento impidiendo colisiones eléctricas.",
     e: "¿Qué es una máquina de 4 estados Grafcet? Es una estructura secuencial cíclica donde el sistema recorre ordenadamente 4 fases: Estado 0 (Parado-Cerrado), Estado 1 (Abriendo Q1), Estado 2 (Parado-Abierto) y Estado 3 (Cerrando Q2). Cada pulsación de I1 avanza al estado inmediato siguiente y resetea taxativamente el anterior. Los finales de carrera N/C conmutan a 0 al ser pisados; su lectura invertida (/I2 o /I3) fuerza el paso al estado de parada correspondiente.",
@@ -1334,7 +1364,7 @@ header .header-controles [data-tooltip]:focus::after {
     t: "Alternancia de Bombas para Reparto de Carga",
     q: "Diseñar un sistema de control para dos bombas (Q1 y Q2) que operan en un sistema de bombeo cloacal o de tanque, buscando igualar las horas de uso de cada equipo. Entrada: I1 (Flotante de demanda N/A). Funcionamiento: 1. Cuando I1 se activa, debe arrancar una bomba. 2. Al desactivarse I1, la bomba en marcha se detiene. 3. En la siguiente activación de I1, debe arrancar la bomba que NO trabajó en el ciclo anterior. 4. El ciclo de alternancia (Q1-Q2-Q1-Q2) debe mantenerse indefinidamente. Seguridad: Al igual que en casos anteriores, incluir un pulsador de emergencia (I4, N/C).",
     io: [["I1","Flotante de demanda en pozo","NA","El nivel sube y exige desagote"],["I4","Parada de emergencia PE","NC","En reposo (abre a 0 al pulsarlo fail-safe)"],["Q1","Bomba de impulsión cloacal 1","Digital / Relé","Salida energizada en turnos pares"],["Q2","Bomba de impulsión cloacal 2","Digital / Relé","Salida energizada en turnos impares"]],
-    soft: [["B001","Relé de impulsos (Toggle biestable)","Conmuta su estado en cada vaciado del pozo"]],
+    soft: [["B001","Relé de impulsos","Conmuta turno de bomba en cada vaciado"]],
     eq: ["B001_Trg = Flanco_Descendente(I1)","Q1 = I1 · NOT(B001) · I4","Q2 = I1 · B001 · I4"],
     sol: "Conmutación cíclica gobernada por un relé de impulsos biestable (Toggle). La alternancia se genera mediante el flanco descendente del flotante de demanda I1, de modo que la bandera interna B001 conmuta su estado binario recién cuando el pozo completa su vaciado y la bomba en servicio se apaga. Durante la siguiente demanda (I1 en nivel 1), la conducción se deriva hacia la bomba alternativa evaluando los contactos directo e inverso de B001. El pulsador de emergencia I4 (físicamente NC) opera en serie como contacto abierto, habilitando la maniobra en reposo e interrumpiendo el circuito de forma inmediata al accionarse.",
     e: "¿Por qué es fundamental la alternancia de bombas y cómo opera el relé de impulsos? Alternar el uso asegura que ambas bombas acumulen iguales horas de marcha, evitando desgastes dispares. El relé de impulsos conmuta el estado de B001 en cada flanco descendente de I1 (al completarse el desagote). Cuando I1 vuelve a pedir desagote, si B001 está en 0 arranca la Bomba 1 (Q1), y si está en 1 arranca la Bomba 2 (Q2). El pulsador de parada de emergencia PE I4 actúa en serie en ambas ramas.",
@@ -1482,16 +1512,16 @@ header .header-controles [data-tooltip]:focus::after {
       html += '<h3 class="subtitulo-seccion-tecnica">Recursos Internos de Software</h3>';
       html += '<div class="tabla-contenedor"><table class="tabla-tecnica tabla-software">';
       html += '<thead><tr>';
-      html += '<th class="col-centrada" style="width:90px">Identificador</th>';
-      html += '<th class="col-centrada" style="width:150px">Tipo de bloque</th>';
+      html += '<th class="col-centrada col-soft-id-th" style="width:75px">Identificador</th>';
+      html += '<th class="col-centrada col-soft-tipo-th" style="width:115px">Tipo de bloque</th>';
       html += '<th class="col-izquierda">Función lógica</th>';
       html += '</tr></thead><tbody>';
 
       ej.soft.forEach(([id, tipo, func]) => {
         html += '<tr>';
-        html += '<td class="col-centrada col-borne">' + id + '</td>';
-        html += '<td class="col-centrada col-tipo">' + tipo + '</td>';
-        html += '<td class="col-izquierda">' + enriquecerTexto(func) + '</td>';
+        html += '<td class="col-centrada col-borne col-soft-id">' + id + '</td>';
+        html += '<td class="col-centrada col-tipo col-soft-tipo">' + tipo + '</td>';
+        html += '<td class="col-izquierda col-soft-func">' + enriquecerTexto(func) + '</td>';
         html += '</tr>';
       });
       html += '</tbody></table></div></div>';

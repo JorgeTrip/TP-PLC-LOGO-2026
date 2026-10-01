@@ -33,16 +33,16 @@ export function generarScriptTablasIo() {
       html += '<h3 class="subtitulo-seccion-tecnica">Recursos Internos de Software</h3>';
       html += '<div class="tabla-contenedor"><table class="tabla-tecnica tabla-software">';
       html += '<thead><tr>';
-      html += '<th class="col-centrada" style="width:90px">Identificador</th>';
-      html += '<th class="col-centrada" style="width:150px">Tipo de bloque</th>';
+      html += '<th class="col-centrada col-soft-id-th" style="width:75px">Identificador</th>';
+      html += '<th class="col-centrada col-soft-tipo-th" style="width:115px">Tipo de bloque</th>';
       html += '<th class="col-izquierda">Función lógica</th>';
       html += '</tr></thead><tbody>';
 
       ej.soft.forEach(([id, tipo, func]) => {
         html += '<tr>';
-        html += '<td class="col-centrada col-borne">' + id + '</td>';
-        html += '<td class="col-centrada col-tipo">' + tipo + '</td>';
-        html += '<td class="col-izquierda">' + enriquecerTexto(func) + '</td>';
+        html += '<td class="col-centrada col-borne col-soft-id">' + id + '</td>';
+        html += '<td class="col-centrada col-tipo col-soft-tipo">' + tipo + '</td>';
+        html += '<td class="col-izquierda col-soft-func">' + enriquecerTexto(func) + '</td>';
         html += '</tr>';
       });
       html += '</tbody></table></div></div>';

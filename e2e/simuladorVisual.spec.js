@@ -96,6 +96,15 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const boxIo43 = await card43.locator('table.tabla-io').boundingBox();
   const boxSoft43 = await tablaSoft43.boundingBox();
   expect(boxSoft43.x).toBeGreaterThan(boxIo43.x);
+
+  // Verificar que ninguna tabla de software presenta scroll horizontal en escritorio
+  const tablasContenedorSoft = page.locator('.contenedor-tabla-grupo:has(table.tabla-software) .tabla-contenedor');
+  const countSoft = await tablasContenedorSoft.count();
+  for (let i = 0; i < countSoft; i++) {
+    const contenedor = tablasContenedorSoft.nth(i);
+    const info = await contenedor.evaluate(el => ({ sw: el.scrollWidth, cw: el.clientWidth }));
+    expect(info.sw <= info.cw + 1, `Tabla de software índice ${i} no debe tener scroll horizontal`).toBe(true);
+  }
 });
 
 test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {
