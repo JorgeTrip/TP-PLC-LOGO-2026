@@ -1,13 +1,16 @@
 import { generarScriptInteraccionesUi } from './scriptInteraccionesUi.js';
+import { generarScriptTablasIo } from './scriptTablasIo.js';
 import { glosarioTerminos } from '../dominio/glosarioTerminos.js';
 
 export function generarScriptSimulacion() {
   const glosarioJson = JSON.stringify(glosarioTerminos);
   const scriptUi = generarScriptInteraccionesUi();
+  const scriptTablas = generarScriptTablasIo();
 
   return `
 <script>
 ${scriptUi}
+${scriptTablas}
 
   const glosarioTerminosPlc = ${glosarioJson};
   function enriquecerTexto(txt) {
@@ -43,18 +46,9 @@ ${scriptUi}
     cabeceraSticky.append(h2, divQ);
     card.append(cabeceraSticky);
 
-    const h3Io = document.createElement('h3');
-    h3Io.textContent = 'Asignación de Entradas y Salidas';
-    const tabla = document.createElement('table');
-    ej.io.forEach(([sym, desc]) => {
-      const tr = document.createElement('tr');
-      const td1 = document.createElement('td'); td1.textContent = sym;
-      const td2 = document.createElement('td');
-      td2[propSetHtml] = enriquecerTexto(desc);
-      tr.append(td1, td2);
-      tabla.append(tr);
-    });
-    card.append(h3Io, tabla);
+    const divTablas = document.createElement('div');
+    divTablas[propSetHtml] = crearTablaIoHtml(ej);
+    card.append(divTablas);
 
     const h3Sol = document.createElement('h3');
     h3Sol.textContent = 'Solución y Análisis Técnico';

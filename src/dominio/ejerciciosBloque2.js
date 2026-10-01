@@ -10,10 +10,13 @@ export const ejerciciosBloque2 = [
     t: 'Temporización de Pasillo (Luz de Cortesía)',
     q: 'Diseñar un sistema de iluminación temporizada. Al presionar I1 (N/A), Q1 se activa por 15 segundos. Pre-aviso: Q2 se enciende 5s antes del apagado y queda encendida hasta reinicio. Reiniciable por I1.',
     io: [
-      ['I1', 'Pulsador N/A de pasillo / escalera (Normal Abierto)'],
-      ['Q1', 'Luz principal de iluminación de pasillo'],
-      ['Q2', 'Luz testigo de pre-aviso (indicador LED en llave de pared)'],
-      ['T2', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 10 s para pre-aviso)']
+      ['I1', 'Pulsador de pasillo / escalera', 'NA', 'Se presiona el pulsador'],
+      ['Q1', 'Luminaria principal de pasillo', 'Digital / Relé', 'Salida energizada (iluminación activa durante 15 s)'],
+      ['Q2', 'Luz testigo de pre-aviso', 'Digital / Relé', 'Salida energizada (aviso previo al apagado total a los 10 s)']
+    ],
+    soft: [
+      ['T1', 'Temporizador TOF (Off-Delay)', 'Mantiene encendida la luz Q1 durante 15 s tras soltar I1 (rearmable)'],
+      ['T2', 'Temporizador TON (On-Delay)', 'Mide 10 s tras soltar I1 para activar el testigo de pre-aviso Q2']
     ],
     e: '¿Qué es un temporizador TOF (Timer Off-Delay / Retardo a la desconexión)? Es un bloque que mantiene encendida la salida tras desaparecer la señal de entrada. Al presionar I1, la luz Q1 enciende de inmediato. Al soltar I1, el temporizador cuenta 15 segundos antes de apagarla. ¿Qué significa reiniciable ("retriggerable")? Si un usuario vuelve a pulsar I1 mientras la luz está encendida, el temporizador vuelve a 0 y recomienza los 15 segundos desde el inicio. Para la luz testigo de pre-aviso (Q2): un segundo temporizador TON configurado en 10 s mide el tiempo transcurrido desde que se soltó I1 (15 s - 5 s = 10 s). Al cumplirse los 10 s, T2 activa Q2, que se autorretiene permanentemente hasta que una nueva pulsación de I1 reinicia el ciclo completo.',
     i: [['I1', 'Pulsador pasillo', 'p']],
@@ -40,11 +43,13 @@ export const ejerciciosBloque2 = [
     t: 'Desconexión por Conteo de Pulsos',
     q: 'Detener un proceso tras un número determinado de eventos. I1 (N/A): Arranca motor Q1. I2 (N/C): Pulsos de conteo (a 5 pulsos apaga el motor). I3 (N/C): Reset manual del contador.',
     io: [
-      ['I1', 'Pulsador de arranque N/A (Normal Abierto)'],
-      ['I2', 'Sensor de pulsos N/C (Normal Cerrado: abre el circuito al detectar pieza)'],
-      ['I3', 'Pulsador de Reset manual N/C (Normal Cerrado: restablece el contador)'],
-      ['Q1', 'Motor del proceso productivo'],
-      ['C1', 'Contador CTU (Count-Up / Contador ascendente con preselección en 5)']
+      ['I1', 'Pulsador de arranque de proceso', 'NA', 'Se presiona el pulsador'],
+      ['I2', 'Sensor de piezas en cinta transportadora', 'NC', 'En reposo sin pieza (abre a 0 al detectar el paso de cada pieza)'],
+      ['I3', 'Pulsador de reset manual de contador', 'NC', 'En reposo (abre a 0 al presionar el pulsador fail-safe)'],
+      ['Q1', 'Motor de cinta transportadora', 'Digital / Relé', 'Salida energizada (proceso productivo en marcha)']
+    ],
+    soft: [
+      ['C1', 'Contador ascendente (CTU)', 'Cuenta hasta 5 piezas registradas por I2 y desconecta Q1 al alcanzar el valor prefijado']
     ],
     e: '¿Qué es un contador CTU (Count-Up / Contador ascendente)? Es un bloque que cuenta eventos o pulsos discretos. Cada vez que su entrada de conteo detecta una transición (flanco ascendente), incrementa su registro interno en 1. Al llegar al valor preseleccionado (5 pulsos), su contacto de salida C1 conmuta. ¿Cómo actúa el enclavamiento de seguridad? El motor Q1 arranca con autorretención y tiene en serie un contacto normalmente cerrado del contador (/C1). Al llegar al 5º pulso del sensor I2, el contacto /C1 se abre, rompiendo irreversiblemente el lazo de autorretención y deteniendo el motor. Mientras el contador permanezca en 5, el motor queda bloqueado y no puede re-arrancar con I1 hasta que el operario presione el botón de rearme I3 (Reset).',
     i: [['I1', 'Arranque', 'p'], ['I2', 'Sensor pulsos', 'p', 1], ['I3', 'Reset contador', 'p', 1]],
@@ -66,11 +71,17 @@ export const ejerciciosBloque2 = [
     t: 'Secuencia Lógica de Seguridad',
     q: 'Activar Q1 solo si se sigue orden estricto: 1º I2 -> 2º I1 -> 3º I3. Si el orden es incorrecto, el sistema se bloquea. I4 (N/A) resetea bloqueo o secuencia.',
     io: [
-      ['I1–I3', 'Pulsadores de la secuencia N/A (I2 primer paso, I1 segundo paso, I3 tercer paso)'],
-      ['I4', 'Pulsador de Reset N/A (Normal Abierto: desbloqueo general y puesta a cero)'],
-      ['Q1', 'Salida de autorización / habilitación segura'],
-      ['B', 'Marca interna de Bloqueo (se activa ante cualquier pulsación fuera de orden)'],
-      ['M1–M3', 'Marcas internas M (Etapas secuenciales de habilitación 1, 2 y 3)']
+      ['I1', 'Pulsador etapa 2 de secuencia', 'NA', 'Se presiona el pulsador'],
+      ['I2', 'Pulsador etapa 1 de secuencia', 'NA', 'Se presiona el pulsador'],
+      ['I3', 'Pulsador etapa 3 de secuencia', 'NA', 'Se presiona el pulsador'],
+      ['I4', 'Pulsador de reset general y desbloqueo', 'NA', 'Se presiona el pulsador'],
+      ['Q1', 'Salida de habilitación segura', 'Digital / Relé', 'Salida energizada (secuencia completada correctamente)']
+    ],
+    soft: [
+      ['M1', 'Marca interna (Etapa 1)', 'Memoriza la ejecución correcta del Paso 1 (I2)'],
+      ['M2', 'Marca interna (Etapa 2)', 'Memoriza la ejecución correcta del Paso 2 (I1 condicionado por M1)'],
+      ['M3', 'Marca interna (Etapa 3)', 'Memoriza la ejecución correcta del Paso 3 (I3 condicionado por M2) y energiza Q1'],
+      ['B', 'Marca interna de bloqueo', 'Se activa ante cualquier pulsación fuera de orden e inhabilita el sistema']
     ],
     e: '¿Qué es una secuencia lógica y qué es el interbloqueo ("interlock")? Es una máquina secuencial donde una etapa solo puede activarse si la etapa previa está activa. M1 memoriza el Paso 1 (I2); M2 solo puede energizarse si se presiona I1 teniendo M1 cerrado; y M3 solo energiza si se pulsa I3 teniendo M2 cerrado. ¿Cómo funciona la detección de orden incorrecto? Si un operario intenta saltarse pasos (pulsar I1 sin M1 activo, o pulsar I3 sin M2 activo), la corriente lógica se desvía inmediatamente hacia la bobina de Bloqueo B. Al energizarse B, sus contactos normalmente cerrados /B se abren en todas las ramas, congelando el sistema e impidiendo cualquier activación hasta que se presione el pulsador de Reset I4.',
     i: [['I1', 'Paso 2 (I1)', 'p'], ['I2', 'Paso 1 (I2)', 'p'], ['I3', 'Paso 3 (I3)', 'p'], ['I4', 'Reset secuencia', 'p']],

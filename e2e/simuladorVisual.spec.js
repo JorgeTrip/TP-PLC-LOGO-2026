@@ -75,6 +75,28 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const boxLadder = await primerBanco.locator('.col-ladder').boundingBox();
   const boxInteractiva = await primerBanco.locator('.col-interactiva').boundingBox();
   expect(boxInteractiva.x).toBeGreaterThan(boxLadder.x);
+
+  // Verificar estructura canónica de 4 columnas en Tabla de Asignación de I/O
+  const primerCard = page.locator('#contenedor-ejercicios section.card').first();
+  const tablaIo = primerCard.locator('table.tabla-io');
+  await expect(tablaIo).toBeVisible();
+  const cabecerasIo = tablaIo.locator('thead th');
+  await expect(cabecerasIo).toHaveCount(4);
+  await expect(cabecerasIo.nth(0)).toHaveText('Borne');
+  await expect(cabecerasIo.nth(1)).toHaveText('Señal');
+  await expect(cabecerasIo.nth(2)).toHaveText('Tipo de contacto');
+  await expect(cabecerasIo.nth(3)).toHaveText('Vale 1 cuando...');
+
+  // Verificar que ejercicio 4.1 no tiene tabla de software y ejercicio 4.3 sí la tiene con 3 columnas
+  await expect(primerCard.locator('table.tabla-software')).toHaveCount(0);
+  const card43 = page.locator('#ejercicio-4-3');
+  const tablaSoft43 = card43.locator('table.tabla-software');
+  await expect(tablaSoft43).toBeVisible();
+  const cabecerasSoft = tablaSoft43.locator('thead th');
+  await expect(cabecerasSoft).toHaveCount(3);
+  await expect(cabecerasSoft.nth(0)).toHaveText('Identificador');
+  await expect(cabecerasSoft.nth(1)).toHaveText('Tipo de bloque');
+  await expect(cabecerasSoft.nth(2)).toHaveText('Función lógica');
 });
 
 test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {

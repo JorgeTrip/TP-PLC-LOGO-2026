@@ -1,9 +1,7 @@
-/**
- * Estilos para componentes: tarjetas, SVG Ladder, simulación y maquetas.
- * Capa de presentación.
- */
+import { estilosTablasCss } from './estilosTablas.js';
 
 export const estilosComponentesCss = `
+${estilosTablasCss}
 .card {
   background: var(--bg-card);
   border: 1px solid var(--borde-card);
@@ -46,9 +44,7 @@ h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .08em; text-transform:
   border-radius: 0 12px 12px 0;
   color: var(--texto-principal);
 }
-table { border-collapse: collapse; width: 100%; margin: 8px 0; }
-td { border-bottom: 1px solid var(--borde-card); padding: 8px; font-size: 14px; }
-td:first-child { width: 90px; color: var(--acento-purpura); font-family: ui-monospace, monospace; font-weight: 600; }
+
 .banco-simulacion {
   display: grid;
   grid-template-columns: minmax(450px, 1.15fr) minmax(320px, 1fr);

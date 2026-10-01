@@ -10,12 +10,17 @@ export const ejerciciosBloque3 = [
     t: 'Sistema de Alerta Multifunción',
     q: 'Lógica para un pulsador (I1): Presión simple: Q1 por 20s. Presión 2s: Alarma cabina Q2. Presión 5s: Parpadeo de emergencia (Q1 y Q2) a 0.5 Hz durante 2 min (incendio).',
     io: [
-      ['I1', 'Pulsador multifunción N/A (Normal Abierto: discrimina tiempo continuo de presión)'],
-      ['Q1', 'Luz general / evacuación (enciende 20s en simple o parpadea en incendio)'],
-      ['Q2', 'Alarma en cabina de seguridad (activa a los 2s o parpadea en incendio)'],
-      ['T2', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 2 s para cabina)'],
-      ['T5', 'Temporizador TON (Timer On-Delay / Retardo a la conexión de 5 s para incendio)'],
-      ['M1–M4', 'Marcas internas M: M1 (TP 20s simple), M2 (alarma cabina), M3 (emergencia 120s), M4 (reloj asíncrono 0.5 Hz)']
+      ['I1', 'Pulsador multifunción de operador', 'NA', 'Se presiona el pulsador'],
+      ['Q1', 'Luminaria general / evacuación', 'Digital / Relé', 'Salida energizada (luz continua o parpadeo)'],
+      ['Q2', 'Sirena / alarma en cabina de control', 'Digital / Relé', 'Salida energizada (alarma fija o parpadeo)']
+    ],
+    soft: [
+      ['T2', 'Temporizador TON (On-Delay)', 'Discrimina pulsación continua mayor o igual a 2 segundos'],
+      ['T5', 'Temporizador TON (On-Delay)', 'Discrimina pulsación continua mayor o igual a 5 segundos (alarma de incendio)'],
+      ['M1', 'Generador de pulso (TP)', 'Genera pulso temporizado de 20 s para Q1 ante pulsación simple (< 2 s)'],
+      ['M2', 'Marca interna de memoria', 'Activa la alarma en cabina Q2 tras 2 s continuos de pulsación'],
+      ['M3', 'Generador de pulso (TP)', 'Mantiene la emergencia de incendio durante 120 s tras 5 s de pulsación'],
+      ['M4', 'Generador asíncrono de pulsos', 'Oscilador a 0.5 Hz (1 s ON / 1 s OFF) para destello sincrónico']
     ],
     e: '¿Cómo discrimina un único pulsador entre tres funciones distintas? Se usan dos temporizadores TON conectados a I1: T2 (2 segundos) y T5 (5 segundos). 1) Presión simple: si el operario suelta el botón antes de los 2 s (flanco descendente de I1 con /T2 activo), se dispara un pulso fijo TP de 20 s hacia la luz Q1. 2) Presión de 2 s: al mantener pulsado 2 s continuos, T2 conmuta y activa la alarma en cabina Q2. 3) Presión de 5 s (Alarma de Incendio): al alcanzar 5 s continuos, T5 conmuta y dispara la marca de emergencia M3 por 2 minutos (120 s). Ésta habilita un generador de pulsos asíncrono de 0.5 Hz (periodo de 2 s: 1 s encendido y 1 s apagado), haciendo parpadear sincrónicamente a Q1 y Q2 con prioridad absoluta sobre cualquier otra maniobra.',
     i: [['I1', 'Pulsador multifunción', 'p']],
@@ -62,14 +67,19 @@ export const ejerciciosBloque3 = [
     t: 'Control de Acceso a Estacionamiento',
     q: 'Playa con capacidad para 50 vehículos. Controlar barrera entrada/salida y emisión de tickets. Al llegar a 50: bloquear entrada y activar cartel "COMPLETO" (Q3).',
     io: [
-      ['I1', 'Sensor óptico de vehículo en carril de entrada'],
-      ['I2', 'Sensor óptico de vehículo en carril de salida'],
-      ['I3', 'Pulsador de Reset manual N/A (Normal Abierto: reinicia cupos a 0)'],
-      ['Q1', 'Motor de barrera de entrada (pulso TP 3s)'],
-      ['Q2', 'Motor de barrera de salida (pulso TP 3s)'],
-      ['Q3', 'Cartel luminoso "COMPLETO"'],
-      ['Q4', 'Dispensador automático de tickets (pulso TP 1s)'],
-      ['C1', 'Contador CTUD (Count-Up/Down: contador bidireccional adelante/atrás 0–50)']
+      ['I1', 'Sensor de carril de entrada', 'NA', 'Vehículo posicionado sobre el sensor de entrada'],
+      ['I2', 'Sensor de carril de salida', 'NA', 'Vehículo posicionado sobre el sensor de salida'],
+      ['I3', 'Pulsador de reset manual de cupos', 'NA', 'Se presiona el pulsador'],
+      ['Q1', 'Motor de barrera de entrada', 'Digital / Relé', 'Salida energizada (barrera abre durante 3 s)'],
+      ['Q2', 'Motor de barrera de salida', 'Digital / Relé', 'Salida energizada (barrera abre durante 3 s)'],
+      ['Q3', 'Cartel luminoso exterior COMPLETO', 'Digital / Relé', 'Salida energizada (cupo de 50 vehículos alcanzado)'],
+      ['Q4', 'Dispensador automático de tickets', 'Digital / Relé', 'Salida energizada (emite ticket durante 1 s)']
+    ],
+    soft: [
+      ['C1', 'Contador bidireccional (CTUD)', 'Registra ocupación neta (suma con I1, resta con I2, límite en 50)'],
+      ['TP1', 'Temporizador TP (Pulso)', 'Temporiza 3 segundos la apertura de barrera de entrada Q1'],
+      ['TP2', 'Temporizador TP (Pulso)', 'Temporiza 3 segundos la apertura de barrera de salida Q2'],
+      ['TP3', 'Temporizador TP (Pulso)', 'Temporiza 1 segundo la emisión de ticket Q4']
     ],
     e: '¿Qué es un contador bidireccional CTUD (Count Up/Down)? Es un bloque capaz de sumar y restar eventos según la entrada excitada. Cada vehículo detectado por el sensor de entrada I1 (con cupo disponible /Q3) suma 1 al contador C1, abre la barrera de entrada Q1 por 3 segundos mediante un pulso TP y emite un ticket Q4 por 1 segundo. Cada vehículo detectado al egresar por el sensor I2 resta 1 al contador y abre la barrera de salida Q2 por 3 segundos. Al alcanzar los 50 vehículos, la salida C1 activa el cartel "COMPLETO" (Q3). Su contacto normalmente cerrado /Q3 se abre en la rama de entrada, bloqueando físicamente el paso y la entrega de tickets hasta que un auto desocupe una plaza.',
     i: [['I1', 'Auto entrada', 'p'], ['I2', 'Auto salida', 'p'], ['I3', 'Reset cupos', 'p']],
@@ -107,12 +117,17 @@ export const ejerciciosBloque3 = [
     t: 'Automatización de Portón Levadizo',
     q: 'Controlar portón con un único pulsador (I1): Ciclo Abrir - Parar - Cerrar - Parar. Finales de carrera I2 e I3 (ambos N/C) detienen motor en extremos.',
     io: [
-      ['I1', 'Pulsador único de comando N/A (Normal Abierto: avanza la secuencia)'],
-      ['I2', 'Final de carrera FC ABIERTO N/C (Normal Cerrado: abre al llegar al tope superior)'],
-      ['I3', 'Final de carrera FC CERRADO N/C (Normal Cerrado: abre al llegar al tope inferior)'],
-      ['Q1', 'Motor sentido abrir portón'],
-      ['Q2', 'Motor sentido cerrar portón'],
-      ['M0–M3', 'Marcas internas M: etapas secuenciales (0: cerrado, 1: abriendo, 2: abierto, 3: cerrando)']
+      ['I1', 'Pulsador único de comando', 'NA', 'Se presiona el pulsador'],
+      ['I2', 'Final de carrera FC ABIERTO', 'NC', 'Portón fuera del tope superior (abre a 0 al alcanzar apertura total)'],
+      ['I3', 'Final de carrera FC CERRADO', 'NC', 'Portón fuera del tope inferior (abre a 0 al alcanzar cierre total)'],
+      ['Q1', 'Motor sentido abrir portón', 'Digital / Relé', 'Salida energizada (motor eleva el portón)'],
+      ['Q2', 'Motor sentido cerrar portón', 'Digital / Relé', 'Salida energizada (motor desciende el portón)']
+    ],
+    soft: [
+      ['M0', 'Marca interna (Estado 0)', 'Estado de reposo con portón detenido y cerrado'],
+      ['M1', 'Marca interna (Estado 1)', 'Estado activo de apertura con motor Q1 en ascenso'],
+      ['M2', 'Marca interna (Estado 2)', 'Estado de reposo con portón detenido y abierto'],
+      ['M3', 'Marca interna (Estado 3)', 'Estado activo de cierre con motor Q2 en descenso']
     ],
     e: '¿Qué es una máquina de 4 estados? Es una estructura secuencial cíclica donde el sistema recorre ordenadamente 4 fases: Estado 0 (Parado-Cerrado), Estado 1 (Abriendo Q1), Estado 2 (Parado-Abierto) y Estado 3 (Cerrando Q2). Cada pulsación de I1 avanza al estado inmediato siguiente. ¿Cómo actúan los finales de carrera N/C (limit switches)? Son interruptores mecánicos de seguridad colocados en los extremos. Al estar en reposo cerrado, el portón pisa I3, abriendo el circuito eléctrico (señal 0). En Ladder, el contacto invertido /I3 detecta esta apertura y asegura el estado de reposo cerrado. Al abrir por completo, el portón presiona I2 (señal cae a 0), y el contacto /I2 fuerza la detención inmediata (Estado 2), apagando el motor de subida Q1.',
     i: [['I1', 'Pulsador portón', 'p'], ['I2', 'Fin ABIERTO', 's', 1], ['I3', 'Fin CERRADO', 's', 1, 1]],

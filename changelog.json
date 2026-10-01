@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.10.0",
+    "fecha": "2026-09-30",
+    "tipo": "feat",
+    "titulo": "Se refactoriza la sección de I/O en tabla canónica de 4 columnas y tabla independiente de Recursos de Software",
+    "cambios": [
+      "Se crea la estructura canónica de 4 columnas obligatorias para la Tabla de Asignación de I/O: Borne (físico I/Q), Señal, Tipo de contacto (NA/NC/Digital) y Condición binaria exacta (Vale 1 cuando...).",
+      "Se prohíbe y elimina la mezcla de marcas internas (M), temporizadores (T) y contadores (C) en la tabla física de I/O.",
+      "Se implementa tabla independiente de Recursos Internos de Software detallando identificador, tipo de bloque y función lógica para los ejercicios que los requieran.",
+      "Se modularizan los estilos visuales en estilosTablas.js con alineación centrada para bornes/tipos y soporte responsivo sin desbordes."
+    ]
+  },
+  {
     "version": "1.9.0",
     "fecha": "2026-09-29",
     "tipo": "feat",
