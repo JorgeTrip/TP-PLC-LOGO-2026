@@ -12,6 +12,8 @@ export function generarCatalogoCliente() {
     q: ${JSON.stringify(ej.q)},
     io: ${JSON.stringify(ej.io)},
     soft: ${JSON.stringify(ej.soft || [])},
+    eq: ${JSON.stringify(ej.eq || [])},
+    sol: ${JSON.stringify(ej.sol || '')},
     e: ${JSON.stringify(ej.e)},
     i: ${JSON.stringify(ej.i)},
     o: ${JSON.stringify(ej.o)},

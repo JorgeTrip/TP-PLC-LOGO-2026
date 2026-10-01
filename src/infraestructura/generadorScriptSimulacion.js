@@ -1,16 +1,19 @@
 import { generarScriptInteraccionesUi } from './scriptInteraccionesUi.js';
 import { generarScriptTablasIo } from './scriptTablasIo.js';
+import { generarScriptDetalleTecnico } from './scriptDetalleTecnico.js';
 import { glosarioTerminos } from '../dominio/glosarioTerminos.js';
 
 export function generarScriptSimulacion() {
   const glosarioJson = JSON.stringify(glosarioTerminos);
   const scriptUi = generarScriptInteraccionesUi();
   const scriptTablas = generarScriptTablasIo();
+  const scriptDetalle = generarScriptDetalleTecnico();
 
   return `
 <script>
 ${scriptUi}
 ${scriptTablas}
+${scriptDetalle}
 
   const glosarioTerminosPlc = ${glosarioJson};
   function enriquecerTexto(txt) {
@@ -50,12 +53,9 @@ ${scriptTablas}
     divTablas[propSetHtml] = crearTablaIoHtml(ej);
     card.append(divTablas);
 
-    const h3Sol = document.createElement('h3');
-    h3Sol.textContent = 'Solución y Análisis Técnico';
-    const pSol = document.createElement('p');
-    pSol.style.color = 'var(--texto-secundario)';
-    pSol[propSetHtml] = enriquecerTexto(ej.e);
-    card.append(h3Sol, pSol);
+    const divDetalle = document.createElement('div');
+    divDetalle[propSetHtml] = crearSeccionesTecnicasHtml(ej);
+    card.append(divDetalle);
 
     const banco = document.createElement('div');
     banco.className = 'banco-simulacion';

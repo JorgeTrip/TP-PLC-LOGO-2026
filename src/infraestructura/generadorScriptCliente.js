@@ -12,6 +12,14 @@ export function generarScriptCliente() {
   }
   function evaluaConduccionElemento(el, est) {
     if (el.startsWith('[')) {
+      if (el.includes('↓')) {
+        const k = el.replace(/[\\[\\]↓\\s]/g, '');
+        return Boolean(est['flancoBaja_' + k] !== undefined ? est['flancoBaja_' + k] : est[k]);
+      }
+      if (el.includes('↑')) {
+        const k = el.replace(/[\\[\\]↑\\s]/g, '');
+        return Boolean(est['flancoSube_' + k] !== undefined ? est['flancoSube_' + k] : est[k]);
+      }
       const k = el.slice(1, -1);
       return Boolean(est[k] !== undefined ? est[k] : est[el]);
     }
@@ -52,13 +60,14 @@ export function generarScriptCliente() {
       const ramas = p.p && p.p.length > 0 ? p.p : [[]];
       const pw = Math.max(...ramas.map(r => r.reduce((a, e) => a + calcularAnchoElemento(e), 0)), 0);
       const sw = (p.s || []).reduce((a, e) => a + calcularAnchoElemento(e), 0);
-      return { p, ramas, pw, sw, req: 40 + pw + sw + MARGEN_BOBINA + 70 };
+      const extraW = p.o && p.o.startsWith('[') ? Math.max(120, (p.o.length - 2) * 8 + 30) : 70;
+      return { p, ramas, pw, sw, req: 40 + pw + sw + MARGEN_BOBINA + extraW };
     });
-    const anchoTot = Math.max(...rungs.map(r => r.req), 440);
+    const anchoTot = Math.max(...rungs.map(r => r.req), 460);
     const RX = anchoTot - 20;
     let Y = 28, svg = '';
     rungs.forEach(({ p, ramas, pw }) => {
-      const y0 = Y + 54, n = ramas.length, cx = anchoTot - 56;
+      const y0 = Y + 54, n = ramas.length, cx = anchoTot - 64;
       const ev = evaluarPeldaño(p, est);
       if (p.c) svg += '<text class="c" x="48" y="' + (Y + 16) + '">' + p.c + '</text>';
       ramas.forEach((b, i) => {
@@ -86,7 +95,8 @@ export function generarScriptCliente() {
       }
       let xS = 40 + pw;
       const clS = ev.paraleloConduce ? ' energized' : '';
-      svg += '<path class="k' + clS + '" d="M' + xS + ' ' + y0 + 'H' + (cx - 24) + '"/>';
+      const xFinSerie = p.o && p.o.startsWith('[') ? (cx - Math.max(120, (p.o.length - 2) * 8 + 30)/2) : (cx - 24);
+      svg += '<path class="k' + clS + '" d="M' + xS + ' ' + y0 + 'H' + xFinSerie + '"/>';
       (p.s || []).forEach((e, idx) => {
         const item = ev.resSerie[idx], en = item ? item.en : false, cl = en ? ' energized' : '';
         const w = calcularAnchoElemento(e);
@@ -100,7 +110,14 @@ export function generarScriptCliente() {
         xS += w;
       });
       const clB = ev.bobina ? ' energized' : '';
-      svg += '<path class="k' + clB + '" d="M' + (cx + 24) + ' ' + y0 + 'H' + RX + 'M' + (cx - 10) + ' ' + (y0 - 15) + 'a15 15 0 0 0 0 30M' + (cx + 10) + ' ' + (y0 - 15) + 'a15 15 0 0 1 0 30"/><text class="t' + clB + '" x="' + cx + '" y="' + (y0 - 18) + '">' + p.o + '</text>';
+      if (p.o && p.o.startsWith('[')) {
+        const nomB = p.o.slice(1, -1);
+        const bw = Math.max(120, nomB.length * 8 + 24);
+        const bx = Math.min(cx - bw/2, RX - bw - 12);
+        svg += '<rect class="b' + clB + '" x="' + bx + '" y="' + (y0 - 20) + '" width="' + bw + '" height="40" rx="6"/><text class="t' + clB + '" x="' + (bx + bw/2) + '" y="' + (y0 + 5) + '">' + nomB + '</text><path class="k' + clB + '" d="M' + (bx + bw) + ' ' + y0 + 'H' + RX + '"/>';
+      } else {
+        svg += '<path class="k' + clB + '" d="M' + (cx + 24) + ' ' + y0 + 'H' + RX + 'M' + (cx - 10) + ' ' + (y0 - 15) + 'a15 15 0 0 0 0 30M' + (cx + 10) + ' ' + (y0 - 15) + 'a15 15 0 0 1 0 30"/><text class="t' + clB + '" x="' + cx + '" y="' + (y0 - 18) + '">' + p.o + '</text>';
+      }
       Y += n * ALTO_RAMA + 42;
     });
     return '<svg viewBox="0 0 ' + (anchoTot + 20) + ' ' + (Y + 20) + '" width="' + (anchoTot + 20) + '" height="' + (Y + 20) + '" class="ladder-svg"><path class="k rail" d="M40 20V' + (Y + 10) + 'M' + RX + ' 20V' + (Y + 10) + '"/>' + svg + '</svg>';

@@ -2,6 +2,7 @@
  * Estilos para las tablas canónicas de Asignación de I/O y Recursos de Software.
  * Capa de presentación.
  */
+import { estilosDetalleTecnicoCss } from './estilosDetalleTecnico.js';
 
 export const estilosTablasCss = `
 .bloque-tablas-asignacion {
@@ -94,4 +95,5 @@ export const estilosTablasCss = `
   font-weight: 600;
   color: var(--texto-principal);
 }
+${estilosDetalleTecnicoCss}
 `;

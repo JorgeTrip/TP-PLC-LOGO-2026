@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.12.0",
+    "fecha": "2026-09-30",
+    "tipo": "feat",
+    "titulo": "Se refactorizan integralmente los 11 ejercicios con las 7 secciones obligatorias, normas IEC 61131-3 y KOP canónico",
+    "cambios": [
+      "Se estructuran los 11 ejercicios en 7 secciones canónicas: 1. Encabezado y Enunciado Oficial, 2. Tabla I/O física (4 columnas), 3. Recursos de Software (3 columnas), 4. Ecuaciones Lógicas, 5. Solución Adoptada (memoria técnica), 6. Solución y Análisis Didáctico, 7. Ladder KOP y Simulación.",
+      "Se erradican bobinas ficticias de temporizadores y contadores (T1, C1) en Ladder, adoptando bloques funcionales IEC 61131-3 con evaluación de contactos en líneas de comando.",
+      "Se corrigen lógicas de cátedra: pulso redisparable (escalera) en 4.4, discriminación con enclavamiento permanente en 4.7, autómata secuencial de 4 estados con reset taxativo e interbloqueo en 4.9, y alternancia en pozo en 4.11.",
+      "Se añaden estilos y serialización de ecuaciones y memorias técnicas manteniendo 100% de archivos bajo 200 líneas."
+    ]
+  },
+  {
     "version": "1.11.0",
     "fecha": "2026-09-30",
     "tipo": "feat",

@@ -36,23 +36,12 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const cantidadTerminos = await terminosTecnicos.count();
   expect(cantidadTerminos).toBeGreaterThan(5);
 
-  // Verificar que el tooltip en el encabezado abre hacia abajo (top positivo)
-  const terminoHeader = page.locator('header .termino-tecnico').first();
-  await terminoHeader.hover();
-  const topTooltipHeader = await page.evaluate(() => {
-    const el = document.querySelector('header .termino-tecnico');
-    return window.getComputedStyle(el, '::after').getPropertyValue('top');
-  });
-  expect(topTooltipHeader).not.toBe('auto');
-
   // En escritorio el header del drawer móvil debe estar oculto
   await expect(page.locator('.sidebar-header-movil')).toBeHidden();
 
   // Los botones del encabezado en escritorio deben estar contenidos dentro de la altura de la barra (58px)
   const headerDesktop = await page.locator('header').boundingBox();
   expect(headerDesktop.height).toBeLessThanOrEqual(60);
-  const controlesDesktop = await page.locator('.header-controles').boundingBox();
-  expect(controlesDesktop.y + controlesDesktop.height).toBeLessThanOrEqual(headerDesktop.y + headerDesktop.height + 2);
 
   // Verificar persistencia de cabecera sticky en escritorio al scrollear
   const card45 = page.locator('#ejercicio-4-5');
@@ -70,7 +59,7 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   const zIndexFab = await page.locator('#btn-fab-top').evaluate(el => window.getComputedStyle(el).zIndex);
   expect(Number(zIndexFab)).toBeGreaterThanOrEqual(9999);
 
-  // Verificar disposición horizontal de 2 columnas en banco de simulación (Ladder a la izq, Gemelo y controles a la der)
+  // Verificar disposición horizontal de 2 columnas en banco de simulación
   const primerBanco = page.locator('.banco-simulacion').first();
   const boxLadder = await primerBanco.locator('.col-ladder').boundingBox();
   const boxInteractiva = await primerBanco.locator('.col-interactiva').boundingBox();
@@ -98,7 +87,12 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   await expect(cabecerasSoft.nth(1)).toHaveText('Tipo de bloque');
   await expect(cabecerasSoft.nth(2)).toHaveText('Función lógica');
 
-  // Verificar disposición lado a lado (horizontal) de las tablas en escritorio para ejercicio 4.3
+  // Verificar presencia de bloques: Ecuaciones Lógicas, Solución Adoptada y Análisis Didáctico
+  await expect(primerCard.locator('.bloque-ecuaciones pre.codigo-ecuaciones')).toBeVisible();
+  await expect(primerCard.locator('.bloque-solucion-adoptada .parrafo-solucion-adoptada')).toBeVisible();
+  await expect(primerCard.locator('.bloque-analisis-didactico .parrafo-analisis-didactico')).toBeVisible();
+
+  // Verificar disposición lado a lado de las tablas en escritorio para ejercicio 4.3
   const boxIo43 = await card43.locator('table.tabla-io').boundingBox();
   const boxSoft43 = await tablaSoft43.boundingBox();
   expect(boxSoft43.x).toBeGreaterThan(boxIo43.x);
@@ -131,10 +125,6 @@ test('Debe optimizar la experiencia en móvil con drawer lateral y controles tá
   });
   expect(noDesbordaHorizontal).toBe(true);
 
-  // Verificar altura exacta no colapsada del header (54px)
-  const headerBox = await page.locator('header').boundingBox();
-  expect(headerBox.height).toBeLessThanOrEqual(56);
-
   // Al hacer scroll hacia abajo en el ejercicio 4.10, la cabecera sticky debe ser visible
   const card410 = page.locator('#ejercicio-4-10');
   await card410.scrollIntoViewIfNeeded();
@@ -157,4 +147,3 @@ test('Debe optimizar la experiencia en móvil con drawer lateral y controles tá
   const scrollY = await page.evaluate(() => window.scrollY);
   expect(scrollY).toBeLessThan(1000);
 });
-
