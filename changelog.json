@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.12.2",
+    "fecha": "2026-09-30",
+    "tipo": "fix",
+    "titulo": "Se abrevia el encabezado Identificador a ID en la tabla de Recursos de Software",
+    "cambios": [
+      "Se reemplaza el rótulo de cabecera 'Identificador' por 'ID' para evitar cualquier superposición con 'Tipo de bloque'.",
+      "Se calibra el ancho de la columna a 55px y se conserva el tooltip explicativo nativo title='Identificador'.",
+      "Se actualizan las suites de prueba unitarias y E2E de Playwright manteniendo plena conformidad."
+    ]
+  },
+  {
     "version": "1.12.1",
     "fecha": "2026-09-30",
     "tipo": "fix",

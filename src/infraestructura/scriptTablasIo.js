@@ -33,7 +33,7 @@ export function generarScriptTablasIo() {
       html += '<h3 class="subtitulo-seccion-tecnica">Recursos Internos de Software</h3>';
       html += '<div class="tabla-contenedor"><table class="tabla-tecnica tabla-software">';
       html += '<thead><tr>';
-      html += '<th class="col-centrada col-soft-id-th" style="width:75px">Identificador</th>';
+      html += '<th class="col-centrada col-soft-id-th" style="width:55px" title="Identificador">ID</th>';
       html += '<th class="col-centrada col-soft-tipo-th" style="width:115px">Tipo de bloque</th>';
       html += '<th class="col-izquierda">Función lógica</th>';
       html += '</tr></thead><tbody>';

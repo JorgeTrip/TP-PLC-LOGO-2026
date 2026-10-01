@@ -83,7 +83,7 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   await expect(tablaSoft43).toBeVisible();
   const cabecerasSoft = tablaSoft43.locator('thead th');
   await expect(cabecerasSoft).toHaveCount(3);
-  await expect(cabecerasSoft.nth(0)).toHaveText('Identificador');
+  await expect(cabecerasSoft.nth(0)).toHaveText('ID');
   await expect(cabecerasSoft.nth(1)).toHaveText('Tipo de bloque');
   await expect(cabecerasSoft.nth(2)).toHaveText('Función lógica');
 

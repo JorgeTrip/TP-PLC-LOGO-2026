@@ -109,7 +109,7 @@ export const estilosTablasCss = `
 }
 .tabla-software .col-soft-id-th,
 .tabla-software .col-soft-id {
-  width: 70px;
+  width: 55px;
   font-size: 12px;
   white-space: nowrap;
 }
