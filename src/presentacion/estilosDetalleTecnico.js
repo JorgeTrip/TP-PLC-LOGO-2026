@@ -4,6 +4,28 @@
  */
 
 export const estilosDetalleTecnicoCss = `
+.bloque-fila-tecnica {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 16px;
+  align-items: stretch;
+  margin: 14px 0;
+}
+@media (max-width: 1000px) {
+  .bloque-fila-tecnica {
+    grid-template-columns: 1fr;
+  }
+}
+.bloque-fila-tecnica .bloque-detalle-tecnico {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bloque-fila-tecnica .codigo-ecuaciones,
+.bloque-fila-tecnica .parrafo-solucion-adoptada {
+  flex: 1;
+  margin: 6px 0 0;
+}
 .bloque-detalle-tecnico {
   margin: 14px 0;
 }
@@ -13,7 +35,6 @@ export const estilosDetalleTecnicoCss = `
   border-left: 3px solid var(--acento-azul);
   border-radius: 10px;
   padding: 12px 16px;
-  margin: 6px 0 0;
   overflow-x: auto;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 13px;
@@ -25,7 +46,6 @@ export const estilosDetalleTecnicoCss = `
   color: inherit;
 }
 .parrafo-solucion-adoptada {
-  margin: 6px 0 0;
   font-size: 13.5px;
   line-height: 1.6;
   color: var(--texto-principal);

@@ -309,6 +309,28 @@ header h1 {
   overflow-wrap: break-word;
 }
 
+.bloque-fila-tecnica {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 16px;
+  align-items: stretch;
+  margin: 14px 0;
+}
+@media (max-width: 1000px) {
+  .bloque-fila-tecnica {
+    grid-template-columns: 1fr;
+  }
+}
+.bloque-fila-tecnica .bloque-detalle-tecnico {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bloque-fila-tecnica .codigo-ecuaciones,
+.bloque-fila-tecnica .parrafo-solucion-adoptada {
+  flex: 1;
+  margin: 6px 0 0;
+}
 .bloque-detalle-tecnico {
   margin: 14px 0;
 }
@@ -318,7 +340,6 @@ header h1 {
   border-left: 3px solid var(--acento-azul);
   border-radius: 10px;
   padding: 12px 16px;
-  margin: 6px 0 0;
   overflow-x: auto;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 13px;
@@ -330,7 +351,6 @@ header h1 {
   color: inherit;
 }
 .parrafo-solucion-adoptada {
-  margin: 6px 0 0;
   font-size: 13.5px;
   line-height: 1.6;
   color: var(--texto-principal);
@@ -1535,17 +1555,26 @@ header .header-controles [data-tooltip]:focus::after {
   function crearSeccionesTecnicasHtml(ej) {
     let html = '';
 
-    if (ej.eq && ej.eq.length > 0) {
-      html += '<div class="bloque-detalle-tecnico bloque-ecuaciones">';
-      html += '<h3 class="subtitulo-seccion-tecnica">Ecuaciones Lógicas</h3>';
-      html += '<pre class="codigo-ecuaciones"><code>' + ej.eq.map(e => e.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n') + '</code></pre>';
-      html += '</div>';
-    }
+    const tieneEq = Boolean(ej.eq && ej.eq.length > 0);
+    const tieneSol = Boolean(ej.sol);
 
-    if (ej.sol) {
-      html += '<div class="bloque-detalle-tecnico bloque-solucion-adoptada">';
-      html += '<h3 class="subtitulo-seccion-tecnica">Solución Adoptada</h3>';
-      html += '<p class="parrafo-solucion-adoptada">' + enriquecerTexto(ej.sol) + '</p>';
+    if (tieneEq || tieneSol) {
+      html += '<div class="bloque-fila-tecnica">';
+
+      if (tieneEq) {
+        html += '<div class="bloque-detalle-tecnico bloque-ecuaciones">';
+        html += '<h3 class="subtitulo-seccion-tecnica">Ecuaciones Lógicas</h3>';
+        html += '<pre class="codigo-ecuaciones"><code>' + ej.eq.map(e => e.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n') + '</code></pre>';
+        html += '</div>';
+      }
+
+      if (tieneSol) {
+        html += '<div class="bloque-detalle-tecnico bloque-solucion-adoptada">';
+        html += '<h3 class="subtitulo-seccion-tecnica">Solución Adoptada</h3>';
+        html += '<p class="parrafo-solucion-adoptada">' + enriquecerTexto(ej.sol) + '</p>';
+        html += '</div>';
+      }
+
       html += '</div>';
     }
 

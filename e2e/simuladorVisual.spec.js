@@ -92,6 +92,11 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   await expect(primerCard.locator('.bloque-solucion-adoptada .parrafo-solucion-adoptada')).toBeVisible();
   await expect(primerCard.locator('.bloque-analisis-didactico .parrafo-analisis-didactico')).toBeVisible();
 
+  // Verificar disposición lado a lado (horizontal) de Ecuaciones y Solución Adoptada en escritorio
+  const boxEq = await primerCard.locator('.bloque-ecuaciones').boundingBox();
+  const boxSol = await primerCard.locator('.bloque-solucion-adoptada').boundingBox();
+  expect(boxSol.x).toBeGreaterThan(boxEq.x);
+
   // Verificar disposición lado a lado de las tablas en escritorio para ejercicio 4.3
   const boxIo43 = await card43.locator('table.tabla-io').boundingBox();
   const boxSoft43 = await tablaSoft43.boundingBox();

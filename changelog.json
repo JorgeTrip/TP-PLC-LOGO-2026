@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.13.0",
+    "fecha": "2026-09-30",
+    "tipo": "feat",
+    "titulo": "Se disponen los bloques de Ecuaciones Lógicas y Solución Adoptada en paralelo lado a lado en escritorio",
+    "cambios": [
+      "Se crea el contenedor responsivo .bloque-fila-tecnica con cuadrícula de 2 columnas (1fr / 1.25fr) para ubicar Ecuaciones Lógicas y Solución Adoptada lado a lado en pantallas de escritorio.",
+      "Se unifican las alturas mediante alineación stretch y flex: 1 en las cajas de código y párrafos técnicos, logrando una estética simétrica y equilibrada.",
+      "Se mantiene la disposición apilada en pantallas menores a 1000px y dispositivos móviles.",
+      "Se incorpora prueba automatizada en Playwright para verificar las coordenadas y presencia horizontal en viewport de escritorio."
+    ]
+  },
+  {
     "version": "1.12.2",
     "fecha": "2026-09-30",
     "tipo": "fix",
