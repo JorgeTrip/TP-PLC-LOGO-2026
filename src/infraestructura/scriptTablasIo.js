@@ -6,13 +6,15 @@
 export function generarScriptTablasIo() {
   return `
   function crearTablaIoHtml(ej) {
-    let html = '<div class="bloque-tablas-asignacion">';
+    const tieneSoft = Boolean(ej.soft && ej.soft.length > 0);
+    let html = '<div class="bloque-tablas-asignacion' + (tieneSoft ? ' con-software' : '') + '">';
+    html += '<div class="contenedor-tabla-grupo">';
     html += '<h3 class="subtitulo-seccion-tecnica">Tabla de Asignación de Entradas y Salidas (I/O)</h3>';
     html += '<div class="tabla-contenedor"><table class="tabla-tecnica tabla-io">';
     html += '<thead><tr>';
-    html += '<th class="col-centrada" style="width:75px">Borne</th>';
+    html += '<th class="col-centrada" style="width:70px">Borne</th>';
     html += '<th class="col-izquierda">Señal</th>';
-    html += '<th class="col-centrada" style="width:130px">Tipo de contacto</th>';
+    html += '<th class="col-centrada" style="width:115px">Tipo de contacto</th>';
     html += '<th class="col-izquierda">Vale 1 cuando...</th>';
     html += '</tr></thead><tbody>';
 
@@ -24,14 +26,15 @@ export function generarScriptTablasIo() {
       html += '<td class="col-izquierda">' + enriquecerTexto(cond) + '</td>';
       html += '</tr>';
     });
-    html += '</tbody></table></div>';
+    html += '</tbody></table></div></div>';
 
-    if (ej.soft && ej.soft.length > 0) {
-      html += '<h3 class="subtitulo-seccion-tecnica" style="margin-top:14px">Recursos Internos de Software</h3>';
+    if (tieneSoft) {
+      html += '<div class="contenedor-tabla-grupo">';
+      html += '<h3 class="subtitulo-seccion-tecnica">Recursos Internos de Software</h3>';
       html += '<div class="tabla-contenedor"><table class="tabla-tecnica tabla-software">';
       html += '<thead><tr>';
-      html += '<th class="col-centrada" style="width:110px">Identificador</th>';
-      html += '<th class="col-centrada" style="width:180px">Tipo de bloque</th>';
+      html += '<th class="col-centrada" style="width:90px">Identificador</th>';
+      html += '<th class="col-centrada" style="width:150px">Tipo de bloque</th>';
       html += '<th class="col-izquierda">Función lógica</th>';
       html += '</tr></thead><tbody>';
 
@@ -42,7 +45,7 @@ export function generarScriptTablasIo() {
         html += '<td class="col-izquierda">' + enriquecerTexto(func) + '</td>';
         html += '</tr>';
       });
-      html += '</tbody></table></div>';
+      html += '</tbody></table></div></div>';
     }
 
     html += '</div>';

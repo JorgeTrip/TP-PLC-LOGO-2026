@@ -97,6 +97,11 @@ test('Debe cargar la plataforma y renderizar los 11 ejercicios con diagramas Lad
   await expect(cabecerasSoft.nth(0)).toHaveText('Identificador');
   await expect(cabecerasSoft.nth(1)).toHaveText('Tipo de bloque');
   await expect(cabecerasSoft.nth(2)).toHaveText('Función lógica');
+
+  // Verificar disposición lado a lado (horizontal) de las tablas en escritorio para ejercicio 4.3
+  const boxIo43 = await card43.locator('table.tabla-io').boundingBox();
+  const boxSoft43 = await tablaSoft43.boundingBox();
+  expect(boxSoft43.x).toBeGreaterThan(boxIo43.x);
 });
 
 test('Debe optimizar la experiencia en móvil con drawer lateral y controles táctiles', async ({ page }) => {

@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.11.0",
+    "fecha": "2026-09-30",
+    "tipo": "feat",
+    "titulo": "Se disponen las tablas de I/O y Recursos de Software lado a lado en escritorio",
+    "cambios": [
+      "Se agrupan las tablas de I/O y de Recursos de Software en un grid horizontal de 2 columnas (.con-software) para pantallas de escritorio.",
+      "Se reduce significativamente el espacio vertical ocupado por cada ejercicio permitiendo visualizar ambas tablas en paralelo.",
+      "Se mantiene la disposición apilada en pantallas menores a 1000px y móviles para garantizar legibilidad completa sin desbordes."
+    ]
+  },
+  {
     "version": "1.10.0",
     "fecha": "2026-09-30",
     "tipo": "feat",

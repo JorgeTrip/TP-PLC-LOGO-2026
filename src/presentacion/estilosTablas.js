@@ -5,10 +5,24 @@
 
 export const estilosTablasCss = `
 .bloque-tablas-asignacion {
-  margin: 18px 0;
+  margin: 16px 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: start;
+}
+.bloque-tablas-asignacion.con-software {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+}
+.contenedor-tabla-grupo {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+}
+@media (max-width: 1000px) {
+  .bloque-tablas-asignacion.con-software {
+    grid-template-columns: 1fr;
+  }
 }
 .subtitulo-seccion-tecnica {
   margin: 12px 0 6px;
