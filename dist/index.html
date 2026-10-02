@@ -1260,16 +1260,15 @@ header .header-controles [data-tooltip]:focus::after {
     q: "Diseñar una lógica para un pulsador (I1) con tres funciones según el tiempo de presión: Presión simple: Enciende Q1 por 20 segundos. Presión 2 segundos: Activa alarma en cabina de seguridad (Q2). Presión 5 segundos: Activa parpadeo de emergencia (Q1 y Q2) a 0.5 Hz durante 2 minutos (Alarma de Incendio).",
     io: [["I1","Pulsador multifunción de operador","NA","Se presiona el pulsador"],["Q1","Luminaria general / evacuación","Digital / Relé","Salida energizada (20 s fija o parpadeo)"],["Q2","Alarma en cabina de control","Digital / Relé","Salida energizada (fija en 2s o parpadeo)"]],
     soft: [["T2","TON (2 s)","Alarma cabina (presión >= 2 s)"],["T5","TON (5 s)","Alarma incendio (presión >= 5 s)"],["M1","TP (20 s)","Pulso de luz ante presión simple"],["M2","Relé RS","Enclavamiento de alarma en cabina"],["M3","TP (120 s)","Emergencia incendio (2 minutos)"],["M4","Async (0.5 Hz)","Parpadeo simétrico de emergencia"]],
-    eq: ["T2_IN = I1 (TON, 2 s) ; T5_IN = I1 (TON, 5 s)","M1 = TP(Flanco_Descendente(I1) · NOT(T2), 20 s)","Set(M2) = Flanco_Ascendente(T2) · NOT(T5) ; Reset(M2) = M3","M3 = TP(Flanco_Ascendente(T5), 120 s)","M4 = M3 · Oscilador(1 s ON / 1 s OFF)","Q1 = M1 + M4","Q2 = (M2 · NOT(M3)) + M4"],
-    sol: "Discriminación de consignas por medición de tiempo continuo de entrada mediante dos bloques TON regulados a 2 y 5 segundos. La liberación de I1 antes de los 2 segundos genera un flanco descendente condicionado por NOT(T2) que activa el temporizador M1 gobernando la iluminación Q1 durante 20 segundos. Sostener la presión entre 2 y 5 segundos activa T2 y enclava la alarma fija de cabina M2 (Q2). Superar los 5 segundos acciona el temporizador de incendio M3 durante 120 segundos: resetea la alarma simple de cabina y habilita el oscilador simétrico M4 a 0.5 Hz comandando de forma simultánea e intermitente Q1 y Q2 con prioridad máxima.",
-    e: "¿Cómo discrimina un único pulsador entre tres funciones distintas? Se usan dos temporizadores TON conectados a I1: T2 (2 segundos) y T5 (5 segundos). 1) Presión simple: si se suelta antes de los 2 s (flanco descendente con /T2 activo), se dispara un pulso fijo TP de 20 s hacia Q1. 2) Presión de 2 s: al mantener pulsado 2 s continuos, T2 conmuta y enclava la alarma fija de cabina M2 (Q2). 3) Presión de 5 s (Incendio): al alcanzar 5 s continuos, T5 conmuta y dispara la emergencia M3 por 2 minutos (120 s), reseteando la alarma simple y habilitando un oscilador asíncrono de 0.5 Hz comandando sincrónicamente Q1 y Q2.",
+    eq: ["T2_IN = I1 (TON, PT = 2 s) ; T5_IN = I1 (TON, PT = 5 s)","M1 = TP(Flanco_Descendente(I1) · NOT(T2), 20 s)","Set(M2) = Flanco_Descendente(I1) · T2 · NOT(T5)","Reset(M2) = Flanco_Ascendente(T5)","M3 = TP(Flanco_Ascendente(T5), 120 s)","M4 = M3 · Oscilador(1 s ON / 1 s OFF)","Q1 = M1 + M4 ; Q2 = (M2 · NOT(M3)) + M4"],
+    sol: "Discriminación estricta por medición de tiempo en bloques TON (2 s y 5 s). Para evitar disparos espurios en cabina mientras el operador sostiene la pulsación hacia la alarma de incendio (5 s), la alarma de cabina M2 se enclava únicamente al liberar el pulsador mediante flanco descendente [Flanco_Descendente(I1) · T2 · NOT(T5)]. La pulsación simple (< 2 s) dispara al soltar el temporizador M1 (20 s) para iluminación Q1. Al superar los 5 s continuos, el flanco ascendente de T5 dispara la emergencia M3 (120 s), resetea forzosamente M2 y activa el oscilador simétrico M4 a 0.5 Hz comandando sincrónicamente Q1 y Q2.",
+    e: "¿Cómo evitar disparos espurios de cabina al activar incendio? Evaluando la alarma de cabina al soltar: Flanco_Descendente(I1) · T2 · /T5. Si el operario busca activar incendio manteniendo 5 s, no se dispara cabina al pasar por el segundo 2. Al llegar a 5 s, Flanco_Ascendente(T5) dispara la emergencia M3 de 2 min (120 s) y resetea de forma forzosa M2, activando el oscilador a 0.5 Hz sobre Q1 y Q2.",
     i: [["I1","Pulsador multifunción","p"]],
     o: ["Q1","Q2"],
-    r: [{"c":"R1: Discriminación de presión continua >= 2 s en bloque TON T2","s":["I1"],"o":"[TON T2 | 2s]"},{"c":"R2: Discriminación de presión continua >= 5 s en bloque TON T5","s":["I1"],"o":"[TON T5 | 5s]"},{"c":"R3: Disparo de pulso TP M1 (20 s) ante liberación previa a 2 s","s":["[↓ I1]","/T2"],"o":"[TP M1 | 20s]"},{"c":"R4: Enclavamiento permanente de alarma fija M2 en cabina al superar 2 s","s":["[↑ T2]","/T5"],"o":"S M2"},{"c":"R5: Disparo de emergencia por incendio TP M3 (120 s) al superar 5 s","s":["[↑ T5]"],"o":"[TP M3 | 120s]"},{"c":"R6: Oscilador asíncrono M4 a 0.5 Hz habilitado por emergencia M3","s":["M3"],"o":"[Async M4 | 1s/1s]"},{"c":"R7: Salida de luz general Q1 gobernada por pulso simple M1 o parpadeo M4","p":[["M1"],["M4"]],"o":"Q1"},{"c":"R8: Salida de alarma Q2 gobernada por cabina M2 o parpadeo M4","p":[["M2","/M3"],["M4"]],"o":"Q2"}],
+    r: [{"c":"R1: Medición de tiempo continuo 2 s en bloque TON T2","s":["I1"],"o":"[TON T2 | 2s]"},{"c":"R2: Medición de tiempo continuo 5 s en bloque TON T5","s":["I1"],"o":"[TON T5 | 5s]"},{"c":"R3: Disparo de pulso TP M1 (20 s) al soltar con t < 2 s","s":["[↓ I1]","/T2"],"o":"[TP M1 | 20s]"},{"c":"R4: Enclavamiento de alarma en cabina M2 al soltar con 2 s <= t < 5 s","s":["[↓ I1]","T2","/T5"],"o":"S M2"},{"c":"R5: Disparo de emergencia por incendio TP M3 (120 s) al alcanzar 5 s","s":["[↑ T5]"],"o":"[TP M3 | 120s]"},{"c":"R6: Reset forzado de memoria de cabina M2 por flanco de incendio","s":["[↑ T5]"],"o":"R M2"},{"c":"R7: Oscilador asíncrono M4 a 0.5 Hz habilitado durante emergencia M3","s":["M3"],"o":"[Async M4 | 1s/1s]"},{"c":"R8: Salida de luz general Q1 gobernada por pulso simple M1 o parpadeo M4","p":[["M1"],["M4"]],"o":"Q1"},{"c":"R9: Salida de alarma Q2 gobernada por cabina M2 o parpadeo M4","p":[["M2","/M3"],["M4"]],"o":"Q2"}],
     ejecutar: (S, I, dt) => {
       if (I.I1) {
         S.presion = (S.presion || 0) + dt;
-        if (S.presion >= 2 && !S.disparo2) { S.disparo2 = true; S.m2 = true; }
         if (S.presion >= 5 && !S.disparo5) {
           S.disparo5 = true; S.m2 = false; S.tEmergencia = 120; S.tReloj = 0;
         } else if (S.disparo5 && (S.tEmergencia || 0) > 0) {
@@ -1277,19 +1276,19 @@ header .header-controles [data-tooltip]:focus::after {
         }
       } else {
         if (S.presion > 0 && S.presion < 2) S.tSimple = 20;
+        else if (S.presion >= 2 && S.presion < 5) S.m2 = true;
         S.presion = 0; S.disparo2 = false; S.disparo5 = false;
-        if ((S.tEmergencia || 0) > 0) { S.tReloj = (S.tReloj || 0) + dt; }
+        if ((S.tEmergencia || 0) > 0) S.tReloj = (S.tReloj || 0) + dt;
       }
       const emergencia = (S.tEmergencia || 0) > 0;
       const cicloReloj = emergencia && Math.floor(S.tReloj || 0) % 2 === 0;
-      S.info = S.presion > 0 ? `Presión continua: ${S.presion.toFixed(1)} s` : (emergencia ? `🔥 EMERGENCIA INCENDIO: ${S.tEmergencia.toFixed(0)} s` : (S.m2 ? 'Alarma en cabina activa' : ''));
-      const salidas = {
+      S.info = S.presion > 0 ? `Presión continua: ${S.presion.toFixed(1)} s` : (emergencia ? `🔥 EMERGENCIA INCENDIO: ${S.tEmergencia.toFixed(0)} s` : (S.m2 ? 'Alarma cabina activa' : ''));
+      if (S.tSimple > 0) S.tSimple = Math.max(0, S.tSimple - dt);
+      if (S.tEmergencia > 0) S.tEmergencia = Math.max(0, S.tEmergencia - dt);
+      return {
         Q1: Boolean(emergencia ? cicloReloj : (S.tSimple || 0) > 0),
         Q2: Boolean(emergencia ? cicloReloj : Boolean(S.m2))
       };
-      if (S.tSimple > 0) S.tSimple = Math.max(0, S.tSimple - dt);
-      if (S.tEmergencia > 0) S.tEmergencia = Math.max(0, S.tEmergencia - dt);
-      return salidas;
     }
   },
   {
@@ -1348,8 +1347,7 @@ header .header-controles [data-tooltip]:focus::after {
       if (estado === 1 && !I.I2) estado = 2;
       if (estado === 3 && !I.I3) estado = 0;
       S.s = estado;
-      const etiquetas = ['Parado (cerrado) - Próximo: ABRIR', 'ABRIENDO PORTÓN (Q1)', 'Parado (abierto) - Próximo: CERRAR', 'CERRANDO PORTÓN (Q2)'];
-      S.info = etiquetas[estado];
+      S.info = ['Parado (cerrado)', 'ABRIENDO PORTÓN (Q1)', 'Parado (abierto)', 'CERRANDO PORTÓN (Q2)'][estado];
       return {
         Q1: estado === 1,
         Q2: estado === 3,

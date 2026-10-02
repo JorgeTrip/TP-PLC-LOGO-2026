@@ -15,10 +15,11 @@ describe('Simulación Lógica PLC: Ejercicios 4.7 a 4.11', () => {
     expect(res1.Q1).toBe(true);  // Q1 activo por 20s
     expect(res1.Q2).toBe(false);
 
-    // Caso 2: Presión de 2 segundos -> Alarma cabina Q2
+    // Caso 2: Presión de 2 segundos (2 s <= t < 5 s) -> Alarma cabina al soltar
     let s2 = {};
-    ej.ejecutar(s2, { I1: true }, 1.5);
-    let res2 = ej.ejecutar(s2, { I1: true }, 0.6); // Total 2.1 s
+    ej.ejecutar(s2, { I1: true }, 2.5);
+    expect(s2.m2).toBeFalsy(); // Sin disparo espurio mientras se mantiene pulsado
+    let res2 = ej.ejecutar(s2, { I1: false }, 0.05); // Al soltar
     expect(res2.Q2).toBe(true);
 
     // Caso 3: Presión de 5 segundos -> Parpadeo de emergencia 0.5 Hz (1s ON / 1s OFF)

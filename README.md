@@ -59,3 +59,13 @@ El repositorio está 100% preparado para Netlify mediante `netlify.toml`:
 - **Publish Directory**: `dist`
 
 Al vincular este repositorio en el panel de Netlify (`Import an existing project from GitHub -> JorgeTrip/TP-PLC-LOGO-2026`), el sitio se compila y publica automáticamente.
+
+---
+
+## 🧠 Base de Conocimientos (NotebookLM)
+
+Este repositorio está integrado al cuaderno oficial **Tecnologías para la automatización** de NotebookLM:
+- **Alias:** `tpa` / `tecnologias_automatizacion`
+- **ID:** `531c7300-67a1-4422-a91c-b90f6193aa62`
+- **Documentación de uso:** Consultar [base_conocimiento_notebooklm.md](file:///docs/base_conocimiento_notebooklm.md) y [.notebooklm.json](file:///.notebooklm.json).
+
