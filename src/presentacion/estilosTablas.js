@@ -115,7 +115,7 @@ export const estilosTablasCss = `
 }
 .tabla-software .col-soft-tipo-th,
 .tabla-software .col-soft-tipo {
-  width: 110px;
+  width: 155px;
   font-size: 11px;
   white-space: nowrap;
   overflow: hidden;
