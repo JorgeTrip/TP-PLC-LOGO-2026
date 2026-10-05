@@ -118,6 +118,8 @@ export const estilosTablasCss = `
   width: 110px;
   font-size: 11px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tabla-software .col-soft-func {
   font-size: 12px;

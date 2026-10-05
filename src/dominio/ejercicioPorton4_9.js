@@ -15,14 +15,14 @@ export const ejercicioPorton4_9 = {
     ['Q2', 'Contactor de motor - Sentido Cerrar', 'Digital / Relé', 'Salida energizada (portón en descenso)']
   ],
   soft: [
-    ['M0', 'Marca de reposo (M1 en LOGO!)', 'Portón detenido cerrado (inicializado por M8)'],
-    ['M1', 'Marca de estado (Reposo cerrado)', 'Estado inicial fijado por M8 en primer scan'],
-    ['M2', 'Marca de estado (Abriendo)', 'Comanda motor de apertura Q1'],
-    ['M3', 'Marca de estado (Detenido abierto)', 'Pausa o tope superior alcanzado'],
-    ['M4', 'Marca de estado (Cerrando)', 'Comanda motor de cierre Q2'],
-    ['M5', 'Marca de pulso de flanco', 'Disparo monostable de un ciclo para pulsador I1'],
-    ['M6', 'Marca de memoria de flanco', 'Registro del estado previo de I1'],
-    ['M8', 'Marca de arranque LOGO!', 'Activa en 1er scan para inicializar etapa M1']
+    ['M0', 'Marca estado', 'Reposo cerrado (referencia Grafcet / M1 LOGO!)'],
+    ['M1', 'Marca estado', 'Reposo cerrado (fijado por M8 en 1er scan)'],
+    ['M2', 'Marca estado', 'Portón abriendo (comanda motor Q1)'],
+    ['M3', 'Marca estado', 'Pausa en carrera o tope superior alcanzado'],
+    ['M4', 'Marca estado', 'Portón cerrando (comanda motor Q2)'],
+    ['M5', 'Marca flanco', 'Pulso monoestable de 1 ciclo al pulsar I1'],
+    ['M6', 'Marca memoria', 'Registro de estado previo de I1'],
+    ['M8', 'Marca arranque', 'Activa en 1er scan para inicializar M1']
   ],
   eq: [
     'M5 = I1 · NOT(M6) ; M6 = I1',
