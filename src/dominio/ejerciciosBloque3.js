@@ -3,6 +3,7 @@
  * Cumple normas IEC 61131-3 y cátedra UTN FRBA. Capa de dominio puro.
  */
 import { detectarFlancoAscendente } from './tiposPlc.js';
+import { ejercicioPorton4_9 } from './ejercicioPorton4_9.js';
 
 export const ejerciciosBloque3 = [
   {
@@ -139,60 +140,5 @@ export const ejerciciosBloque3 = [
       return res;
     }
   },
-  {
-    n: '4.9',
-    t: 'Automatización de Portón Levadizo',
-    q: 'Controlar un portón con un único pulsador (I1): El ciclo debe ser: Abrir - Parar - Cerrar - Parar. Utilizar finales de carrera (I2 e I3, ambos N/C) para detener el motor en los extremos.',
-    io: [
-      ['I1', 'Pulsador de comando paso a paso', 'NA', 'Se presiona el pulsador'],
-      ['I2', 'Fin de carrera superior (tope abierto)', 'NC', 'Portón fuera de tope (abre a 0 en tope alto)'],
-      ['I3', 'Fin de carrera inferior (tope cerrado)', 'NC', 'Portón fuera de tope (abre a 0 en tope bajo)'],
-      ['Q1', 'Contactor de motor - Sentido Abrir', 'Digital / Relé', 'Salida energizada (portón en ascenso)'],
-      ['Q2', 'Contactor de motor - Sentido Cerrar', 'Digital / Relé', 'Salida energizada (portón en descenso)']
-    ],
-    soft: [
-      ['M0', 'Marca de estado', 'Estado 0: Portón detenido cerrado'],
-      ['M1', 'Marca de estado', 'Estado 1: Portón abriendo (subida Q1)'],
-      ['M2', 'Marca de estado', 'Estado 2: Portón detenido abierto / pausa'],
-      ['M3', 'Marca de estado', 'Estado 3: Portón cerrando (bajada Q2)']
-    ],
-    eq: [
-      'Paso = Flanco_Ascendente(I1)',
-      'Tope_Abierto = NOT(I2) ; Tope_Cerrado = NOT(I3)',
-      'Transición_M0_a_M1 = M0 · Paso',
-      'Transición_M1_a_M2 = M1 · (Paso + Tope_Abierto)',
-      'Transición_M2_a_M3 = M2 · Paso',
-      'Transición_M3_a_M0 = M3 · (Paso + Tope_Cerrado)',
-      'Q1 = M1 · NOT(Q2)',
-      'Q2 = M3 · NOT(Q1)'
-    ],
-    sol: 'Autómata secuencial cíclico de cuatro estados resuelto mediante marcas de memoria interbloqueadas. El ciclo operativo sigue la secuencia M0 (parado cerrado) -> M1 (abriendo) -> M2 (parado intermedio/abierto) -> M3 (cerrando) -> M0. Cada flanco de subida de I1 avanza una etapa y apaga la previa. Los finales de carrera físicos NC conmutan a 0 al ser pisados por el mecanismo; su lectura negada fuerza el paso inmediato al estado de detención correspondiente (Tope superior I2 detiene M1 pasando a M2; tope inferior I3 detiene M3 pasando a M0). Ambas salidas de potencia disponen de contactos cruzados de enclavamiento impidiendo colisiones eléctricas.',
-    e: '¿Qué es una máquina de 4 estados Grafcet? Es una estructura secuencial cíclica donde el sistema recorre ordenadamente 4 fases: Estado 0 (Parado-Cerrado), Estado 1 (Abriendo Q1), Estado 2 (Parado-Abierto) y Estado 3 (Cerrando Q2). Cada pulsación de I1 avanza al estado inmediato siguiente y resetea taxativamente el anterior. Los finales de carrera N/C conmutan a 0 al ser pisados; su lectura invertida (/I2 o /I3) fuerza el paso al estado de parada correspondiente.',
-    i: [['I1', 'Pulsador portón', 'p'], ['I2', 'Fin ABIERTO', 's', 1], ['I3', 'Fin CERRADO', 's', 1, 1]],
-    o: ['Q1', 'Q2'],
-    r: [
-      { c: 'R1: Transición M0 -> M1 (Comienzo de apertura al pulsar I1)', s: ['M0', '[↑ I1]'], o: 'S M1' },
-      { c: 'R2: Transición M1 -> M2 (Detención por tope abierto /I2 o pulsación)', p: [['M1', '[↑ I1]'], ['M1', '/I2']], o: 'S M2' },
-      { c: 'R3: Transición M2 -> M3 (Comienzo de cierre al pulsar I1)', s: ['M2', '[↑ I1]'], o: 'S M3' },
-      { c: 'R4: Transición M3 -> M0 (Detención por tope cerrado /I3 o pulsación)', p: [['M3', '[↑ I1]'], ['M3', '/I3']], o: 'S M0' },
-      { c: 'R5: Motor de subida Q1 activo en M1 con interbloqueo eléctrico /Q2', s: ['M1', '/Q2'], o: 'Q1' },
-      { c: 'R6: Motor de bajada Q2 activo en M3 con interbloqueo eléctrico /Q1', s: ['M3', '/Q1'], o: 'Q2' }
-    ],
-    ejecutar: (S, I) => {
-      let estado = S.s !== undefined ? S.s : 0;
-      if (detectarFlancoAscendente(S, 'btn', I.I1)) estado = (estado + 1) % 4;
-      if (estado === 1 && !I.I2) estado = 2;
-      if (estado === 3 && !I.I3) estado = 0;
-      S.s = estado;
-      S.info = ['Parado (cerrado)', 'ABRIENDO PORTÓN (Q1)', 'Parado (abierto)', 'CERRANDO PORTÓN (Q2)'][estado];
-      return {
-        Q1: estado === 1,
-        Q2: estado === 3,
-        M0: estado === 0,
-        M1: estado === 1,
-        M2: estado === 2,
-        M3: estado === 3
-      };
-    }
-  }
+  ejercicioPorton4_9
 ];

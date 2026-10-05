@@ -89,10 +89,20 @@ describe('Simulación Lógica PLC: Ejercicios 4.7 a 4.11', () => {
     res = ej.ejecutar(estado, { I1: true, I2: true, I3: true }, 0.05);
     ej.ejecutar(estado, { I1: false, I2: true, I3: true }, 0.05);
     expect(res.Q2).toBe(true);
+    expect(res.M4).toBe(true);
+
+    // 4º Pulso durante el cierre: Debe detenerse en M1 sin disparar carrera a M2
+    res = ej.ejecutar(estado, { I1: true, I2: true, I3: true }, 0.05);
+    ej.ejecutar(estado, { I1: false, I2: true, I3: true }, 0.05);
+    expect(res.Q1).toBe(false);
+    expect(res.Q2).toBe(false);
+    expect(res.M1).toBe(true);
+    expect(res.M2).toBe(false);
 
     // Llega a fin de carrera cerrado (I3 se acciona = 0)
     res = ej.ejecutar(estado, { I1: false, I2: true, I3: false }, 0.05);
     expect(res.Q2).toBe(false);
+    expect(res.M1).toBe(true);
   });
 
   it('4.10: Control de Nivel de Tanque con Bombas en Cascada y Parada PE', () => {
