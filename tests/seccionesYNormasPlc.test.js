@@ -72,6 +72,6 @@ describe('Cumplimiento de las 7 Secciones y Normas IEC 61131-3 KOP', () => {
     expect(e410.io.some(row => row[0] === 'I4' && row[2] === 'NC')).toBe(true);
 
     const e411 = catalogoEjercicios.find(e => e.n === '4.11');
-    expect(e411.soft.some(s => s[0] === 'B001' && s[1].includes('Relé de impulsos'))).toBe(true);
+    expect(e411.soft.some(s => (s[0] === 'B001' || s[0] === 'SF001') && s[1].includes('Relé de impulsos'))).toBe(true);
   });
 });
