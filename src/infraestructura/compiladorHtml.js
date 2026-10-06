@@ -5,20 +5,46 @@
 import fs from 'fs';
 import path from 'path';
 import { estilosCss } from '../presentacion/estilosGlobales.js';
+import { estilosModalChangelogCss } from '../presentacion/estilosModalChangelog.js';
 import { generarEncabezadoHtml } from './plantillaHtml.js';
+import { generarModalChangelogHtml, generarScriptModalChangelog } from './generadorModalChangelog.js';
 import { generarScriptCliente } from './generadorScriptCliente.js';
 import { generarCodigoMaquetasCliente } from './generadorCodigoMaquetas.js';
 import { generarCatalogoCliente } from './generadorCatalogoCliente.js';
 import { generarScriptSimulacion } from './generadorScriptSimulacion.js';
 
+function obtenerDatosChangelog() {
+  try {
+    const rutaChangelog = path.resolve('changelog.json');
+    if (fs.existsSync(rutaChangelog)) {
+      return JSON.parse(fs.readFileSync(rutaChangelog, 'utf-8'));
+    }
+  } catch (err) {
+    console.warn('⚠️ No se pudo leer changelog.json, usando listado vacío:', err.message);
+  }
+  return [];
+}
+
 export function compilarDocumentoHtml() {
-  const encabezado = generarEncabezadoHtml(estilosCss);
+  const changelogData = obtenerDatosChangelog();
+  const estilosCompletos = `${estilosCss}\n${estilosModalChangelogCss}`;
+  const encabezado = generarEncabezadoHtml(estilosCompletos);
+  const modalChangelogHtml = generarModalChangelogHtml(changelogData);
   const scriptCliente = generarScriptCliente();
   const scriptMaquetas = generarCodigoMaquetasCliente();
   const scriptCatalogo = generarCatalogoCliente();
+  const scriptModalChangelog = generarScriptModalChangelog(changelogData);
   const scriptSimulacion = generarScriptSimulacion();
 
-  return [encabezado, scriptCliente, scriptMaquetas, scriptCatalogo, scriptSimulacion].join('\n');
+  return [
+    encabezado,
+    modalChangelogHtml,
+    scriptCliente,
+    scriptMaquetas,
+    scriptCatalogo,
+    scriptModalChangelog,
+    scriptSimulacion
+  ].join('\n');
 }
 
 export function compilarYGuardarHtml(rutasSalida) {

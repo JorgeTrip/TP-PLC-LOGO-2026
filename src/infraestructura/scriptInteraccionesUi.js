@@ -72,22 +72,24 @@ export function generarScriptInteraccionesUi() {
     };
   }
 
-  // Supresión activa de badges y widgets de Netlify
+  // Supresión activa de badges y widgets de Netlify (excluyendo la app y modal changelog)
   function suprimirBadgeNetlify() {
     const selectores = [
       '[data-netlify-badge]', '.netlify-badge', '#netlify-badge',
       'iframe#netlify-badge', 'iframe[src*="netlify"]', 'netlify-drawer-root',
-      '#netlify-drawer', '[class*="netlify"]', 'a[href*="netlify.com"]'
+      '#netlify-drawer'
     ];
     selectores.forEach(sel => {
       document.querySelectorAll(sel).forEach(el => {
+        if (el.closest('#modal-changelog, #sidebar-principal, main')) return;
         const contenedor = el.closest('div[style*="fixed"], div[style*="absolute"]') || el;
         contenedor.remove();
       });
     });
-    document.querySelectorAll('body *').forEach(nodo => {
-      if ((nodo.textContent || '').includes('Powered by Netlify') && nodo.children.length <= 1) {
-        const caja = nodo.closest('div[style*="fixed"], a, div') || nodo;
+    // Solo detectar widgets flotantes inyectados como hijos directos del body
+    document.querySelectorAll('body > div[style*="fixed"], body > div[style*="absolute"]').forEach(caja => {
+      if (caja.id === 'modal-changelog' || caja.id === 'sidebar-overlay') return;
+      if ((caja.textContent || '').includes('Powered by Netlify') && !caja.querySelector('#modal-changelog')) {
         caja.style.setProperty('display', 'none', 'important');
         caja.remove();
       }

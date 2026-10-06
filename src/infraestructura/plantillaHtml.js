@@ -63,6 +63,15 @@ ${estilosCss}
       <nav class="sidebar-nav">
 ${enlacesSidebar}
       </nav>
+      <div class="sidebar-footer">
+        <button id="btn-abrir-changelog" class="btn-sidebar-changelog" type="button" aria-haspopup="dialog" aria-controls="modal-changelog" title="Ver Historial de Cambios CI/CD">
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="icono-changelog">🚀</span>
+            <span class="texto-changelog">Historial de Cambios</span>
+          </span>
+          <span class="badge-version-sidebar">CI/CD</span>
+        </button>
+      </div>
     </aside>
     <main class="contenido-principal">
 ${seccionEnunciado}

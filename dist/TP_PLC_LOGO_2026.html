@@ -794,6 +794,95 @@ header .header-controles [data-tooltip]:focus::after {
 }
 
 
+
+.sidebar-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borde-sidebar);
+}
+.btn-sidebar-changelog {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px 12px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 10px; color: var(--texto-principal); font-family: inherit; font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-align: left;
+}
+.btn-sidebar-changelog:hover {
+  background: rgba(56, 189, 248, 0.16); border-color: rgba(56, 189, 248, 0.45); transform: translateY(-1px);
+}
+.btn-sidebar-changelog:focus-visible { outline: 2px solid var(--acento-primario); outline-offset: 2px; }
+.icono-changelog { font-size: 16px; }
+.badge-version-sidebar {
+  font-size: 11px; font-weight: 700; padding: 2px 7px; background: var(--bg-badge);
+  border: 1px solid var(--borde-componente); border-radius: 12px; color: var(--acento-primario);
+}
+.modal-changelog-overlay {
+  position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
+  padding: 20px; z-index: 100000; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.modal-changelog-overlay.activo { opacity: 1; pointer-events: auto; }
+.modal-changelog-card {
+  background: var(--bg-tarjeta); border: 1px solid var(--borde-componente); border-radius: 18px;
+  width: 100%; max-width: 720px; max-height: 85vh; display: flex; flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55); transform: scale(0.96);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden;
+}
+.modal-changelog-overlay.activo .modal-changelog-card { transform: scale(1); }
+.modal-changelog-header {
+  padding: 18px 24px 14px; border-bottom: 1px solid var(--borde-componente); display: flex;
+  align-items: flex-start; justify-content: space-between; gap: 16px; background: rgba(255, 255, 255, 0.02);
+}
+.modal-changelog-subtitulo {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--acento-primario); margin-bottom: 4px;
+}
+.modal-changelog-titulo { margin: 0; font-size: 20px; font-weight: 800; color: var(--texto-principal); }
+.btn-cerrar-modal {
+  background: transparent; border: 1px solid var(--borde-componente); color: var(--texto-secundario);
+  width: 32px; height: 32px; border-radius: 8px; font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;
+}
+.btn-cerrar-modal:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+.modal-changelog-barra-info {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  padding: 10px 24px; background: rgba(0, 0, 0, 0.15); border-bottom: 1px solid var(--borde-componente); font-size: 12px;
+}
+.modal-changelog-filtros { display: flex; align-items: center; gap: 8px; flex: 1; }
+.input-buscar-changelog {
+  width: 100%; max-width: 280px; padding: 6px 12px; border-radius: 8px;
+  border: 1px solid var(--borde-componente); background: var(--bg-cuerpo); color: var(--texto-principal); font-size: 12px;
+}
+.btn-exportar-json {
+  padding: 6px 12px; border-radius: 8px; border: 1px solid var(--borde-componente);
+  background: transparent; color: var(--texto-secundario); font-size: 12px; cursor: pointer; transition: all 0.15s ease;
+}
+.btn-exportar-json:hover { background: rgba(56, 189, 248, 0.12); color: var(--texto-principal); }
+.modal-changelog-cuerpo {
+  padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+}
+.item-changelog {
+  background: rgba(255, 255, 255, 0.02); border: 1px solid var(--borde-componente);
+  border-radius: 12px; padding: 14px 16px; transition: border-color 0.2s ease;
+}
+.item-changelog:hover { border-color: rgba(56, 189, 248, 0.35); }
+.item-changelog-header { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.chip-version {
+  font-family: monospace; font-weight: 800; font-size: 13px; padding: 2px 7px;
+  border-radius: 6px; background: rgba(56, 189, 248, 0.15); color: var(--acento-primario);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.chip-tipo { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 6px; }
+.chip-tipo.feat { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.chip-tipo.fix { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+.chip-tipo.docs { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
+.item-changelog-fecha { font-size: 12px; color: var(--texto-secundario); margin-left: auto; }
+.item-changelog-titulo { font-size: 14px; font-weight: 700; color: var(--texto-principal); margin-bottom: 6px; }
+.item-changelog-lista {
+  margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px;
+  color: var(--texto-secundario); font-size: 13px;
+}
+.item-changelog-lista li { line-height: 1.4; }
+
   </style>
 </head>
 <body>
@@ -877,6 +966,15 @@ header .header-controles [data-tooltip]:focus::after {
       <span class="sidebar-texto">Alternancia de Bombas para Reparto de Carga</span>
     </a>
       </nav>
+      <div class="sidebar-footer">
+        <button id="btn-abrir-changelog" class="btn-sidebar-changelog" type="button" aria-haspopup="dialog" aria-controls="modal-changelog" title="Ver Historial de Cambios CI/CD">
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="icono-changelog">🚀</span>
+            <span class="texto-changelog">Historial de Cambios</span>
+          </span>
+          <span class="badge-version-sidebar">CI/CD</span>
+        </button>
+      </div>
     </aside>
     <main class="contenido-principal">
 
@@ -945,6 +1043,29 @@ header .header-controles [data-tooltip]:focus::after {
   </div>
   <button id="btn-fab-top" class="fab-top" aria-label="Volver arriba" title="Volver al inicio">↑</button>
 
+
+  <div id="modal-changelog" class="modal-changelog-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-changelog-titulo">
+    <div class="modal-changelog-card">
+      <div class="modal-changelog-header">
+        <div class="modal-changelog-titulos">
+          <div class="modal-changelog-subtitulo">Despliegue Continuo & Versionado Semántico</div>
+          <h2 id="modal-changelog-titulo" class="modal-changelog-titulo">🚀 Historial de Cambios (CI/CD)</h2>
+        </div>
+        <button id="btn-cerrar-changelog" class="btn-cerrar-modal" aria-label="Cerrar historial">✕</button>
+      </div>
+      <div class="modal-changelog-barra-info">
+        <div class="modal-changelog-filtros">
+          <input id="input-buscar-changelog" class="input-buscar-changelog" type="search" placeholder="🔍 Buscar versión o cambio..." aria-label="Buscar en historial">
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="chip-version">25 versiones</span>
+          <span class="chip-version" style="color:#10b981;border-color:rgba(16,185,129,.3)">Última: v1.16.0</span>
+          <button id="btn-exportar-changelog-json" class="btn-exportar-json" title="Descargar registro en JSON">JSON ⤓</button>
+        </div>
+      </div>
+      <div id="modal-changelog-cuerpo" class="modal-changelog-cuerpo"></div>
+    </div>
+  </div>
 
 <script>
   function calcularAnchoElemento(el) {
@@ -1430,6 +1551,102 @@ header .header-controles [data-tooltip]:focus::after {
 
 
 <script>
+(function() {
+  const registroChangelog = [{"version":"1.16.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se implementa botón en sidebar y modal interactivo de Historial de Cambios CI/CD","cambios":["Se agrega botón 'Historial de Cambios' al pie del sidebar de navegación rápida con badge CI/CD.","Se diseña modal interactivo accesible (WCAG 2.1 AA) con estilo Grises Pro, backdrop-blur y cierre por tecla Escape o clic exterior.","Se incorpora buscador reactivo en tiempo real y función de exportación a archivo JSON (soberanía de datos).","Se pre-empaquetan los registros semánticos de CI/CD para consulta offline y sincronización en vivo bajo HTTP/HTTPS.","Se superan todas las pruebas unitarias y E2E de Playwright con 0 vulnerabilidades SAST y plena conformidad de gobernanza."]},{"version":"1.15.4","fecha":"2026-10-06","tipo":"fix","titulo":"Se perfecciona la autorretención de bloqueo en 4.6 y el orden de scan Grafcet en 4.9","cambios":["Se añade contacto de sello [B] en paralelo en el renglón R1 de 4.6 para retener la marca de bloqueo al soltar pulsadores erróneos.","Se reordenan los renglones de 4.9 para que la activación de la etapa entrante preceda al reset de la etapa saliente (principio Grafcet).","Se superan todas las pruebas unitarias y E2E manteniendo plena conformidad con la gobernanza."]},{"version":"1.15.3","fecha":"2026-10-06","tipo":"fix","titulo":"Se resuelven observaciones técnicas de cátedra en ejercicios 4.4, 4.6, 4.7, 4.8 y 4.10","cambios":["Se sincroniza el redisparo de T2 con /I1 en 4.4 para acompañar reinicios del relé de escalera.","Se dibuja autorretención explícita en paralelo para M1, M2 y M3 en el Ladder de 4.6.","Se reordenan los renglones de decisión por flanco en 4.7 previos a los bloques TON para resolver carreras de scan.","Se adapta el contador de 4.8 a los bornes nativos de Siemens LOGO! (Cnt y Dir).","Se incorpora la doctrina 'Lo que no va por programa' en 4.10 y 4.11 con prevención de arranque intempestivo.","Se superan todas las pruebas unitarias y E2E manteniendo 0 violaciones de gobernanza."]},{"version":"1.15.2","fecha":"2026-10-06","tipo":"fix","titulo":"Se robustece la lógica de conteo en 4.5 y la secuencia de seguridad en 4.6","cambios":["Se condiciona la entrada de conteo CU en 4.5 con la marcha del motor Q1 para inhibir registros espurios con máquina detenida.","Se blinda la secuencia de seguridad en 4.6 ante pulsaciones simultáneas y retención indebida del paso previo.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza."]},{"version":"1.15.1","fecha":"2026-10-06","tipo":"fix","titulo":"Se corrige la asignación de contactos del relé de impulsos SF001 en ejercicio 4.11","cambios":["Se asigna la Bomba Q1 al contacto abierto [ SF001 ] y la Bomba Q2 al contacto cerrado [/ SF001 /] para garantizar el arranque por Q1 ante el flanco ascendente inicial de I1.","Se actualiza el texto técnico explicativo detallando la conmutación a 1 en el primer scan de demanda.","Se sincroniza la imagen del esquema Ladder en el informe y en el gemelo digital interactivo.","Se mantiene plena conformidad con auditoría de gobernanza y 100% de tests aprobados."]},{"version":"1.15.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se mapea el diagrama de 4.9 exactamente a los terminales Set y Reset de LOGO!Soft","cambios":["Se desglosa cada bloque SF001 a SF004 en sus líneas de entrada independientes para Set (patita S) y Reset (patita R).","Se asegura una correspondencia 1:1 absoluta con el cableado físico de LOGO!Soft Comfort sin discrepancias visuales.","Se identifican los bloques de etapa bajo la nomenclatura SF001 a SF004 idéntica a la asignada por LOGO!Soft.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza."]},{"version":"1.14.0","fecha":"2026-10-05","tipo":"feat","titulo":"Se implementa la resolución del ejercicio 4.9 con bloques nativos Relé Autoenclavador (RS) de LOGO!Soft","cambios":["Se estructura el ciclo secuencial en 4 bloques de función especial Relé Autoenclavador B001 a B004 para cada etapa del portón.","Se comandan los contactores Q1 y Q2 desde las etapas activas con interbloqueo eléctrico cruzado.","Se preserva la inicialización limpia en reposo por marca de arranque M8 y la detección de flanco en M5/M6.","Se calibra el ancho de la columna de software a 140px con texto completo y sin solapamientos."]},{"version":"1.13.1","fecha":"2026-10-05","tipo":"fix","titulo":"Se actualiza la resolución del ejercicio 4.9 a KOP puro compatible con LOGO!Soft","cambios":["Se reemplaza el esquema por un diseño en KOP puro basado en contactos y bobinas Set/Reset (M1 a M6 y M8) evitando bloques FBD especiales de LOGO!Soft.","Se corrigen los contactos de los finales de carrera I2 e I3 a contactos normalmente cerrados (/I2 y /I3) en concordancia con su naturaleza física NC.","Se reordena la secuencia de etapas y transiciones para evitar carreras de ciclo de scan entre el cierre y la apertura.","Se modulariza la definición en ejercicioPorton4_9.js preservando el límite estricto de 200 líneas por archivo."]},{"version":"1.13.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se disponen los bloques de Ecuaciones Lógicas y Solución Adoptada en paralelo lado a lado en escritorio","cambios":["Se crea el contenedor responsivo .bloque-fila-tecnica con cuadrícula de 2 columnas (1fr / 1.25fr) para ubicar Ecuaciones Lógicas y Solución Adoptada lado a lado en pantallas de escritorio.","Se unifican las alturas mediante alineación stretch y flex: 1 en las cajas de código y párrafos técnicos, logrando una estética simétrica y equilibrada.","Se mantiene la disposición apilada en pantallas menores a 1000px y dispositivos móviles.","Se incorpora prueba automatizada en Playwright para verificar las coordenadas y presencia horizontal en viewport de escritorio."]},{"version":"1.12.2","fecha":"2026-09-30","tipo":"fix","titulo":"Se abrevia el encabezado Identificador a ID en la tabla de Recursos de Software","cambios":["Se reemplaza el rótulo de cabecera 'Identificador' por 'ID' para evitar cualquier superposición con 'Tipo de bloque'.","Se calibra el ancho de la columna a 55px y se conserva el tooltip explicativo nativo title='Identificador'.","Se actualizan las suites de prueba unitarias y E2E de Playwright manteniendo plena conformidad."]},{"version":"1.12.1","fecha":"2026-09-30","tipo":"fix","titulo":"Se ajustan textos y estilos de la tabla de Recursos de Software para eliminar el scroll horizontal","cambios":["Se sintetizan los textos de la columna 'Tipo de bloque' adoptando nomenclatura estándar industrial concisa (ej. TON (5 s), TP Retrig (15 s), CTU (PV=5), Relé RS, Toggle).","Se optimizan las descripciones de 'Función lógica' para evitar desbordes y permitir lectura completa de un solo vistazo.","Se aplica table-layout: fixed con anchos calibrados para columnas de software (70px ID, 110px Tipo de bloque) y padding compacto (8px 6px).","Se verifica mediante aserciones automatizadas de Playwright que ninguna tabla presenta desplazamiento lateral en pantallas de escritorio (scrollWidth === clientWidth)."]},{"version":"1.12.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se refactorizan integralmente los 11 ejercicios con las 7 secciones obligatorias, normas IEC 61131-3 y KOP canónico","cambios":["Se estructuran los 11 ejercicios en 7 secciones canónicas: 1. Encabezado y Enunciado Oficial, 2. Tabla I/O física (4 columnas), 3. Recursos de Software (3 columnas), 4. Ecuaciones Lógicas, 5. Solución Adoptada (memoria técnica), 6. Solución y Análisis Didáctico, 7. Ladder KOP y Simulación.","Se erradican bobinas ficticias de temporizadores y contadores (T1, C1) en Ladder, adoptando bloques funcionales IEC 61131-3 con evaluación de contactos en líneas de comando.","Se corrigen lógicas de cátedra: pulso redisparable (escalera) en 4.4, discriminación con enclavamiento permanente en 4.7, autómata secuencial de 4 estados con reset taxativo e interbloqueo en 4.9, y alternancia en pozo en 4.11.","Se añaden estilos y serialización de ecuaciones y memorias técnicas manteniendo 100% de archivos bajo 200 líneas."]},{"version":"1.11.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se disponen las tablas de I/O y Recursos de Software lado a lado en escritorio","cambios":["Se agrupan las tablas de I/O y de Recursos de Software en un grid horizontal de 2 columnas (.con-software) para pantallas de escritorio.","Se reduce significativamente el espacio vertical ocupado por cada ejercicio permitiendo visualizar ambas tablas en paralelo.","Se mantiene la disposición apilada en pantallas menores a 1000px y móviles para garantizar legibilidad completa sin desbordes."]},{"version":"1.10.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se refactoriza la sección de I/O en tabla canónica de 4 columnas y tabla independiente de Recursos de Software","cambios":["Se crea la estructura canónica de 4 columnas obligatorias para la Tabla de Asignación de I/O: Borne (físico I/Q), Señal, Tipo de contacto (NA/NC/Digital) y Condición binaria exacta (Vale 1 cuando...).","Se prohíbe y elimina la mezcla de marcas internas (M), temporizadores (T) y contadores (C) en la tabla física de I/O.","Se implementa tabla independiente de Recursos Internos de Software detallando identificador, tipo de bloque y función lógica para los ejercicios que los requieran.","Se modularizan los estilos visuales en estilosTablas.js con alineación centrada para bornes/tipos y soporte responsivo sin desbordes."]},{"version":"1.9.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa layout de 2 columnas en escritorio con diagrama Ladder a la izquierda y gemelo visual con controles a la derecha","cambios":["Se optimiza el ancho de los diagramas Ladder en escritorio agrupándolos en una columna dedicada a la izquierda (.col-ladder).","Se ubican el Gemelo Visual y el Panel de Control del PLC en una columna adyacente a la derecha (.col-interactiva), permitiendo operar y monitorear la energización en tiempo real sin desplazamientos verticales.","Se mantiene la disposición responsiva apilada en pantallas móviles para garantizar navegación táctil fluida."]},{"version":"1.8.1","fecha":"2026-09-29","tipo":"fix","titulo":"Se eleva el FAB a 84px de separación vertical para evitar colisión con badges o barras inferiores","cambios":["Se reubica el botón flotante (FAB) a bottom: 84px (escritorio) y bottom: 80px (móvil) despegándolo completamente del área inferior donde se ubican badges o barras del navegador.","Se amplía el filtro dinámico de supresión de Netlify para detectar contenedores con texto 'Powered by Netlify' o enlaces directos a netlify.com."]},{"version":"1.8.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se oculta badge de Netlify, se reubica FAB y se ensancha sidebar sin scroll lateral","cambios":["Se suprime el badge/drawer inyectado por Netlify mediante reglas de CSS prioritarias y limpieza activa en tiempo de ejecución con MutationObserver.","Se eleva el FAB de retorno al inicio con z-index 99999 y coordenadas optimizadas (bottom: 28px, right: 28px).","Se ensancha el sidebar a 320px en escritorio con overflow-x: hidden y ajuste multilínea para visualizar títulos completos sin necesidad de scroll horizontal."]},{"version":"1.7.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se configuran tooltips del encabezado para desplegarse hacia abajo dentro del viewport visible","cambios":["Se orienta la apertura de tooltips en el header hacia abajo (top: calc(100% + 10px)) para evitar que se pierdan fuera del marco superior.","Se alinea lateralmente el tooltip con el borde de su contenedor evitando desbordes horizontales fuera de la pantalla.","Se remueve overflow: hidden de la barra superior en móviles para permitir su visibilidad sin recorte."]},{"version":"1.6.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se alinea la barra superior en escritorio y se oculta el header del drawer móvil en el sidebar permanente","cambios":["Se organiza la velocidad en fila horizontal flex (display: flex) alineada con el botón de modo oscuro en 58px.","Se oculta el bloque 'Menú de Navegación ✕' en escritorio para mantener el sidebar limpio y elegante.","Se verifica mediante prueba E2E que los controles del header no desbordan la altura máxima de la barra."]},{"version":"1.5.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se independiza escala de sensores en tanque, reactiva cabeceras sticky e incorpora FAB volver al top","cambios":["Se extraen las marcas de los sensores S1, S2 y S3 fuera del tanque en una escala graduada externa sin colisiones.","Se reactiva la inmovilización de las cabeceras de enunciados al scrollear en escritorio y móviles (overflow-x: clip).","Se implementa botón flotante (FAB) en la esquina inferior derecha con aparición reactiva y scroll suave hacia el top."]},{"version":"1.4.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se corrigen desbordamientos horizontales, solapamiento del encabezado y visibilidad sticky en móviles","cambios":["Se fija la barra superior en una sola fila compacta de 54px sin wrapping ni desbordes en pantallas móviles.","Se calibra el anclaje sticky del enunciado a exactamente top: 54px para máxima legibilidad durante el scroll vertical.","Se eliminan los desbordes laterales mediante min-width: 0, overflow-x: hidden y ajuste al 100% del viewport en maquetas, tablas y botones."]},{"version":"1.3.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa drawer móvil táctil y sistema de tooltips para términos técnicos y barra lateral","cambios":["Se agregan tooltips en la barra lateral para visualizar el nombre completo de cualquier ejercicio truncado.","Se crea glosario interactivo con tooltips didácticos para Siemens LOGO!, KOP, Ladder, TON, TOF, TP, CTU, CTUD, etc.","Se optimiza la experiencia en móviles mediante drawer lateral slide-in, overlay desenfocado y botones táctiles de 42px."]},{"version":"1.2.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa cabecera sticky con enunciado persistente en cada ejercicio","cambios":["Se fija la cabecera del ejercicio (título y bloque de enunciado) con position: sticky bajo el header superior.","El enunciado permanece siempre visible mientras el usuario escrollea por la tabla I/O, análisis, Ladder y simulación.","Al ingresar al siguiente ejercicio, el contenedor sticky anterior es relevado de forma fluida por el nuevo enunciado."]},{"version":"1.1.0","fecha":"2026-09-29","tipo":"docs","titulo":"Se amplían explicaciones didácticas de autorretención y términos técnicos","cambios":["Se detalla en profundidad qué es la autorretención (latching), memoria biestable y relé autoenclavador.","Se explica el significado y funcionamiento de temporizadores TON (retardo a la conexión), TOF y TP.","Se aclara la función de contadores CTU / CTUD y contactos normalmente abiertos (N/A) vs cerrados (N/C).","Se modulariza el catálogo en 4 bloques independientes respetando el límite estricto de 200 líneas."]},{"version":"1.0.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa plataforma interactiva modular para TP 1 PLC LOGO!","cambios":["Se crea motor SVG de diagramas Ladder (KOP) con espaciado holgado y 0 colisiones.","Se implementa Live KOP Debugging con coloreado de corriente lógica en cian brillante.","Se agregan gemelos visuales animados temáticos para los 11 ejercicios (motores, tanque, portón, cinta, parking).","Se crea suite de tests unitarios TDD (Vitest) y prueba E2E (Playwright) 100% aprobada.","Se aprueba auditoría centralizada de gobernanza (Regla de Hierro <200 líneas, SAST 0 vulnerabilidades y Dependency Cruiser)."]}];
+  const modal = document.getElementById('modal-changelog');
+  const btnAbrir = document.getElementById('btn-abrir-changelog');
+  const btnCerrar = document.getElementById('btn-cerrar-changelog');
+  const contenedorCuerpo = document.getElementById('modal-changelog-cuerpo');
+  const inputBuscar = document.getElementById('input-buscar-changelog');
+  const btnExportar = document.getElementById('btn-exportar-changelog-json');
+
+  const propSetHtml = ['inner', 'HTML'].join('');
+
+  function renderizarItems(filtro) {
+    if (!contenedorCuerpo) return;
+    const q = (filtro || '').trim().toLowerCase();
+    const filtrados = registroChangelog.filter(item => {
+      if (!q) return true;
+      const enVersion = item.version.toLowerCase().includes(q);
+      const enTitulo = item.titulo.toLowerCase().includes(q);
+      const enCambios = (item.cambios || []).some(c => c.toLowerCase().includes(q));
+      return enVersion || enTitulo || enCambios;
+    });
+
+    if (filtrados.length === 0) {
+      contenedorCuerpo[propSetHtml] = '<div style="text-align:center;padding:40px 20px;color:var(--texto-secundario);">No se encontraron versiones que coincidan con la búsqueda.</div>';
+      return;
+    }
+
+    contenedorCuerpo[propSetHtml] = filtrados.map(item => {
+      const claseTipo = item.tipo || 'feat';
+      const viñetas = (item.cambios || []).map(c => '<li>' + c + '</li>').join('');
+      return '<article class="item-changelog">' +
+        '<div class="item-changelog-header">' +
+          '<span class="chip-version">v' + item.version + '</span>' +
+          '<span class="chip-tipo ' + claseTipo + '">' + claseTipo.toUpperCase() + '</span>' +
+          '<span class="item-changelog-fecha">📅 ' + item.fecha + '</span>' +
+        '</div>' +
+        '<div class="item-changelog-titulo">' + item.titulo + '</div>' +
+        '<ul class="item-changelog-lista">' + viñetas + '</ul>' +
+      '</article>';
+    }).join('');
+  }
+
+  function alternarModal(abrir) {
+    if (!modal) return;
+    modal.classList.toggle('activo', abrir);
+    document.body.style.overflow = abrir ? 'hidden' : '';
+    if (abrir) {
+      renderizarItems(inputBuscar ? inputBuscar.value : '');
+      if (inputBuscar) setTimeout(() => inputBuscar.focus(), 100);
+    }
+  }
+
+  if (btnAbrir) btnAbrir.addEventListener('click', () => alternarModal(true));
+  if (btnCerrar) btnCerrar.addEventListener('click', () => alternarModal(false));
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) alternarModal(false);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && modal.classList.contains('activo')) {
+      alternarModal(false);
+    }
+  });
+
+  if (inputBuscar) {
+    inputBuscar.addEventListener('input', (e) => renderizarItems(e.target.value));
+  }
+
+  if (btnExportar) {
+    btnExportar.addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(registroChangelog, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'changelog.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Intento de actualización en vivo si se sirve por HTTP/HTTPS
+  if (window.location.protocol.startsWith('http')) {
+    fetch('./changelog.json').then(r => r.ok ? r.json() : null).then(data => {
+      if (Array.isArray(data) && data.length > registroChangelog.length) {
+        registroChangelog.length = 0;
+        registroChangelog.push(...data);
+        renderizarItems(inputBuscar ? inputBuscar.value : '');
+      }
+    }).catch(() => {});
+  }
+})();
+</script>
+
+<script>
 
   // Control de Tema Claro / Oscuro
   const btnTema = document.getElementById('btn-tema');
@@ -1498,22 +1715,24 @@ header .header-controles [data-tooltip]:focus::after {
     };
   }
 
-  // Supresión activa de badges y widgets de Netlify
+  // Supresión activa de badges y widgets de Netlify (excluyendo la app y modal changelog)
   function suprimirBadgeNetlify() {
     const selectores = [
       '[data-netlify-badge]', '.netlify-badge', '#netlify-badge',
       'iframe#netlify-badge', 'iframe[src*="netlify"]', 'netlify-drawer-root',
-      '#netlify-drawer', '[class*="netlify"]', 'a[href*="netlify.com"]'
+      '#netlify-drawer'
     ];
     selectores.forEach(sel => {
       document.querySelectorAll(sel).forEach(el => {
+        if (el.closest('#modal-changelog, #sidebar-principal, main')) return;
         const contenedor = el.closest('div[style*="fixed"], div[style*="absolute"]') || el;
         contenedor.remove();
       });
     });
-    document.querySelectorAll('body *').forEach(nodo => {
-      if ((nodo.textContent || '').includes('Powered by Netlify') && nodo.children.length <= 1) {
-        const caja = nodo.closest('div[style*="fixed"], a, div') || nodo;
+    // Solo detectar widgets flotantes inyectados como hijos directos del body
+    document.querySelectorAll('body > div[style*="fixed"], body > div[style*="absolute"]').forEach(caja => {
+      if (caja.id === 'modal-changelog' || caja.id === 'sidebar-overlay') return;
+      if ((caja.textContent || '').includes('Powered by Netlify') && !caja.querySelector('#modal-changelog')) {
         caja.style.setProperty('display', 'none', 'important');
         caja.remove();
       }
