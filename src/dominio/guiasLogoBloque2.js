@@ -41,7 +41,7 @@ export const guiasLogoBloque2 = {
       'Renglón 9 (Reset B005): Paralelo de contacto NC /I3 y NA B001 conectado al pin R de B005.',
       'Renglón 10 y 11 (Comando motores con interbloqueo cruzado): Contacto NA B003 en serie con NC /Q2 hacia ( Q1 ); contacto NA B005 en serie con NC /Q1 hacia ( Q2 ).'
     ],
-    comportamiento: 'Orden secuencial Grafcet: Set de etapa siguiente antes de Reset de saliente.'
+    comportamiento: 'Orden secuencial Grafcet: Set de etapa entrante antes de Reset de saliente. Nota de representación KOP: Para prevenir carreras de escaneo, las órdenes de activación y desactivación de una misma etapa se procesan en renglones intercalados; en LOGO!Soft Comfort se disponen los cuatro bloques biestables B002 a B005 y se conectan directamente los conductores a sus respectivos terminales físicos S (patita superior) y R (patita media).'
   },
   '4.10': {
     bloques: 'Ninguno. Lógica de autorretención con prioridad de corte unificada.',
