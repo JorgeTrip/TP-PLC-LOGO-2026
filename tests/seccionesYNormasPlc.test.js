@@ -65,8 +65,8 @@ describe('Cumplimiento de las 7 Secciones y Normas IEC 61131-3 KOP', () => {
     expect(e47.soft.some(s => s[0] === 'M2')).toBe(true);
 
     const e49 = catalogoEjercicios.find(e => e.n === '4.9');
-    expect(e49.soft.some(s => s[0] === 'B001' && (s[1].includes('Relé RS') || s[1].includes('Relé autoenclavador')))).toBe(true);
-    expect(e49.soft.some(s => s[0] === 'B004')).toBe(true);
+    expect(e49.soft.some(s => (s[0] === 'SF001' || s[0] === 'B001') && (s[1].includes('Relé RS') || s[1].includes('Relé autoenclavador')))).toBe(true);
+    expect(e49.soft.some(s => s[0] === 'SF004' || s[0] === 'B004')).toBe(true);
 
     const e410 = catalogoEjercicios.find(e => e.n === '4.10');
     expect(e410.io.some(row => row[0] === 'I4' && row[2] === 'NC')).toBe(true);
