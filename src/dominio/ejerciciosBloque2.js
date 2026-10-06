@@ -110,19 +110,19 @@ export const ejerciciosBloque2 = [
       ['B', 'Relé RS', 'Bandera de bloqueo ante error']
     ],
     eq: [
-      'Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2)) + (I2 · I1) + (I1 · I3) + (I2 · I3)',
+      'Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2)) + (I2 · I1) + (I1 · I3) + (I2 · I3) + B',
       'Reset(B) = I4',
       'Set(M1) = I2 · NOT(B) ; Reset(M1) = I4 + B',
       'Set(M2) = I1 · NOT(I2) · M1 · NOT(B) ; Reset(M2) = I4 + B',
       'Set(M3) = I3 · NOT(I1) · M2 · NOT(B) ; Reset(M3) = I4 + B',
       'Q1 = M3'
     ],
-    sol: 'Máquina secuencial escalonada con lazo de interbloqueo preventivo y protección contra accionamientos simultáneos. Cada etapa condiciona estrictamente el acceso a la siguiente: M1 memoriza la pulsación inicial de I2; M2 exige M1 activo con I2 ya liberado al pulsar I1; y M3 exige M2 activo con I1 liberado al pulsar I3, habilitando la salida segura Q1. Cualquier accionamiento irregular (presionar I1 sin M1, I3 sin M2 o pulsar múltiples entradas simultáneamente) activa la marca de bloqueo B, la cual abre sus contactos normalmente cerrados e inmoviliza el control. El pulsador I4 restablece las marcas de etapa y extingue el bloqueo.',
-    e: '¿Cómo prevenir la vulneración de una secuencia de seguridad ante entradas simultáneas? En el renglón 1 se evalúa el bloqueo preventivo B: si se detectan dos o más pulsadores activos a la vez o un avance sin la etapa previa, B se enclava de inmediato. Asimismo, cada paso exige que el pulsador anterior ya esté liberado (/I2 en paso 2 y /I1 en paso 3). El contacto /B corta todas las líneas de avance. Solo el rearme voluntario mediante I4 resetea el bloqueo y limpia las memorias para reiniciar desde el Paso 1.',
+    sol: 'Máquina secuencial escalonada con lazo de interbloqueo preventivo y protección contra accionamientos simultáneos. Cada etapa condiciona estrictamente el acceso a la siguiente: M1 memoriza la pulsación inicial de I2; M2 exige M1 activo con I2 ya liberado al pulsar I1; y M3 exige M2 activo con I1 liberado al pulsar I3, habilitando la salida segura Q1. Cualquier accionamiento irregular activa la marca de bloqueo B, la cual se autorretiene mediante contacto de sello en R1 y abre sus contactos normalmente cerrados e inmoviliza el control. El pulsador I4 restablece las marcas de etapa y extingue el bloqueo.',
+    e: '¿Cómo prevenir la vulneración de una secuencia de seguridad ante entradas simultáneas? En el renglón 1 se evalúa el bloqueo preventivo B: si se detectan dos o más pulsadores activos a la vez o un avance sin la etapa previa, B se enclava de inmediato con autorretención propia. Asimismo, cada paso exige que el pulsador anterior ya esté liberado (/I2 en paso 2 y /I1 en paso 3). El contacto /B corta todas las líneas de avance. Solo el rearme voluntario mediante I4 resetea el bloqueo y limpia las memorias para reiniciar desde el Paso 1.',
     i: [['I1', 'Paso 2 (I1)', 'p'], ['I2', 'Paso 1 (I2)', 'p'], ['I3', 'Paso 3 (I3)', 'p'], ['I4', 'Reset secuencia', 'p']],
     o: ['Q1'],
     r: [
-      { c: 'R1: Detección y memoria de bloqueo B ante error de secuencia o pulsación simultánea', p: [['I1', '/M1'], ['I3', '/M2'], ['I1', 'I2'], ['I1', 'I3'], ['I2', 'I3']], s: ['/I4'], o: 'B' },
+      { c: 'R1: Detección y autorretención de bloqueo B ante error de secuencia o pulsación simultánea', p: [['I1', '/M1'], ['I3', '/M2'], ['I1', 'I2'], ['I1', 'I3'], ['I2', 'I3'], ['B']], s: ['/I4'], o: 'B' },
       { c: 'R2: Paso 1: habilitación y autorretención de marca M1 al pulsar I2', p: [['I2'], ['M1']], s: ['/I4', '/B'], o: 'M1' },
       { c: 'R3: Paso 2: habilitación y autorretención de M2 por I1 con I2 liberado y M1 activo', p: [['I1', '/I2', 'M1'], ['M2']], s: ['/I4', '/B'], o: 'M2' },
       { c: 'R4: Paso 3: habilitación y autorretención de M3 por I3 con I1 liberado y M2 activo', p: [['I3', '/I1', 'M2'], ['M3']], s: ['/I4', '/B'], o: 'M3' },
