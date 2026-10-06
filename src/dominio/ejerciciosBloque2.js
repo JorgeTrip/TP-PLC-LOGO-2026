@@ -26,8 +26,8 @@ export const ejerciciosBloque2 = [
       'Set(B003) = B002 ; Reset(B003) = I1',
       'Q2 = B003'
     ],
-    sol: 'Automatismo basado en un temporizador de pulso redisparable parametrizado en 15 segundos para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. Para garantizar que el pre-aviso acompañe el redisparo, el temporizador TON T2 (10 s) se alimenta mediante Q1 · NOT(I1): cualquier pulsación sobre I1 hace caer la entrada de T2 a 0, reseteando su acumulador y sincronizando el conteo de 10 segundos con el nuevo ciclo. Cumplido este plazo, T2 enclava M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 lo apaga.',
-    e: '¿Qué es un temporizador de pulso redisparable y cómo se resetea el pre-aviso? Cada pulsación en I1 reinicia el tiempo total de 15 s de T1. Para evitar que el pre-aviso quede vencido al repulsar en medio del ciclo, la entrada del bloque TON T2 (10 s) se condiciona con Q1 AND NOT(I1): al pulsar I1 la señal cae a cero forzando el reseteo del temporizador. Al vencer los 10 s, T2 enclava la marca RS M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 resetea M1.',
+    sol: 'Automatismo basado en el bloque nativo Interruptor de alumbrado para escalera B001 (15 s) para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. Para garantizar que el pre-aviso acompañe el redisparo, el temporizador TON B002 (10 s) se alimenta mediante B001 · NOT(I1): cualquier pulsación sobre I1 hace caer la entrada de B002 a 0, reseteando su acumulador y sincronizando el conteo de 10 segundos con el nuevo ciclo. Cumplido este plazo, B002 excita la entrada Set del relé autoenclavador B003 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 lo resetea.',
+    e: '¿Cómo opera el sincronismo de pre-aviso con bloques nativos de LOGO!? Cada pulsación en I1 reinicia el tiempo total de 15 s del bloque de escalera B001. Para evitar que el pre-aviso quede vencido al repulsar en medio del ciclo, la entrada del bloque TON B002 (10 s) se condiciona con B001 AND NOT(I1): al pulsar I1 la señal cae a cero forzando el reseteo del temporizador. Al vencer los 10 s, B002 enclava el relé autoenclavador B003 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 resetea B003.',
     i: [['I1', 'Pulsador pasillo', 'p']],
     o: ['Q1', 'Q2'],
     r: [
@@ -45,7 +45,7 @@ export const ejerciciosBloque2 = [
         S.activo = true;
         S.m1 = false;
       } else if (S.activo) {
-        if (I.I1) S.t = 0; // Mientras I1 se mantiene pulsado durante el ciclo, T2 se mantiene en 0
+        if (I.I1) S.t = 0; // Mientras I1 se mantiene pulsado durante el ciclo, B002 se mantiene en 0
         else S.t = (S.t || 0) + dt;
         if (S.t >= 10) S.m1 = true;
         if (S.t >= 15) S.activo = false;
