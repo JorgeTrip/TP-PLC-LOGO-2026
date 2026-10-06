@@ -3,6 +3,7 @@
  * Capa de infraestructura.
  */
 import { catalogoEjercicios } from '../dominio/catalogoEjercicios.js';
+import { obtenerGuiaLogo } from '../dominio/guiasLogo.js';
 
 export function generarCatalogoCliente() {
   const serializados = catalogoEjercicios.map(ej => {
@@ -15,6 +16,7 @@ export function generarCatalogoCliente() {
     eq: ${JSON.stringify(ej.eq || [])},
     sol: ${JSON.stringify(ej.sol || '')},
     e: ${JSON.stringify(ej.e)},
+    guiaLogo: ${JSON.stringify(obtenerGuiaLogo(ej.n))},
     i: ${JSON.stringify(ej.i)},
     o: ${JSON.stringify(ej.o)},
     r: ${JSON.stringify(ej.r)},

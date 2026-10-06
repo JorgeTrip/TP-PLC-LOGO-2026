@@ -883,6 +883,172 @@ header .header-controles [data-tooltip]:focus::after {
 }
 .item-changelog-lista li { line-height: 1.4; }
 
+
+/* Contenedor principal de la Guía LOGO!Soft */
+.bloque-guia-logo {
+  background: var(--bg-card, #242426);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="light"] .bloque-guia-logo {
+  background: #ffffff;
+  border-color: rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.bloque-guia-logo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #38bdf8, #0284c7);
+}
+
+.encabezado-guia-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.icono-guia-logo {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.titulo-guia-logo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+[data-theme="light"] .titulo-guia-logo {
+  color: #0284c7;
+}
+
+.badge-logo-software {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+[data-theme="light"] .badge-logo-software {
+  background: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+  border-color: rgba(2, 132, 199, 0.25);
+}
+
+/* Fila de metadatos de bloques y elementos */
+.guia-logo-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.guia-logo-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+  color: var(--texto-secundario, #94a3b8);
+}
+
+.guia-logo-etiqueta {
+  font-weight: 600;
+  color: var(--texto-principal, #e2e8f0);
+}
+
+.guia-logo-valor {
+  color: var(--texto-principal, #e2e8f0);
+}
+
+/* Estructura KOP por renglones */
+.guia-logo-estructura-wrap {
+  margin-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+}
+
+[data-theme="light"] .guia-logo-estructura-wrap {
+  border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+.guia-logo-estructura-titulo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+[data-theme="light"] .guia-logo-estructura-titulo {
+  color: #0284c7;
+}
+
+.guia-logo-lista {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guia-logo-lista-item {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--texto-principal, #f1f5f9);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid rgba(56, 189, 248, 0.6);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+[data-theme="light"] .guia-logo-lista-item {
+  background: #f8fafc;
+  color: #1e293b;
+  border-left-color: #0284c7;
+}
+
+/* Notas de cátedra y comportamiento */
+.guia-logo-nota {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  font-size: 0.86rem;
+  color: #fbbf24;
+  line-height: 1.5;
+}
+
+[data-theme="light"] .guia-logo-nota {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.2);
+  color: #b45309;
+}
+
   </style>
 </head>
 <body>
@@ -1058,8 +1224,8 @@ header .header-controles [data-tooltip]:focus::after {
           <input id="input-buscar-changelog" class="input-buscar-changelog" type="search" placeholder="🔍 Buscar versión o cambio..." aria-label="Buscar en historial">
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
-          <span class="chip-version">25 versiones</span>
-          <span class="chip-version" style="color:#10b981;border-color:rgba(16,185,129,.3)">Última: v1.16.0</span>
+          <span class="chip-version">26 versiones</span>
+          <span class="chip-version" style="color:#10b981;border-color:rgba(16,185,129,.3)">Última: v1.17.0</span>
           <button id="btn-exportar-changelog-json" class="btn-exportar-json" title="Descargar registro en JSON">JSON ⤓</button>
         </div>
       </div>
@@ -1068,6 +1234,7 @@ header .header-controles [data-tooltip]:focus::after {
   </div>
 
 <script>
+
   function calcularAnchoElemento(el) {
     if (el.startsWith('[')) return Math.max(96, (el.length - 2) * 8 + 32);
     return 84;
@@ -1116,30 +1283,89 @@ header .header-controles [data-tooltip]:focus::after {
     }
     return { resRamas, paraleloConduce, resSerie, bobina: flSerie };
   }
+  function parsearSalidaLadder(o) {
+    if (!o) return { esBloque: false, nom: '', pin: '', grupo: null };
+    const s = String(o).trim();
+    if (s.startsWith('[') && s.endsWith(']')) {
+      const int = s.slice(1, -1).trim();
+      if (int.startsWith('Trg ')) {
+        const nom = int.slice(4).trim();
+        return { esBloque: true, pin: 'Trg', nom: nom, grupo: nom };
+      }
+      const matchTipo = int.match(/^(TON|TP|TP_Retrig|CTU|Async)\s+(.+)$/);
+      if (matchTipo) {
+        const pin = matchTipo[1] === 'Async' ? 'En' : (matchTipo[1] === 'CTU' ? 'Cnt' : 'Trg');
+        return { esBloque: true, pin, nom: int, grupo: matchTipo[2].split('|')[0].trim() };
+      }
+      return { esBloque: true, pin: 'IN', nom: int, grupo: int };
+    }
+    const matchSR = s.match(/^(S|R)\s+(.+)$/);
+    if (matchSR) {
+      return { esBloque: true, pin: matchSR[1], nom: matchSR[2], grupo: matchSR[2] };
+    }
+    const matchParentesis = s.match(/^(.+?)\s*\((S|R|Cnt|Dir|Trg)\)$/);
+    if (matchParentesis) {
+      return { esBloque: true, pin: matchParentesis[2], nom: matchParentesis[1], grupo: matchParentesis[1] };
+    }
+    return { esBloque: false, nom: s, pin: '', grupo: null };
+  }
+
+
   function renderLadderSvg(peldaños, est) {
-    const ALTO_RAMA = 68, MARGEN_BOBINA = 60;
+    const ALTO_RAMA = 68, MARGEN_BOBINA = 50, ANCHO_BLOQUE = 140;
     const rungs = peldaños.map(p => {
       const ramas = p.p && p.p.length > 0 ? p.p : [[]];
       const pw = Math.max(...ramas.map(r => r.reduce((a, e) => a + calcularAnchoElemento(e), 0)), 0);
       const sw = (p.s || []).reduce((a, e) => a + calcularAnchoElemento(e), 0);
-      const extraW = p.o && p.o.startsWith('[') ? Math.max(120, (p.o.length - 2) * 8 + 30) : 70;
-      return { p, ramas, pw, sw, req: 40 + pw + sw + MARGEN_BOBINA + extraW };
+      const salidaInfo = parsearSalidaLadder(p.o);
+      const extraW = salidaInfo.esBloque ? (ANCHO_BLOQUE + 20) : 70;
+      return { p, ramas, pw, sw, salidaInfo, req: 40 + pw + sw + MARGEN_BOBINA + extraW };
     });
-    const anchoTot = Math.max(...rungs.map(r => r.req), 460);
-    const RX = anchoTot - 20;
-    let Y = 28, svg = '';
-    rungs.forEach(({ p, ramas, pw }) => {
-      const y0 = Y + 54, n = ramas.length, cx = anchoTot - 64;
-      const ev = evaluarPeldaño(p, est);
-      if (p.c) svg += '<text class="c" x="48" y="' + (Y + 16) + '">' + p.c + '</text>';
-      ramas.forEach((b, i) => {
-        const yF = y0 + i * ALTO_RAMA;
-        const rEv = ev.resRamas[i] || [];
+
+    const anchoTot = Math.max(...rungs.map(r => r.req), 470);
+    const RX = anchoTot - 20, BX = RX - ANCHO_BLOQUE - 12;
+    let Y = 28;
+
+    const datosRungs = rungs.map(r => {
+      const y0 = Y + 54, n = r.ramas.length, ev = evaluarPeldaño(r.p, est);
+      const info = { ...r, y0, n, ev, yTop: Y };
+      Y += n * ALTO_RAMA + 42;
+      return info;
+    });
+
+    // Detectar grupos contiguos de bloques que comparten nombre
+    const grupos = [];
+    let i = 0;
+    while (i < datosRungs.length) {
+      const rActual = datosRungs[i];
+      if (rActual.salidaInfo.esBloque && rActual.salidaInfo.grupo) {
+        let j = i + 1;
+        while (j < datosRungs.length && datosRungs[j].salidaInfo.esBloque && datosRungs[j].salidaInfo.grupo === rActual.salidaInfo.grupo) {
+          j++;
+        }
+        if (j - i > 1) {
+          grupos.push({ inicio: i, fin: j - 1, nom: rActual.salidaInfo.grupo });
+          i = j;
+          continue;
+        }
+      }
+      i++;
+    }
+
+    let svg = '';
+
+    // Renderizar lógica de contactos de cada peldaño
+    datosRungs.forEach((r, idx) => {
+      const { p, ramas, pw, y0, n, ev, salidaInfo } = r;
+      if (p.c) svg += '<text class="c" x="48" y="' + (r.yTop + 16) + '">' + p.c + '</text>';
+
+      ramas.forEach((b, ri) => {
+        const yF = y0 + ri * ALTO_RAMA, rEv = ev.resRamas[ri] || [];
         const rAct = rEv.some(e => e.en);
         svg += '<path class="k' + (rAct ? ' energized' : '') + '" d="M40 ' + yF + 'H' + (40 + pw) + '"/>';
         let x = 40;
-        b.forEach((e, idx) => {
-          const item = rEv[idx], en = item ? item.en : false, cl = en ? ' energized' : '';
+        b.forEach((e, bi) => {
+          const item = rEv[bi], en = item ? item.en : false, cl = en ? ' energized' : '';
           const w = calcularAnchoElemento(e);
           if (e.startsWith('[')) {
             svg += '<rect class="b' + cl + '" x="' + (x + 6) + '" y="' + (yF - 18) + '" width="' + (w - 12) + '" height="36" rx="6"/><text class="t' + cl + '" x="' + (x + w/2) + '" y="' + (yF + 5) + '">' + e.slice(1, -1) + '</text>';
@@ -1151,16 +1377,20 @@ header .header-controles [data-tooltip]:focus::after {
           x += w;
         });
       });
+
       if (n > 1) {
         const clV = ev.paraleloConduce ? ' energized' : '';
         svg += '<path class="k' + clV + '" d="M40 ' + y0 + 'V' + (y0 + (n - 1) * ALTO_RAMA) + 'M' + (40 + pw) + ' ' + y0 + 'V' + (y0 + (n - 1) * ALTO_RAMA) + '"/>';
       }
+
       let xS = 40 + pw;
       const clS = ev.paraleloConduce ? ' energized' : '';
-      const xFinSerie = p.o && p.o.startsWith('[') ? (cx - Math.max(120, (p.o.length - 2) * 8 + 30)/2) : (cx - 24);
-      svg += '<path class="k' + clS + '" d="M' + xS + ' ' + y0 + 'H' + xFinSerie + '"/>';
-      (p.s || []).forEach((e, idx) => {
-        const item = ev.resSerie[idx], en = item ? item.en : false, cl = en ? ' energized' : '';
+      const cx = anchoTot - 64;
+      const xLlegada = salidaInfo.esBloque ? BX : (cx - 24);
+      svg += '<path class="k' + clS + '" d="M' + xS + ' ' + y0 + 'H' + xLlegada + '"/>';
+
+      (p.s || []).forEach((e, si) => {
+        const item = ev.resSerie[si], en = item ? item.en : false, cl = en ? ' energized' : '';
         const w = calcularAnchoElemento(e);
         if (e.startsWith('[')) {
           svg += '<rect class="b' + cl + '" x="' + (xS + 6) + '" y="' + (y0 - 18) + '" width="' + (w - 12) + '" height="36" rx="6"/><text class="t' + cl + '" x="' + (xS + w/2) + '" y="' + (y0 + 5) + '">' + e.slice(1, -1) + '</text>';
@@ -1171,17 +1401,53 @@ header .header-controles [data-tooltip]:focus::after {
         }
         xS += w;
       });
-      const clB = ev.bobina ? ' energized' : '';
-      if (p.o && p.o.startsWith('[')) {
-        const nomB = p.o.slice(1, -1);
-        const bw = Math.max(120, nomB.length * 8 + 24);
-        const bx = Math.min(cx - bw/2, RX - bw - 12);
-        svg += '<rect class="b' + clB + '" x="' + bx + '" y="' + (y0 - 20) + '" width="' + bw + '" height="40" rx="6"/><text class="t' + clB + '" x="' + (bx + bw/2) + '" y="' + (y0 + 5) + '">' + nomB + '</text><path class="k' + clB + '" d="M' + (bx + bw) + ' ' + y0 + 'H' + RX + '"/>';
-      } else {
-        svg += '<path class="k' + clB + '" d="M' + (cx + 24) + ' ' + y0 + 'H' + RX + 'M' + (cx - 10) + ' ' + (y0 - 15) + 'a15 15 0 0 0 0 30M' + (cx + 10) + ' ' + (y0 - 15) + 'a15 15 0 0 1 0 30"/><text class="t' + clB + '" x="' + cx + '" y="' + (y0 - 18) + '">' + p.o + '</text>';
+
+      // Si es bobina estándar
+      if (!salidaInfo.esBloque) {
+        const clB = ev.bobina ? ' energized' : '';
+        svg += '<path class="k' + clB + '" d="M' + (cx - 10) + ' ' + (y0 - 15) + 'a15 15 0 0 0 0 30M' + (cx + 10) + ' ' + (y0 - 15) + 'a15 15 0 0 1 0 30"/>';
+        svg += '<text class="t' + clB + '" x="' + cx + '" y="' + (y0 - 18) + '">' + salidaInfo.nom + '</text>';
+        svg += '<path class="k' + clB + '" d="M' + (cx + 24) + ' ' + y0 + 'H' + RX + '"/>';
       }
-      Y += n * ALTO_RAMA + 42;
     });
+
+    // Renderizar cajas de bloques especiales
+    const peldañosEnGrupo = new Set();
+    grupos.forEach(g => {
+      for (let k = g.inicio; k <= g.fin; k++) peldañosEnGrupo.add(k);
+      const rIni = datosRungs[g.inicio], rFin = datosRungs[g.fin];
+      const yBox = rIni.y0 - 22, hBox = (rFin.y0 - rIni.y0) + 44, yMid = (rIni.y0 + rFin.y0) / 2;
+      const algunAct = datosRungs.slice(g.inicio, g.fin + 1).some(d => d.ev.bobina);
+      const clBox = algunAct ? ' energized' : '';
+
+      svg += '<rect class="b' + clBox + '" x="' + BX + '" y="' + yBox + '" width="' + ANCHO_BLOQUE + '" height="' + hBox + '" rx="8"/>';
+      svg += '<text class="t' + clBox + '" x="' + (BX + ANCHO_BLOQUE/2) + '" y="' + (yMid - 2) + '" font-weight="bold">' + g.nom + '</text>';
+      svg += '<text class="t" x="' + (BX + ANCHO_BLOQUE/2) + '" y="' + (yMid + 14) + '" font-size="10" fill="#94a3b8">LOGO! Bloque</text>';
+
+      // Rótulos de pines de entrada a la izquierda
+      for (let k = g.inicio; k <= g.fin; k++) {
+        const rk = datosRungs[k];
+        const clPin = rk.ev.bobina ? ' energized' : '';
+        svg += '<rect x="' + BX + '" y="' + (rk.y0 - 8) + '" width="24" height="16" fill="rgba(56,189,248,0.15)" rx="3"/>';
+        svg += '<text class="t' + clPin + '" x="' + (BX + 12) + '" y="' + (rk.y0 + 4) + '" font-size="11" font-weight="bold">' + rk.salidaInfo.pin + '</text>';
+      }
+      // Conexión derecha al riel
+      svg += '<path class="k' + clBox + '" d="M' + (BX + ANCHO_BLOQUE) + ' ' + yMid + 'H' + RX + '"/>';
+    });
+
+    // Bloques especiales individuales (no agrupados contiguamente)
+    datosRungs.forEach((r, idx) => {
+      if (r.salidaInfo.esBloque && !peldañosEnGrupo.has(idx)) {
+        const clB = r.ev.bobina ? ' energized' : '';
+        const yBox = r.y0 - 20, hBox = 40;
+        svg += '<rect class="b' + clB + '" x="' + BX + '" y="' + yBox + '" width="' + ANCHO_BLOQUE + '" height="' + hBox + '" rx="8"/>';
+        svg += '<rect x="' + BX + '" y="' + (r.y0 - 8) + '" width="24" height="16" fill="rgba(56,189,248,0.15)" rx="3"/>';
+        svg += '<text class="t' + clB + '" x="' + (BX + 12) + '" y="' + (r.y0 + 4) + '" font-size="11" font-weight="bold">' + r.salidaInfo.pin + '</text>';
+        svg += '<text class="t' + clB + '" x="' + (BX + ANCHO_BLOQUE/2 + 8) + '" y="' + (r.y0 + 4) + '" font-size="11">' + r.salidaInfo.nom + '</text>';
+        svg += '<path class="k' + clB + '" d="M' + (BX + ANCHO_BLOQUE) + ' ' + r.y0 + 'H' + RX + '"/>';
+      }
+    });
+
     return '<svg viewBox="0 0 ' + (anchoTot + 20) + ' ' + (Y + 20) + '" width="' + (anchoTot + 20) + '" height="' + (Y + 20) + '" class="ladder-svg"><path class="k rail" d="M40 20V' + (Y + 10) + 'M' + RX + ' 20V' + (Y + 10) + '"/>' + svg + '</svg>';
   }
 </script>
@@ -1258,6 +1524,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["Q1 = (I1 + Q1) · NOT(I2)"],
     sol: "Mando de marcha y parada resuelto mediante memoria por autorretención con parada dominante. El contacto auxiliar abierto de Q1 se conecta en paralelo con el pulsador de arranque I1. La orden de parada I2 (físicamente NA) se programa como contacto normalmente cerrado en serie en la línea principal, interrumpiendo el flujo eléctrico hacia la bobina aún ante la presencia simultánea de la señal de marcha.",
     e: "¿Qué es la autorretención (o memoria por enclavamiento)? Es un circuito donde un contacto auxiliar normal abierto de la propia bobina de salida (Q1) se conecta en paralelo con el pulsador de marcha (I1). Al presionar I1, la bobina Q1 se energiza y cierra su contacto auxiliar. Al soltar I1, la corriente lógica sigue fluyendo a través de este contacto de Q1, manteniendo el motor en marcha (\"sellado\" o \"retenido\"). La parada I2 (N/A) se coloca en serie como contacto invertido (/I2): al pulsarlo se abre y corta la alimentación. Posee parada dominante: si se presionan ambos botones al mismo tiempo, el corte en serie prevalece y la salida es 0.",
+    guiaLogo: {"bloques":"Ninguno. Se resuelve con lógica combinacional pura.","elementos":"Contacto normalmente abierto (NA), Contacto normalmente cerrado (NC), Bobina estándar ( ).","estructura":["Renglón 1: Conectar en paralelo el contacto NA I1 con el contacto de autorretención NA Q1. A la salida de ese paralelo, conectar en serie el contacto NC I2 y rematar en la bobina ( Q1 )."],"comportamiento":"Parada dominante; presionar simultáneamente I1 e I2 debe mantener la bobina apagada por corte en serie de I2."},
     i: [["I1","Marcha","p"],["I2","Parada","p"]],
     o: ["Q1"],
     r: [{"c":"R1: Autorretención con parada dominante","p":[["I1"],["Q1"]],"s":["/I2"],"o":"Q1"}],
@@ -1275,6 +1542,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["Set(RS_Q1) = I1","Reset(RS_Q1) = NOT(I2)","Q1 = RS_Q1"],
     sol: "Circuito biestable resuelto mediante un relé autoenclavador con prioridad al Reset. El pulsador de arranque I1 excita el terminal Set. Por criterios de seguridad funcional, el pulsador de parada I2 posee contacto físico NC y entrega señal continua en reposo; se programa un contacto negado en el renglón correspondiente para enviar nivel 1 al terminal Reset únicamente cuando la línea física se abre al accionarlo o por corte de cable.",
     e: "¿Qué es un relé autoenclavador (bloque Set-Reset)? Es una función de memoria biestable con entradas independientes: S (Set: activa la salida en 1 de forma memorizada) y R (Reset: apaga la salida a 0). El reset es dominante (R > S). ¿Por qué el botón de detención físico es Normal Cerrado (N/C)? Por normativa de seguridad industrial (fail-safe): si el cable se corta o desconecta, la señal cae a 0 y la máquina se detiene sola. En la programación Ladder KOP, se debe colocar un contacto invertido (/I2), ya que al pulsar la detención la entrada física pasa de 1 a 0, haciendo que /I2 se cierre y envíe el pulso de 1 lógico al borne Reset.",
+    guiaLogo: {"bloques":"Relé autoenclavador (B001, menú Otros).","pines":"Terminal superior S (Set), terminal inferior R (Reset).","estructura":["Renglón 1 (Línea Set): Contacto NA I1 conectado directamente al pin S del bloque B001.","Renglón 2 (Línea Reset): Contacto NC /I2 conectado al pin R del bloque B001. Al ser I2 un pulsador físico NC (entrega 1 continuo en reposo), el contacto programado invertido envía 1 al reset únicamente cuando la línea se abre al presionarlo o ante corte de cable.","Renglón 3 (Salida de potencia): Contacto NA B001 conectado a la bobina ( Q1 )."]},
     i: [["I1","Arranque","p"],["I2","Detención","p",1]],
     o: ["Q1"],
     r: [{"c":"R1: Excitación del terminal Set mediante pulsador NA","s":["I1"],"o":"S RS_Q1"},{"c":"R2: Excitación del terminal Reset por apertura de I2 (NC)","s":["/I2"],"o":"R RS_Q1"},{"c":"R3: Gobierno del contactor principal Q1 desde el bloque RS","s":["RS_Q1"],"o":"Q1"}],
@@ -1294,6 +1562,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["M1 = (I1 + M1) · NOT(I2)","T1_IN = M1","Q1 = M1 · T1","Q2 = M1 · NOT(T1)"],
     sol: "Control temporizado articulado mediante una marca interna M1 retenida por autorretención desde I1 y desenergizada por I2. M1 habilita en paralelo un bloque TON de 5 segundos y la señalización Q2 mediante un contacto cerrado del propio temporizador. Durante los primeros 5 segundos, Q2 permanece activa y Q1 inhibida. Vencido el tiempo, T1 conmuta: abre el paso hacia la lámpara Q2 y cierra la alimentación al contactor Q1.",
     e: "¿Cómo opera el temporizador TON (Timer On-Delay / Retardo a la conexión)? Es un bloque que retrasa el encendido. Cuando su entrada recibe señal 1, el reloj comienza a contar; transcurrido el tiempo prefijado (5 segundos), su salida pasa a 1. Si la entrada se corta antes, el conteo se reinicia a 0. ¿Cómo se logra el pre-aviso? La marca interna M1 memoriza la pulsación de I1. Durante los primeros 5 segundos, M1 está activa pero el temporizador aún no venció: la condición (M1 · /T1) energiza la lámpara de aviso Q2. Cumplidos los 5 segundos, la salida T1 conmuta: abre /T1 (apagando la lámpara Q2) y cierra T1 (poniendo en marcha el motor Q1). Pulsar I2 en cualquier instante borra M1 y detiene todo.",
+    guiaLogo: {"bloques":"Relé autoenclavador (B001, para memoria general) y Retardo a la conexión (B002, menú Temporizadores, parametrizado en T = 5 s).","estructura":["Renglón 1: Contacto NA I1 al pin S de B001. Contacto NA I2 al pin R de B001.","Renglón 2: Contacto NA B001 conectado al terminal de disparo Trg del bloque Retardo a la conexión B002.","Renglón 3 (Lámpara Q2): Contacto NA B001 en serie con contacto NC /B002 hacia la bobina ( Q2 ). Conduce durante los 5 segundos que dura el conteo.","Renglón 4 (Motor Q1): Contacto NA B001 en serie con contacto NA B002 hacia la bobina ( Q1 ). Energiza al conmutar el temporizador."]},
     i: [["I1","Arranque","p"],["I2","Parada","p"]],
     o: ["Q1","Q2"],
     r: [{"c":"R1: Memoria de orden de marcha general en marca M1","p":[["I1"],["M1"]],"s":["/I2"],"o":"M1"},{"c":"R2: Entrada IN del bloque temporizador TON T1 (5 s)","s":["M1"],"o":"[TON T1 | 5s]"},{"c":"R3: Puesta en marcha de Q1 tras conmutar el contacto T1","s":["M1","T1"],"o":"Q1"},{"c":"R4: Lámpara de aviso Q2 activa mientras T1 no haya vencido","s":["M1","/T1"],"o":"Q2"}],
@@ -1314,6 +1583,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["T1 = TP_Retrig(I1, 15 s)","Q1 = T1","T2_IN = Q1 · NOT(I1)  (TON, PT = 10 s)","Set(M1) = T2","Reset(M1) = I1","Q2 = M1"],
     sol: "Automatismo basado en un temporizador de pulso redisparable parametrizado en 15 segundos para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. Para garantizar que el pre-aviso acompañe el redisparo, el temporizador TON T2 (10 s) se alimenta mediante Q1 · NOT(I1): cualquier pulsación sobre I1 hace caer la entrada de T2 a 0, reseteando su acumulador y sincronizando el conteo de 10 segundos con el nuevo ciclo. Cumplido este plazo, T2 enclava M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 lo apaga.",
     e: "¿Qué es un temporizador de pulso redisparable y cómo se resetea el pre-aviso? Cada pulsación en I1 reinicia el tiempo total de 15 s de T1. Para evitar que el pre-aviso quede vencido al repulsar en medio del ciclo, la entrada del bloque TON T2 (10 s) se condiciona con Q1 AND NOT(I1): al pulsar I1 la señal cae a cero forzando el reseteo del temporizador. Al vencer los 10 s, T2 enclava la marca RS M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 resetea M1.",
+    guiaLogo: {"bloques":"Interruptor de alumbrado para escalera (B001, menú Temporizadores, T = 15 s), Retardo a la conexión (B002, T = 10 s) y Relé autoenclavador (B003, menú Otros).","estructura":["Renglón 1 (Luz de pasillo): Contacto NA I1 conectado al terminal Trg del bloque B001. Contacto NA B001 comanda la bobina ( Q1 ).","Renglón 2 (Sincronismo pre-aviso): Contacto NA B001 en serie con contacto NC /I1 conectado al pin Trg del bloque B002. La presencia de /I1 garantiza que cualquier repulsación durante el ciclo resetee a cero el acumulador del temporizador.","Renglón 3 (Enclavamiento testigo): Contacto NA B002 conectado al pin S de B003. Contacto NA I1 conectado al pin R de B003.","Renglón 4 (Testigo Q2): Contacto NA B003 comanda la bobina ( Q2 )."]},
     i: [["I1","Pulsador pasillo","p"]],
     o: ["Q1","Q2"],
     r: [{"c":"R1: Disparo de pulso redisparable T1 (15 s) por pulsación de I1","s":["I1"],"o":"[TP_Retrig T1 | 15s]"},{"c":"R2: Accionamiento directo de luminaria principal Q1","s":["T1"],"o":"Q1"},{"c":"R3: Habilitación y sincronismo de temporizador TON T2 (10 s) con Q1 y /I1","s":["Q1","/I1"],"o":"[TON T2 | 10s]"},{"c":"R4: Enclavamiento del testigo M1 al cumplirse T2","s":["T2"],"o":"S M1"},{"c":"R5: Rearme y apagado del testigo mediante pulsador I1","s":["I1"],"o":"R M1"},{"c":"R6: Comando de luz testigo Q2 desde marca memorizada M1","s":["M1"],"o":"Q2"}],
@@ -1343,6 +1613,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["C1_CU = Flanco_Ascendente(NOT(I2)) · Q1","C1_R = NOT(I3)","Q1 = (I1 + Q1) · NOT(C1)"],
     sol: "Proceso productivo gobernado por autorretención combinada con corte automático por límite de eventos. El pulsador I1 energiza el motor Q1 en serie con un contacto cerrado del contador C1. Para evitar registros espurios con la máquina detenida, la entrada de conteo CU se condiciona en serie con un contacto abierto de Q1: los pulsos generados por el captor de paso I2 (físicamente NC, evaluado negado) solo incrementan la cuenta durante la marcha efectiva del proceso. Al alcanzar 5 registros, la salida C1 conmuta a nivel alto, interrumpe la autorretención de Q1 y detiene el proceso. El sistema queda bloqueado frente a nuevas órdenes de arranque hasta que el operario acciona el pulsador de rearme I3 (NC).",
     e: "¿Por qué condicionar la entrada de conteo con Q1 y cómo interactúa con I2? Condicionar la entrada CU con un contacto abierto de marcha Q1 garantiza que solo se computen piezas cuando el motor está en movimiento, evitando descalibrar el lote por manipulaciones manuales o ruidos con la máquina parada. El captor I2 es normal cerrado por seguridad (1 en reposo) y abre a 0 al pasar una pieza; en Ladder se programa invertido /I2 en serie con Q1. Al alcanzar 5 pulsos (PV=5), el contacto /C1 abre la autorretención de Q1 y detiene el motor.",
+    guiaLogo: {"bloques":"Contador adelante/atrás (B001, menú Contadores, parámetros: On = 5, Off = 0).","estructura":["Renglón 1 (Conteo condicionado): Contacto NA Q1 en serie con contacto NC /I2 conectado al borne de conteo Cnt de B001. Al ser I2 un sensor NC, el paso de una pieza abre el contacto físico y genera el flanco de subida en /I2, computando solo cuando el proceso marcha. El borne Dir queda sin conectar (nivel 0 por defecto para suma).","Renglón 2 (Reset manual): Contacto NC /I3 conectado al terminal R del bloque B001.","Renglón 3 (Motor de proceso): Rama paralela de I1 y sello Q1, en serie con contacto NC /B001 hacia la bobina ( Q1 ). Al llegar a 5 piezas, B001 abre y desenergiza la marcha."]},
     i: [["I1","Arranque","p"],["I2","Sensor pulsos","p",1],["I3","Reset contador","p",1]],
     o: ["Q1"],
     r: [{"c":"R1: Registro de conteo CU condicionado a marcha Q1 y reset manual en bloque CTU C1 (PV=5)","s":["Q1","/I2"],"o":"[CTU C1 | PV=5 | R=/I3]"},{"c":"R2: Motor Q1 con autorretención y corte por contacto /C1","p":[["I1"],["Q1"]],"s":["/C1"],"o":"Q1"}],
@@ -1365,6 +1636,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2)) + (I2 · I1) + (I1 · I3) + (I2 · I3) + B","Reset(B) = I4","Set(M1) = I2 · NOT(B) ; Reset(M1) = I4 + B","Set(M2) = I1 · NOT(I2) · M1 · NOT(B) ; Reset(M2) = I4 + B","Set(M3) = I3 · NOT(I1) · M2 · NOT(B) ; Reset(M3) = I4 + B","Q1 = M3"],
     sol: "Máquina secuencial escalonada con lazo de interbloqueo preventivo y protección contra accionamientos simultáneos. Cada etapa condiciona estrictamente el acceso a la siguiente: M1 memoriza la pulsación inicial de I2; M2 exige M1 activo con I2 ya liberado al pulsar I1; y M3 exige M2 activo con I1 liberado al pulsar I3, habilitando la salida segura Q1. Cualquier accionamiento irregular activa la marca de bloqueo B, la cual se autorretiene mediante contacto de sello en R1 y abre sus contactos normalmente cerrados e inmoviliza el control. El pulsador I4 restablece las marcas de etapa y extingue el bloqueo.",
     e: "¿Cómo prevenir la vulneración de una secuencia de seguridad ante entradas simultáneas? En el renglón 1 se evalúa el bloqueo preventivo B: si se detectan dos o más pulsadores activos a la vez o un avance sin la etapa previa, B se enclava de inmediato con autorretención propia. Asimismo, cada paso exige que el pulsador anterior ya esté liberado (/I2 en paso 2 y /I1 en paso 3). El contacto /B corta todas las líneas de avance. Solo el rearme voluntario mediante I4 resetea el bloqueo y limpia las memorias para reiniciar desde el Paso 1.",
+    guiaLogo: {"bloques":"4 bloques Relé autoenclavador (B001 para Falla/Bloqueo, B002 para Paso 1, B003 para Paso 2, B004 para Paso 3).","estructura":["Renglón 1 (Set Bloqueo B001): Ramas en paralelo que detectan saltos o presiones simultáneas: [I1 · /B002], [I3 · /B003], [I1 · I2], [I1 · I3], [I2 · I3]. Conectan al pin S de B001. Pin R recibe el contacto NA I4.","Renglón 2 (Paso 1): Contacto NA I2 en serie con contacto NC /B001 conectado al pin S de B002. Pin R recibe el paralelo I4 o B001.","Renglón 3 (Paso 2): Contactos en serie I1, NC /I2 (pulsador previo liberado), NA B002 y NC /B001 conectados al pin S de B003. Pin R recibe I4 o B001.","Renglón 4 (Paso 3): Contactos en serie I3, NC /I1, NA B003 y NC /B001 conectados al pin S de B004. Pin R recibe I4 o B001.","Renglón 5 (Habilitación): Contacto NA B004 comanda la bobina ( Q1 )."]},
     i: [["I1","Paso 2 (I1)","p"],["I2","Paso 1 (I2)","p"],["I3","Paso 3 (I3)","p"],["I4","Reset secuencia","p"]],
     o: ["Q1"],
     r: [{"c":"R1: Detección y autorretención de bloqueo B ante error de secuencia o pulsación simultánea","p":[["I1","/M1"],["I3","/M2"],["I1","I2"],["I1","I3"],["I2","I3"],["B"]],"s":["/I4"],"o":"B"},{"c":"R2: Paso 1: habilitación y autorretención de marca M1 al pulsar I2","p":[["I2"],["M1"]],"s":["/I4","/B"],"o":"M1"},{"c":"R3: Paso 2: habilitación y autorretención de M2 por I1 con I2 liberado y M1 activo","p":[["I1","/I2","M1"],["M2"]],"s":["/I4","/B"],"o":"M2"},{"c":"R4: Paso 3: habilitación y autorretención de M3 por I3 con I1 liberado y M2 activo","p":[["I3","/I1","M2"],["M3"]],"s":["/I4","/B"],"o":"M3"},{"c":"R5: Salida de habilitación segura Q1 gobernada por etapa M3","s":["M3"],"o":"Q1"}],
@@ -1389,6 +1661,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["Set(M2) = Flanco_Descendente(I1) · T2 · NOT(T5)","M1 = TP(Flanco_Descendente(I1) · NOT(T2), 20 s)","T2_IN = I1 (TON, PT = 2 s) ; T5_IN = I1 (TON, PT = 5 s)","M3 = TP(Flanco_Ascendente(T5), 120 s) ; Reset(M2) = Flanco_Ascendente(T5)","M4 = M3 · Oscilador(1 s ON / 1 s OFF)","Q1 = M1 + M4 ; Q2 = (M2 · NOT(M3)) + M4"],
     sol: "Discriminación temporal inmune a carreras de escaneo. Para evitar que la desactivación de los temporizadores al soltar I1 borre el tiempo acumulado antes de evaluarlo, los renglones de decisión por flanco descendente [↓ I1] se ejecutan antes de los bloques TON en el ciclo de scan: R1 enclava la alarma en cabina M2 si T2 estaba activo sin alcanzar T5, y R2 dispara la luz general M1 (20 s) si no se alcanzó T2. Superados 5 s continuos, el flanco de T5 enclava la emergencia M3 (120 s), resetea M2 y activa el oscilador asíncrono M4 a 0.5 Hz modulando Q1 y Q2.",
     e: "¿Cómo resolver la carrera de escaneo al evaluar el tiempo de pulsación? En PLC, al soltar I1 (1 a 0), un TON se apaga de inmediato. Si las decisiones se ubican antes de los temporizadores en el orden del scan, el autómata evalúa [↓ I1] con el estado aún activo de T2 y T5. Así, soltar con 2 s <= t < 5 s enclava cabina M2 sin disparar la luz de 20 s. Al llegar a 5 s, el flanco de T5 activa la emergencia de 2 min M3 y el oscilador a 0.5 Hz.",
+    guiaLogo: {"bloques":"Retardo a la conexión B001 (2 s) y B002 (5 s). AND (flanco) B003 (menú Otros). Relé de barrido (Salida de impulsos) B004 (20 s) y B006 (120 s). Relé autoenclavador B005. Generador de impulsos asíncrono B007 (TH = 1 s, TL = 1 s).","estructura":["Renglón 1 y 2 (Medición de pulsación): Contacto NA I1 conectado en paralelo a los pines Trg de B001 y B002.","Renglón 3 (Detección de liberación): Contacto NC /I1 conectado a la entrada del bloque AND (flanco) B003, generando un pulso de un ciclo al soltar.","Renglón 4 (Pulsación simple): Contacto NA B003 en serie con contacto NC /B001 conectado al pin Trg de B004 (20 s).","Renglón 5 (Alarma cabina): Contacto NA B003 en serie con NA B001 y NC /B002 conectado al pin S de B005. Pin R conectado a la salida de B002 (se resetea si se alcanzan los 5 s).","Renglón 6 (Emergencia incendio): Contacto NA B002 conectado al pin Trg de B006 (120 s). Contacto NA B006 conectado al pin de habilitación En de B007 (0.5 Hz).","Renglón 7 (Salida Q1): Paralelo de contactos NA B004 y NA B007 comanda la bobina ( Q1 ).","Renglón 8 (Salida Q2): Paralelo de [B005 · /B006] y NA B007 comanda la bobina ( Q2 )."]},
     i: [["I1","Pulsador multifunción","p"]],
     o: ["Q1","Q2"],
     r: [{"c":"R1: Enclavamiento de alarma cabina M2 al soltar con 2 s <= t < 5 s (previo a reset de TON)","s":["[↓ I1]","T2","/T5"],"o":"S M2"},{"c":"R2: Disparo de pulso TP M1 (20 s) al soltar con t < 2 s (previo a reset de TON)","s":["[↓ I1]","/T2"],"o":"[TP M1 | 20s]"},{"c":"R3: Medición de tiempo continuo 2 s en bloque TON T2","s":["I1"],"o":"[TON T2 | 2s]"},{"c":"R4: Medición de tiempo continuo 5 s en bloque TON T5","s":["I1"],"o":"[TON T5 | 5s]"},{"c":"R5: Disparo de emergencia por incendio TP M3 (120 s) al alcanzar 5 s","s":["[↑ T5]"],"o":"[TP M3 | 120s]"},{"c":"R6: Reset forzado de memoria de cabina M2 por flanco de incendio","s":["[↑ T5]"],"o":"R M2"},{"c":"R7: Oscilador asíncrono M4 a 0.5 Hz habilitado durante emergencia M3","s":["M3"],"o":"[Async M4 | 1s/1s]"},{"c":"R8: Salida de luz general Q1 gobernada por pulso simple M1 o parpadeo M4","p":[["M1"],["M4"]],"o":"Q1"},{"c":"R9: Salida de alarma Q2 gobernada por cabina M2 o parpadeo M4","p":[["M2","/M3"],["M4"]],"o":"Q2"}],
@@ -1426,6 +1699,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["C1_Cnt = (I1 · NOT(Q3)) + I2","C1_Dir = I2","C1_R = I3","Q3 = C1  (Activo cuando valor actual >= 50)","Q1 = TP(I1 · NOT(Q3), 3 s) ; Q4 = TP(I1 · NOT(Q3), 1 s)","Q2 = TP(I2, 3 s)"],
     sol: "Gestión de capacidad basada en el bloque nativo de Siemens LOGO! Contador adelante/atrás (C1) prefijado en 50 unidades. A diferencia del bloque genérico IEC, LOGO! posee una única entrada de pulsos Cnt y un borne de dirección Dir (0 = incremento, 1 = decremento). El borne Cnt recibe en paralelo los pulsos de ingreso con cupo libre (I1 · NOT Q3) y los de egreso (I2), mientras que Dir es excitado por I2 para descontar del balance. Al llegar a 50 vehículos, C1 enciende el cartel Q3 e inhibe nuevos ingresos. Los temporizadores de pulso TP gobiernan las barreras (3 s) y ticket (1 s).",
     e: "¿Cómo opera el contador adelante/atrás nativo de Siemens LOGO!? En LOGO! el bloque no dispone de entradas CU y CD separadas, sino de una entrada de conteo Cnt y un borne de dirección Dir. Los pulsos de ingreso (I1 · /Q3) y egreso (I2) se conectan en paralelo a Cnt, mientras que el sensor I2 comanda Dir para restar rodados. Al alcanzar 50 vehículos, C1 activa el cartel Q3 e inhibe el ingreso.",
+    guiaLogo: {"bloques":"Contador adelante/atrás (B001, Limit = 50, menú Contadores) y 3 bloques Relé de barrido (Salida de impulsos) (B002 de 3 s, B003 de 1 s, B004 de 3 s, menú Temporizadores).","estructura":["Renglón 1 (Pulsos Cnt): Paralelo entre la entrada con cupo [I1 · /B001] y la salida de vehículos [I2], conectado al borne Cnt de B001.","Renglón 2 (Dirección Dir): Contacto NA I2 conectado directamente al pin Dir de B001 (resta cuando un auto sale).","Renglón 3 (Reset): Contacto NA I3 conectado al pin R de B001.","Renglón 4 (Cartel Q3): Contacto NA B001 comanda la bobina ( Q3 ).","Renglón 5 (Barrera entrada y ticket): Contactos serie I1 y NC /B001 conectados en paralelo a los pines Trg de B002 (3 s) y B003 (1 s). Sus contactos NA comandan respectivamente ( Q1 ) y ( Q4 ).","Renglón 6 (Barrera salida): Contacto NA I2 conectado al pin Trg de B004 (3 s). Su contacto NA comanda ( Q2 )."]},
     i: [["I1","Auto entrada","p"],["I2","Auto salida","p"],["I3","Reset cupos","p"]],
     o: ["Q1","Q2","Q3","Q4"],
     r: [{"c":"R1: Entrada de pulsos Cnt en Contador C1 (PV=50) desde ingreso (/Q3) o egreso I2","p":[["I1","/Q3"],["I2"]],"o":"C1 (Cnt)"},{"c":"R2: Selección de dirección Dir en Contador C1 desde sensor de egreso I2 (resta)","s":["I2"],"o":"C1 (Dir)"},{"c":"R3: Reset manual del contador C1 desde pulsador I3","s":["I3"],"o":"C1 (R)"},{"c":"R4: Cartel COMPLETO Q3 activado por salida del contador C1","s":["C1"],"o":"Q3"},{"c":"R5: Apertura de barrera de entrada TP1 (3 s) por pulso en entrada","s":["I1","/Q3"],"o":"[TP TP1 | 3s]"},{"c":"R6: Accionamiento de barrera de entrada Q1","s":["TP1"],"o":"Q1"},{"c":"R7: Emisión de ticket TP3 (1 s) por vehículo ingresante","s":["I1","/Q3"],"o":"[TP TP3 | 1s]"},{"c":"R8: Dispensador de ticket Q4","s":["TP3"],"o":"Q4"},{"c":"R9: Apertura de barrera de salida TP2 (3 s) por vehículo saliente","s":["I2"],"o":"[TP TP2 | 3s]"},{"c":"R10: Accionamiento de barrera de salida Q2","s":["TP2"],"o":"Q2"}],
@@ -1464,6 +1738,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["M5 = I1 · NOT(M6) ; M6 = I1  (Detección flanco I1)","SF001_S = M8 + SF004 · (NOT(I3) + M5) ; SF001_R = SF002","SF002_S = SF001 · M5 ; SF002_R = NOT(I2) + M5","SF003_S = SF002 · (NOT(I2) + M5) ; SF003_R = SF004","SF004_S = SF003 · M5 ; SF004_R = NOT(I3) + M5","Q1 = SF002 · NOT(Q2) ; Q2 = SF004 · NOT(Q1)"],
     sol: "Esquema secuencial con mapeo 1:1 para LOGO!Soft Comfort basado en 4 bloques de función especial Relé Autoenclavador RS (SF001 a SF004) y secuencia de scan según norma Grafcet. En LOGO!Soft, cada bloque RS dispone de dos terminales físicos independientes: entrada S (Set, patita superior) y entrada R (Reset, patita media). Para evitar carreras de escaneo donde una memoria se borre antes de encender la siguiente, el orden de renglones asegura primero el Set de la etapa entrante y luego el Reset de la saliente: R4 activa SF002 antes del reset de SF001 en R5; R6 activa la pausa SF003 antes del reset de SF002 en R7; y R8 activa SF004 antes del reset de SF003 en R9. Los motores Q1 y Q2 son excitados por SF002 y SF004 con interbloqueo negado cruzado.",
     e: "¿Cómo garantizar transiciones seguras en LOGO!Soft con relés autoenclavadores? Siguiendo el principio universal de Grafcet: activar la etapa siguiente antes de desactivar la previa. Al ordenar los peldaños para que el Set de la etapa entrante se procese antes del Reset de la saliente (por ejemplo, R6 activa la pausa SF003 antes de que R7 apague la apertura SF002), se asegura que el contacto de la etapa actual esté disponible para conmutar la memoria posterior sin carreras de scan. Los contactores de potencia Q1 y Q2 cuentan con interbloqueo cruzado /Q2 y /Q1.",
+    guiaLogo: {"bloques":"AND (flanco) (B001, menú Otros) y 4 bloques Relé autoenclavador (B002: Reposo, B003: Abriendo, B004: Pausa, B005: Cerrando).","estructura":["Renglón 1 (Detección de pulsación): Contacto NA I1 conectado a la entrada del bloque AND (flanco) B001.","Renglón 2 (Set B002): Paralelo de inicialización M8 y fin de carrera [B005 · (/I3 + B001)] al pin S de B002.","Renglón 3 (Set B003): Contactos en serie B002 y B001 conectados al pin S de B003.","Renglón 4 (Reset B002): Contacto NA B003 conectado al pin R de B002.","Renglón 5 (Set B004): Contacto NA B003 en serie con el paralelo de [/I2 + B001] conectado al pin S de B004.","Renglón 6 (Reset B003): Paralelo de contacto NC /I2 y NA B001 conectado al pin R de B003.","Renglón 7 (Set B005): Contactos en serie B004 y B001 conectados al pin S de B005.","Renglón 8 (Reset B004): Contacto NA B005 conectado al pin R de B004.","Renglón 9 (Reset B005): Paralelo de contacto NC /I3 y NA B001 conectado al pin R de B005.","Renglón 10 y 11 (Comando motores con interbloqueo cruzado): Contacto NA B003 en serie con NC /Q2 hacia ( Q1 ); contacto NA B005 en serie con NC /Q1 hacia ( Q2 )."],"comportamiento":"Orden secuencial Grafcet: Set de etapa siguiente antes de Reset de saliente."},
     i: [["I1","Pulsador portón","p"],["I2","Fin ABIERTO","s",1],["I3","Fin CERRADO","s",1,1]],
     o: ["Q1","Q2"],
     r: [{"c":"R1: Pulso de flanco positivo M5 = I1 · NOT(M6)","s":["I1","/M6"],"o":"M5"},{"c":"R2: Registro de estado de I1 para ciclo siguiente M6 = I1","s":["I1"],"o":"M6"},{"c":"R3: Entrada Set (S) de SF001 (Reposo): inicialización M8 o fin de cierre","p":[["M8"],["SF004","/I3"],["SF004","M5"]],"o":"SF001 (S)"},{"c":"R4: Entrada Set (S) de SF002 (Abriendo): arranque al pulsar en reposo","s":["SF001","M5"],"o":"SF002 (S)"},{"c":"R5: Entrada Reset (R) de SF001 (Reposo): apagado al iniciar apertura SF002","s":["SF002"],"o":"SF001 (R)"},{"c":"R6: Entrada Set (S) de SF003 (Pausa): detención de apertura por tope /I2 o M5","p":[["SF002","/I2"],["SF002","M5"]],"o":"SF003 (S)"},{"c":"R7: Entrada Reset (R) de SF002 (Abriendo): detención por tope /I2 o pulsador M5","p":[["/I2"],["M5"]],"o":"SF002 (R)"},{"c":"R8: Entrada Set (S) de SF004 (Cerrando): arranque al pulsar en pausa","s":["SF003","M5"],"o":"SF004 (S)"},{"c":"R9: Entrada Reset (R) de SF003 (Pausa): apagado al iniciar cierre SF004","s":["SF004"],"o":"SF003 (R)"},{"c":"R10: Entrada Reset (R) de SF004 (Cerrando): detención por tope /I3 o pulsador M5","p":[["/I3"],["M5"]],"o":"SF004 (R)"},{"c":"R11: Motor apertura Q1 gobernado por etapa SF002 con interbloqueo negado /Q2","s":["SF002","/Q2"],"o":"Q1"},{"c":"R12: Motor cierre Q2 gobernado por etapa SF004 con interbloqueo negado /Q1","s":["SF004","/Q1"],"o":"Q2"}],
@@ -1509,6 +1784,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["Q1 = (I1 + Q1) · NOT(I3) · I4","Q2 = (I2 + Q2) · NOT(I3) · I4"],
     sol: "Esquema en cascada basado en autorretención escalonada con desenergización unificada. Al descender el fluido y cerrar S1 (NA), arranca la bomba principal Q1 y se enclava. Si la demanda supera el caudal y el agua alcanza el sensor crítico S2 (NA), arranca la auxiliar Q2. Cuando el fluido recupera la cota máxima S3 (NA), su contacto negado /I3 en Ladder abre simultáneamente ambas ramas y extingue el bombeo. Seguridad industrial (Doctrina \"Lo que no va por programa\"): El contacto físico NC del pulsador de emergencia PE se cablea electromecánicamente en serie con la alimentación del contactor en el circuito de potencia/mando de hardware. En Ladder, I4 actúa como corte de seguridad fail-safe (contacto abierto que vale 1 en reposo) y extingue de inmediato la autorretención interna de las bombas, evitando el arranque intempestivo automático al destrabar el pulsador hongo.",
     e: "¿Por qué la parada de emergencia \"no va por programa\" según la cátedra? Un fallo de CPU o un relé de salida soldado mantendría el motor energizado si la parada fuera solo por software. Por norma, el contacto físico NC del pulsador hongo corta electromecánicamente la bobina del contactor en hardware. En Ladder, la entrada I4 ingresa como contacto abierto (1 en reposo): al accionarse o ante corte de cable, cae a 0, extingue al instante la autorretención de Q1 y Q2 y previene arranques intempestivos al rearmar el hongo.",
+    guiaLogo: {"bloques":"Ninguno. Lógica de autorretención con prioridad de corte unificada.","doctrina":"La parada de emergencia PE se cablea electromecánicamente en serie fuera del PLC; dentro del programa, I4 actúa como contacto de seguridad abierto (1 en reposo) para desarmar autorretenciones.","estructura":["Renglón 1 (Bomba 1): Contacto NA I4 en serie con contacto NC /I3 y con el paralelo de arranque [I1 + Q1], rematando en la bobina ( Q1 ).","Renglón 2 (Bomba 2): Contacto NA I4 en serie con contacto NC /I3 y con el paralelo de refuerzo [I2 + Q2], rematando en la bobina ( Q2 )."]},
     i: [["I1","S1 Mínimo","s"],["I2","S2 Crítico","s"],["I3","S3 Máximo","s"],["I4","PE Emergencia","p",1]],
     o: ["Q1","Q2"],
     r: [{"c":"R1: Bomba principal Q1 con autorretención, corte por S3 y seguridad PE I4","p":[["I1"],["Q1"]],"s":["/I3","I4"],"o":"Q1"},{"c":"R2: Bomba auxiliar Q2 con autorretención, corte por S3 y seguridad PE I4","p":[["I2"],["Q2"]],"s":["/I3","I4"],"o":"Q2"}],
@@ -1529,6 +1805,7 @@ header .header-controles [data-tooltip]:focus::after {
     eq: ["SF001_Trg = Flanco_Ascendente(I1)","Q1 = I1 · SF001 · I4","Q2 = I1 · NOT(SF001) · I4"],
     sol: "Durante la presencia de demanda (I1 = 1), el circuito deriva la alimentación hacia Q1 si SF001 = 1 (a través de su contacto normalmente abierto), o hacia Q2 si SF001 = 0 (a través de su contacto normalmente cerrado). Dado que el relé de impulsos SF001 se inicializa en 0 y es disparado en el renglón 1 por el flanco ascendente de I1, la memoria conmuta a 1 en el mismo ciclo en que comienza la primera demanda, garantizando que el ciclo inicie por Q1 y continúe con la secuencia requerida Q1 - Q2 - Q1 - Q2. Seguridad industrial (Doctrina \"Lo que no va por programa\"): La parada de emergencia PE I4 está cableada electromecánicamente en serie con los contactores de hardware; en software abre como contacto NA garantizando interrupción inmediata ante accionamiento o corte de cable.",
     e: "¿Por qué asignar Q1 a contacto abierto y Q2 a cerrado en LOGO!Soft? Al disparar el relé de impulsos SF001 en el renglón 1 con el flanco ascendente de I1, SF001 conmuta de 0 a 1 en el primer scan de la primera demanda. Al asociar la Bomba 1 (Q1) al contacto abierto [ SF001 ], arranca inmediatamente en el ciclo 1. En la segunda demanda, SF001 conmuta a 0 y activa la Bomba 2 (Q2) mediante el contacto normalmente cerrado [/ SF001 /]. La parada PE actúa en hardware y software bajo criterio fail-safe.",
+    guiaLogo: {"bloques":"Relé de impulsos (B001, menú Otros).","estructura":["Renglón 1 (Conmutación biestable): Contacto NA I1 conectado directamente al pin de disparo Trg del bloque Relé de impulsos B001. Conmuta alternativamente su salida entre 0 y 1 con cada flanco ascendente de demanda.","Renglón 2 (Bomba 1): Contactos en serie NA I4, NA I1 y NA B001 rematando en la bobina ( Q1 ). Conduce en los ciclos impares.","Renglón 3 (Bomba 2): Contactos en serie NA I4, NA I1 y NC /B001 rematando en la bobina ( Q2 ). Conduce en los ciclos pares."]},
     i: [["I1","Flotante demanda","s"],["I4","PE Emergencia","p",1]],
     o: ["Q1","Q2"],
     r: [{"c":"R1: Disparo de relé de impulsos SF001 en flanco ascendente de demanda I1","s":["I1"],"o":"[Trg SF001]"},{"c":"R2: Bomba 1 habilitada por contacto abierto [ SF001 ] condicionado a demanda I1 y PE I4","s":["I4","I1","SF001"],"o":"Q1"},{"c":"R3: Bomba 2 habilitada por contacto cerrado [/ SF001 /] condicionado a demanda I1 y PE I4","s":["I4","I1","/SF001"],"o":"Q2"}],
@@ -1552,7 +1829,7 @@ header .header-controles [data-tooltip]:focus::after {
 
 <script>
 (function() {
-  const registroChangelog = [{"version":"1.16.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se implementa botón en sidebar y modal interactivo de Historial de Cambios CI/CD","cambios":["Se agrega botón 'Historial de Cambios' al pie del sidebar de navegación rápida con badge CI/CD.","Se diseña modal interactivo accesible (WCAG 2.1 AA) con estilo Grises Pro, backdrop-blur y cierre por tecla Escape o clic exterior.","Se incorpora buscador reactivo en tiempo real y función de exportación a archivo JSON (soberanía de datos).","Se pre-empaquetan los registros semánticos de CI/CD para consulta offline y sincronización en vivo bajo HTTP/HTTPS.","Se superan todas las pruebas unitarias y E2E de Playwright con 0 vulnerabilidades SAST y plena conformidad de gobernanza."]},{"version":"1.15.4","fecha":"2026-10-06","tipo":"fix","titulo":"Se perfecciona la autorretención de bloqueo en 4.6 y el orden de scan Grafcet en 4.9","cambios":["Se añade contacto de sello [B] en paralelo en el renglón R1 de 4.6 para retener la marca de bloqueo al soltar pulsadores erróneos.","Se reordenan los renglones de 4.9 para que la activación de la etapa entrante preceda al reset de la etapa saliente (principio Grafcet).","Se superan todas las pruebas unitarias y E2E manteniendo plena conformidad con la gobernanza."]},{"version":"1.15.3","fecha":"2026-10-06","tipo":"fix","titulo":"Se resuelven observaciones técnicas de cátedra en ejercicios 4.4, 4.6, 4.7, 4.8 y 4.10","cambios":["Se sincroniza el redisparo de T2 con /I1 en 4.4 para acompañar reinicios del relé de escalera.","Se dibuja autorretención explícita en paralelo para M1, M2 y M3 en el Ladder de 4.6.","Se reordenan los renglones de decisión por flanco en 4.7 previos a los bloques TON para resolver carreras de scan.","Se adapta el contador de 4.8 a los bornes nativos de Siemens LOGO! (Cnt y Dir).","Se incorpora la doctrina 'Lo que no va por programa' en 4.10 y 4.11 con prevención de arranque intempestivo.","Se superan todas las pruebas unitarias y E2E manteniendo 0 violaciones de gobernanza."]},{"version":"1.15.2","fecha":"2026-10-06","tipo":"fix","titulo":"Se robustece la lógica de conteo en 4.5 y la secuencia de seguridad en 4.6","cambios":["Se condiciona la entrada de conteo CU en 4.5 con la marcha del motor Q1 para inhibir registros espurios con máquina detenida.","Se blinda la secuencia de seguridad en 4.6 ante pulsaciones simultáneas y retención indebida del paso previo.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza."]},{"version":"1.15.1","fecha":"2026-10-06","tipo":"fix","titulo":"Se corrige la asignación de contactos del relé de impulsos SF001 en ejercicio 4.11","cambios":["Se asigna la Bomba Q1 al contacto abierto [ SF001 ] y la Bomba Q2 al contacto cerrado [/ SF001 /] para garantizar el arranque por Q1 ante el flanco ascendente inicial de I1.","Se actualiza el texto técnico explicativo detallando la conmutación a 1 en el primer scan de demanda.","Se sincroniza la imagen del esquema Ladder en el informe y en el gemelo digital interactivo.","Se mantiene plena conformidad con auditoría de gobernanza y 100% de tests aprobados."]},{"version":"1.15.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se mapea el diagrama de 4.9 exactamente a los terminales Set y Reset de LOGO!Soft","cambios":["Se desglosa cada bloque SF001 a SF004 en sus líneas de entrada independientes para Set (patita S) y Reset (patita R).","Se asegura una correspondencia 1:1 absoluta con el cableado físico de LOGO!Soft Comfort sin discrepancias visuales.","Se identifican los bloques de etapa bajo la nomenclatura SF001 a SF004 idéntica a la asignada por LOGO!Soft.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza."]},{"version":"1.14.0","fecha":"2026-10-05","tipo":"feat","titulo":"Se implementa la resolución del ejercicio 4.9 con bloques nativos Relé Autoenclavador (RS) de LOGO!Soft","cambios":["Se estructura el ciclo secuencial en 4 bloques de función especial Relé Autoenclavador B001 a B004 para cada etapa del portón.","Se comandan los contactores Q1 y Q2 desde las etapas activas con interbloqueo eléctrico cruzado.","Se preserva la inicialización limpia en reposo por marca de arranque M8 y la detección de flanco en M5/M6.","Se calibra el ancho de la columna de software a 140px con texto completo y sin solapamientos."]},{"version":"1.13.1","fecha":"2026-10-05","tipo":"fix","titulo":"Se actualiza la resolución del ejercicio 4.9 a KOP puro compatible con LOGO!Soft","cambios":["Se reemplaza el esquema por un diseño en KOP puro basado en contactos y bobinas Set/Reset (M1 a M6 y M8) evitando bloques FBD especiales de LOGO!Soft.","Se corrigen los contactos de los finales de carrera I2 e I3 a contactos normalmente cerrados (/I2 y /I3) en concordancia con su naturaleza física NC.","Se reordena la secuencia de etapas y transiciones para evitar carreras de ciclo de scan entre el cierre y la apertura.","Se modulariza la definición en ejercicioPorton4_9.js preservando el límite estricto de 200 líneas por archivo."]},{"version":"1.13.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se disponen los bloques de Ecuaciones Lógicas y Solución Adoptada en paralelo lado a lado en escritorio","cambios":["Se crea el contenedor responsivo .bloque-fila-tecnica con cuadrícula de 2 columnas (1fr / 1.25fr) para ubicar Ecuaciones Lógicas y Solución Adoptada lado a lado en pantallas de escritorio.","Se unifican las alturas mediante alineación stretch y flex: 1 en las cajas de código y párrafos técnicos, logrando una estética simétrica y equilibrada.","Se mantiene la disposición apilada en pantallas menores a 1000px y dispositivos móviles.","Se incorpora prueba automatizada en Playwright para verificar las coordenadas y presencia horizontal en viewport de escritorio."]},{"version":"1.12.2","fecha":"2026-09-30","tipo":"fix","titulo":"Se abrevia el encabezado Identificador a ID en la tabla de Recursos de Software","cambios":["Se reemplaza el rótulo de cabecera 'Identificador' por 'ID' para evitar cualquier superposición con 'Tipo de bloque'.","Se calibra el ancho de la columna a 55px y se conserva el tooltip explicativo nativo title='Identificador'.","Se actualizan las suites de prueba unitarias y E2E de Playwright manteniendo plena conformidad."]},{"version":"1.12.1","fecha":"2026-09-30","tipo":"fix","titulo":"Se ajustan textos y estilos de la tabla de Recursos de Software para eliminar el scroll horizontal","cambios":["Se sintetizan los textos de la columna 'Tipo de bloque' adoptando nomenclatura estándar industrial concisa (ej. TON (5 s), TP Retrig (15 s), CTU (PV=5), Relé RS, Toggle).","Se optimizan las descripciones de 'Función lógica' para evitar desbordes y permitir lectura completa de un solo vistazo.","Se aplica table-layout: fixed con anchos calibrados para columnas de software (70px ID, 110px Tipo de bloque) y padding compacto (8px 6px).","Se verifica mediante aserciones automatizadas de Playwright que ninguna tabla presenta desplazamiento lateral en pantallas de escritorio (scrollWidth === clientWidth)."]},{"version":"1.12.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se refactorizan integralmente los 11 ejercicios con las 7 secciones obligatorias, normas IEC 61131-3 y KOP canónico","cambios":["Se estructuran los 11 ejercicios en 7 secciones canónicas: 1. Encabezado y Enunciado Oficial, 2. Tabla I/O física (4 columnas), 3. Recursos de Software (3 columnas), 4. Ecuaciones Lógicas, 5. Solución Adoptada (memoria técnica), 6. Solución y Análisis Didáctico, 7. Ladder KOP y Simulación.","Se erradican bobinas ficticias de temporizadores y contadores (T1, C1) en Ladder, adoptando bloques funcionales IEC 61131-3 con evaluación de contactos en líneas de comando.","Se corrigen lógicas de cátedra: pulso redisparable (escalera) en 4.4, discriminación con enclavamiento permanente en 4.7, autómata secuencial de 4 estados con reset taxativo e interbloqueo en 4.9, y alternancia en pozo en 4.11.","Se añaden estilos y serialización de ecuaciones y memorias técnicas manteniendo 100% de archivos bajo 200 líneas."]},{"version":"1.11.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se disponen las tablas de I/O y Recursos de Software lado a lado en escritorio","cambios":["Se agrupan las tablas de I/O y de Recursos de Software en un grid horizontal de 2 columnas (.con-software) para pantallas de escritorio.","Se reduce significativamente el espacio vertical ocupado por cada ejercicio permitiendo visualizar ambas tablas en paralelo.","Se mantiene la disposición apilada en pantallas menores a 1000px y móviles para garantizar legibilidad completa sin desbordes."]},{"version":"1.10.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se refactoriza la sección de I/O en tabla canónica de 4 columnas y tabla independiente de Recursos de Software","cambios":["Se crea la estructura canónica de 4 columnas obligatorias para la Tabla de Asignación de I/O: Borne (físico I/Q), Señal, Tipo de contacto (NA/NC/Digital) y Condición binaria exacta (Vale 1 cuando...).","Se prohíbe y elimina la mezcla de marcas internas (M), temporizadores (T) y contadores (C) en la tabla física de I/O.","Se implementa tabla independiente de Recursos Internos de Software detallando identificador, tipo de bloque y función lógica para los ejercicios que los requieran.","Se modularizan los estilos visuales en estilosTablas.js con alineación centrada para bornes/tipos y soporte responsivo sin desbordes."]},{"version":"1.9.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa layout de 2 columnas en escritorio con diagrama Ladder a la izquierda y gemelo visual con controles a la derecha","cambios":["Se optimiza el ancho de los diagramas Ladder en escritorio agrupándolos en una columna dedicada a la izquierda (.col-ladder).","Se ubican el Gemelo Visual y el Panel de Control del PLC en una columna adyacente a la derecha (.col-interactiva), permitiendo operar y monitorear la energización en tiempo real sin desplazamientos verticales.","Se mantiene la disposición responsiva apilada en pantallas móviles para garantizar navegación táctil fluida."]},{"version":"1.8.1","fecha":"2026-09-29","tipo":"fix","titulo":"Se eleva el FAB a 84px de separación vertical para evitar colisión con badges o barras inferiores","cambios":["Se reubica el botón flotante (FAB) a bottom: 84px (escritorio) y bottom: 80px (móvil) despegándolo completamente del área inferior donde se ubican badges o barras del navegador.","Se amplía el filtro dinámico de supresión de Netlify para detectar contenedores con texto 'Powered by Netlify' o enlaces directos a netlify.com."]},{"version":"1.8.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se oculta badge de Netlify, se reubica FAB y se ensancha sidebar sin scroll lateral","cambios":["Se suprime el badge/drawer inyectado por Netlify mediante reglas de CSS prioritarias y limpieza activa en tiempo de ejecución con MutationObserver.","Se eleva el FAB de retorno al inicio con z-index 99999 y coordenadas optimizadas (bottom: 28px, right: 28px).","Se ensancha el sidebar a 320px en escritorio con overflow-x: hidden y ajuste multilínea para visualizar títulos completos sin necesidad de scroll horizontal."]},{"version":"1.7.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se configuran tooltips del encabezado para desplegarse hacia abajo dentro del viewport visible","cambios":["Se orienta la apertura de tooltips en el header hacia abajo (top: calc(100% + 10px)) para evitar que se pierdan fuera del marco superior.","Se alinea lateralmente el tooltip con el borde de su contenedor evitando desbordes horizontales fuera de la pantalla.","Se remueve overflow: hidden de la barra superior en móviles para permitir su visibilidad sin recorte."]},{"version":"1.6.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se alinea la barra superior en escritorio y se oculta el header del drawer móvil en el sidebar permanente","cambios":["Se organiza la velocidad en fila horizontal flex (display: flex) alineada con el botón de modo oscuro en 58px.","Se oculta el bloque 'Menú de Navegación ✕' en escritorio para mantener el sidebar limpio y elegante.","Se verifica mediante prueba E2E que los controles del header no desbordan la altura máxima de la barra."]},{"version":"1.5.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se independiza escala de sensores en tanque, reactiva cabeceras sticky e incorpora FAB volver al top","cambios":["Se extraen las marcas de los sensores S1, S2 y S3 fuera del tanque en una escala graduada externa sin colisiones.","Se reactiva la inmovilización de las cabeceras de enunciados al scrollear en escritorio y móviles (overflow-x: clip).","Se implementa botón flotante (FAB) en la esquina inferior derecha con aparición reactiva y scroll suave hacia el top."]},{"version":"1.4.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se corrigen desbordamientos horizontales, solapamiento del encabezado y visibilidad sticky en móviles","cambios":["Se fija la barra superior en una sola fila compacta de 54px sin wrapping ni desbordes en pantallas móviles.","Se calibra el anclaje sticky del enunciado a exactamente top: 54px para máxima legibilidad durante el scroll vertical.","Se eliminan los desbordes laterales mediante min-width: 0, overflow-x: hidden y ajuste al 100% del viewport en maquetas, tablas y botones."]},{"version":"1.3.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa drawer móvil táctil y sistema de tooltips para términos técnicos y barra lateral","cambios":["Se agregan tooltips en la barra lateral para visualizar el nombre completo de cualquier ejercicio truncado.","Se crea glosario interactivo con tooltips didácticos para Siemens LOGO!, KOP, Ladder, TON, TOF, TP, CTU, CTUD, etc.","Se optimiza la experiencia en móviles mediante drawer lateral slide-in, overlay desenfocado y botones táctiles de 42px."]},{"version":"1.2.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa cabecera sticky con enunciado persistente en cada ejercicio","cambios":["Se fija la cabecera del ejercicio (título y bloque de enunciado) con position: sticky bajo el header superior.","El enunciado permanece siempre visible mientras el usuario escrollea por la tabla I/O, análisis, Ladder y simulación.","Al ingresar al siguiente ejercicio, el contenedor sticky anterior es relevado de forma fluida por el nuevo enunciado."]},{"version":"1.1.0","fecha":"2026-09-29","tipo":"docs","titulo":"Se amplían explicaciones didácticas de autorretención y términos técnicos","cambios":["Se detalla en profundidad qué es la autorretención (latching), memoria biestable y relé autoenclavador.","Se explica el significado y funcionamiento de temporizadores TON (retardo a la conexión), TOF y TP.","Se aclara la función de contadores CTU / CTUD y contactos normalmente abiertos (N/A) vs cerrados (N/C).","Se modulariza el catálogo en 4 bloques independientes respetando el límite estricto de 200 líneas."]},{"version":"1.0.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa plataforma interactiva modular para TP 1 PLC LOGO!","cambios":["Se crea motor SVG de diagramas Ladder (KOP) con espaciado holgado y 0 colisiones.","Se implementa Live KOP Debugging con coloreado de corriente lógica en cian brillante.","Se agregan gemelos visuales animados temáticos para los 11 ejercicios (motores, tanque, portón, cinta, parking).","Se crea suite de tests unitarios TDD (Vitest) y prueba E2E (Playwright) 100% aprobada.","Se aprueba auditoría centralizada de gobernanza (Regla de Hierro <200 líneas, SAST 0 vulnerabilidades y Dependency Cruiser)."]}];
+  const registroChangelog = [{"version":"1.17.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se agregan guías tutoriales de LOGO!Soft Comfort y renderizado de bloques especiales KOP","cambios":["Se incorpora un nuevo apartado en los 11 ejercicios con la guía paso a paso para construir cada esquema en Siemens LOGO!Soft Comfort (menús, bloques, pines y renglones KOP).","Se adapta renderLadderSvg para representar bloques especiales (Relé autoenclavador, Temporizadores TON/TP, Contador adelante/atrás y Relé de impulsos) como cajas rectangulares con conexiones de entrada rotuladas a la izquierda (S, R, Trg, Cnt, Dir) y cierre contra el riel derecho.","Se agrupan verticalmente terminales contiguos de un mismo bloque respetando la geometría nativa de LOGO!Soft.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza y 0 vulnerabilidades SAST."]},{"version":"1.16.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se implementa botón en sidebar y modal interactivo de Historial de Cambios CI/CD","cambios":["Se agrega botón 'Historial de Cambios' al pie del sidebar de navegación rápida con badge CI/CD.","Se diseña modal interactivo accesible (WCAG 2.1 AA) con estilo Grises Pro, backdrop-blur y cierre por tecla Escape o clic exterior.","Se incorpora buscador reactivo en tiempo real y función de exportación a archivo JSON (soberanía de datos).","Se pre-empaquetan los registros semánticos de CI/CD para consulta offline y sincronización en vivo bajo HTTP/HTTPS.","Se superan todas las pruebas unitarias y E2E de Playwright con 0 vulnerabilidades SAST y plena conformidad de gobernanza."]},{"version":"1.15.4","fecha":"2026-10-06","tipo":"fix","titulo":"Se perfecciona la autorretención de bloqueo en 4.6 y el orden de scan Grafcet en 4.9","cambios":["Se añade contacto de sello [B] en paralelo en el renglón R1 de 4.6 para retener la marca de bloqueo al soltar pulsadores erróneos.","Se reordenan los renglones de 4.9 para que la activación de la etapa entrante preceda al reset de la etapa saliente (principio Grafcet).","Se superan todas las pruebas unitarias y E2E manteniendo plena conformidad con la gobernanza."]},{"version":"1.15.3","fecha":"2026-10-06","tipo":"fix","titulo":"Se resuelven observaciones técnicas de cátedra en ejercicios 4.4, 4.6, 4.7, 4.8 y 4.10","cambios":["Se sincroniza el redisparo de T2 con /I1 en 4.4 para acompañar reinicios del relé de escalera.","Se dibuja autorretención explícita en paralelo para M1, M2 y M3 en el Ladder de 4.6.","Se reordenan los renglones de decisión por flanco en 4.7 previos a los bloques TON para resolver carreras de scan.","Se adapta el contador de 4.8 a los bornes nativos de Siemens LOGO! (Cnt y Dir).","Se incorpora la doctrina 'Lo que no va por programa' en 4.10 y 4.11 con prevención de arranque intempestivo.","Se superan todas las pruebas unitarias y E2E manteniendo 0 violaciones de gobernanza."]},{"version":"1.15.2","fecha":"2026-10-06","tipo":"fix","titulo":"Se robustece la lógica de conteo en 4.5 y la secuencia de seguridad en 4.6","cambios":["Se condiciona la entrada de conteo CU en 4.5 con la marcha del motor Q1 para inhibir registros espurios con máquina detenida.","Se blinda la secuencia de seguridad en 4.6 ante pulsaciones simultáneas y retención indebida del paso previo.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza."]},{"version":"1.15.1","fecha":"2026-10-06","tipo":"fix","titulo":"Se corrige la asignación de contactos del relé de impulsos SF001 en ejercicio 4.11","cambios":["Se asigna la Bomba Q1 al contacto abierto [ SF001 ] y la Bomba Q2 al contacto cerrado [/ SF001 /] para garantizar el arranque por Q1 ante el flanco ascendente inicial de I1.","Se actualiza el texto técnico explicativo detallando la conmutación a 1 en el primer scan de demanda.","Se sincroniza la imagen del esquema Ladder en el informe y en el gemelo digital interactivo.","Se mantiene plena conformidad con auditoría de gobernanza y 100% de tests aprobados."]},{"version":"1.15.0","fecha":"2026-10-06","tipo":"feat","titulo":"Se mapea el diagrama de 4.9 exactamente a los terminales Set y Reset de LOGO!Soft","cambios":["Se desglosa cada bloque SF001 a SF004 en sus líneas de entrada independientes para Set (patita S) y Reset (patita R).","Se asegura una correspondencia 1:1 absoluta con el cableado físico de LOGO!Soft Comfort sin discrepancias visuales.","Se identifican los bloques de etapa bajo la nomenclatura SF001 a SF004 idéntica a la asignada por LOGO!Soft.","Se superan todas las pruebas unitarias y E2E de Playwright manteniendo 0 violaciones de gobernanza."]},{"version":"1.14.0","fecha":"2026-10-05","tipo":"feat","titulo":"Se implementa la resolución del ejercicio 4.9 con bloques nativos Relé Autoenclavador (RS) de LOGO!Soft","cambios":["Se estructura el ciclo secuencial en 4 bloques de función especial Relé Autoenclavador B001 a B004 para cada etapa del portón.","Se comandan los contactores Q1 y Q2 desde las etapas activas con interbloqueo eléctrico cruzado.","Se preserva la inicialización limpia en reposo por marca de arranque M8 y la detección de flanco en M5/M6.","Se calibra el ancho de la columna de software a 140px con texto completo y sin solapamientos."]},{"version":"1.13.1","fecha":"2026-10-05","tipo":"fix","titulo":"Se actualiza la resolución del ejercicio 4.9 a KOP puro compatible con LOGO!Soft","cambios":["Se reemplaza el esquema por un diseño en KOP puro basado en contactos y bobinas Set/Reset (M1 a M6 y M8) evitando bloques FBD especiales de LOGO!Soft.","Se corrigen los contactos de los finales de carrera I2 e I3 a contactos normalmente cerrados (/I2 y /I3) en concordancia con su naturaleza física NC.","Se reordena la secuencia de etapas y transiciones para evitar carreras de ciclo de scan entre el cierre y la apertura.","Se modulariza la definición en ejercicioPorton4_9.js preservando el límite estricto de 200 líneas por archivo."]},{"version":"1.13.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se disponen los bloques de Ecuaciones Lógicas y Solución Adoptada en paralelo lado a lado en escritorio","cambios":["Se crea el contenedor responsivo .bloque-fila-tecnica con cuadrícula de 2 columnas (1fr / 1.25fr) para ubicar Ecuaciones Lógicas y Solución Adoptada lado a lado en pantallas de escritorio.","Se unifican las alturas mediante alineación stretch y flex: 1 en las cajas de código y párrafos técnicos, logrando una estética simétrica y equilibrada.","Se mantiene la disposición apilada en pantallas menores a 1000px y dispositivos móviles.","Se incorpora prueba automatizada en Playwright para verificar las coordenadas y presencia horizontal en viewport de escritorio."]},{"version":"1.12.2","fecha":"2026-09-30","tipo":"fix","titulo":"Se abrevia el encabezado Identificador a ID en la tabla de Recursos de Software","cambios":["Se reemplaza el rótulo de cabecera 'Identificador' por 'ID' para evitar cualquier superposición con 'Tipo de bloque'.","Se calibra el ancho de la columna a 55px y se conserva el tooltip explicativo nativo title='Identificador'.","Se actualizan las suites de prueba unitarias y E2E de Playwright manteniendo plena conformidad."]},{"version":"1.12.1","fecha":"2026-09-30","tipo":"fix","titulo":"Se ajustan textos y estilos de la tabla de Recursos de Software para eliminar el scroll horizontal","cambios":["Se sintetizan los textos de la columna 'Tipo de bloque' adoptando nomenclatura estándar industrial concisa (ej. TON (5 s), TP Retrig (15 s), CTU (PV=5), Relé RS, Toggle).","Se optimizan las descripciones de 'Función lógica' para evitar desbordes y permitir lectura completa de un solo vistazo.","Se aplica table-layout: fixed con anchos calibrados para columnas de software (70px ID, 110px Tipo de bloque) y padding compacto (8px 6px).","Se verifica mediante aserciones automatizadas de Playwright que ninguna tabla presenta desplazamiento lateral en pantallas de escritorio (scrollWidth === clientWidth)."]},{"version":"1.12.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se refactorizan integralmente los 11 ejercicios con las 7 secciones obligatorias, normas IEC 61131-3 y KOP canónico","cambios":["Se estructuran los 11 ejercicios en 7 secciones canónicas: 1. Encabezado y Enunciado Oficial, 2. Tabla I/O física (4 columnas), 3. Recursos de Software (3 columnas), 4. Ecuaciones Lógicas, 5. Solución Adoptada (memoria técnica), 6. Solución y Análisis Didáctico, 7. Ladder KOP y Simulación.","Se erradican bobinas ficticias de temporizadores y contadores (T1, C1) en Ladder, adoptando bloques funcionales IEC 61131-3 con evaluación de contactos en líneas de comando.","Se corrigen lógicas de cátedra: pulso redisparable (escalera) en 4.4, discriminación con enclavamiento permanente en 4.7, autómata secuencial de 4 estados con reset taxativo e interbloqueo en 4.9, y alternancia en pozo en 4.11.","Se añaden estilos y serialización de ecuaciones y memorias técnicas manteniendo 100% de archivos bajo 200 líneas."]},{"version":"1.11.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se disponen las tablas de I/O y Recursos de Software lado a lado en escritorio","cambios":["Se agrupan las tablas de I/O y de Recursos de Software en un grid horizontal de 2 columnas (.con-software) para pantallas de escritorio.","Se reduce significativamente el espacio vertical ocupado por cada ejercicio permitiendo visualizar ambas tablas en paralelo.","Se mantiene la disposición apilada en pantallas menores a 1000px y móviles para garantizar legibilidad completa sin desbordes."]},{"version":"1.10.0","fecha":"2026-09-30","tipo":"feat","titulo":"Se refactoriza la sección de I/O en tabla canónica de 4 columnas y tabla independiente de Recursos de Software","cambios":["Se crea la estructura canónica de 4 columnas obligatorias para la Tabla de Asignación de I/O: Borne (físico I/Q), Señal, Tipo de contacto (NA/NC/Digital) y Condición binaria exacta (Vale 1 cuando...).","Se prohíbe y elimina la mezcla de marcas internas (M), temporizadores (T) y contadores (C) en la tabla física de I/O.","Se implementa tabla independiente de Recursos Internos de Software detallando identificador, tipo de bloque y función lógica para los ejercicios que los requieran.","Se modularizan los estilos visuales en estilosTablas.js con alineación centrada para bornes/tipos y soporte responsivo sin desbordes."]},{"version":"1.9.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa layout de 2 columnas en escritorio con diagrama Ladder a la izquierda y gemelo visual con controles a la derecha","cambios":["Se optimiza el ancho de los diagramas Ladder en escritorio agrupándolos en una columna dedicada a la izquierda (.col-ladder).","Se ubican el Gemelo Visual y el Panel de Control del PLC en una columna adyacente a la derecha (.col-interactiva), permitiendo operar y monitorear la energización en tiempo real sin desplazamientos verticales.","Se mantiene la disposición responsiva apilada en pantallas móviles para garantizar navegación táctil fluida."]},{"version":"1.8.1","fecha":"2026-09-29","tipo":"fix","titulo":"Se eleva el FAB a 84px de separación vertical para evitar colisión con badges o barras inferiores","cambios":["Se reubica el botón flotante (FAB) a bottom: 84px (escritorio) y bottom: 80px (móvil) despegándolo completamente del área inferior donde se ubican badges o barras del navegador.","Se amplía el filtro dinámico de supresión de Netlify para detectar contenedores con texto 'Powered by Netlify' o enlaces directos a netlify.com."]},{"version":"1.8.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se oculta badge de Netlify, se reubica FAB y se ensancha sidebar sin scroll lateral","cambios":["Se suprime el badge/drawer inyectado por Netlify mediante reglas de CSS prioritarias y limpieza activa en tiempo de ejecución con MutationObserver.","Se eleva el FAB de retorno al inicio con z-index 99999 y coordenadas optimizadas (bottom: 28px, right: 28px).","Se ensancha el sidebar a 320px en escritorio con overflow-x: hidden y ajuste multilínea para visualizar títulos completos sin necesidad de scroll horizontal."]},{"version":"1.7.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se configuran tooltips del encabezado para desplegarse hacia abajo dentro del viewport visible","cambios":["Se orienta la apertura de tooltips en el header hacia abajo (top: calc(100% + 10px)) para evitar que se pierdan fuera del marco superior.","Se alinea lateralmente el tooltip con el borde de su contenedor evitando desbordes horizontales fuera de la pantalla.","Se remueve overflow: hidden de la barra superior en móviles para permitir su visibilidad sin recorte."]},{"version":"1.6.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se alinea la barra superior en escritorio y se oculta el header del drawer móvil en el sidebar permanente","cambios":["Se organiza la velocidad en fila horizontal flex (display: flex) alineada con el botón de modo oscuro en 58px.","Se oculta el bloque 'Menú de Navegación ✕' en escritorio para mantener el sidebar limpio y elegante.","Se verifica mediante prueba E2E que los controles del header no desbordan la altura máxima de la barra."]},{"version":"1.5.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se independiza escala de sensores en tanque, reactiva cabeceras sticky e incorpora FAB volver al top","cambios":["Se extraen las marcas de los sensores S1, S2 y S3 fuera del tanque en una escala graduada externa sin colisiones.","Se reactiva la inmovilización de las cabeceras de enunciados al scrollear en escritorio y móviles (overflow-x: clip).","Se implementa botón flotante (FAB) en la esquina inferior derecha con aparición reactiva y scroll suave hacia el top."]},{"version":"1.4.0","fecha":"2026-09-29","tipo":"fix","titulo":"Se corrigen desbordamientos horizontales, solapamiento del encabezado y visibilidad sticky en móviles","cambios":["Se fija la barra superior en una sola fila compacta de 54px sin wrapping ni desbordes en pantallas móviles.","Se calibra el anclaje sticky del enunciado a exactamente top: 54px para máxima legibilidad durante el scroll vertical.","Se eliminan los desbordes laterales mediante min-width: 0, overflow-x: hidden y ajuste al 100% del viewport en maquetas, tablas y botones."]},{"version":"1.3.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa drawer móvil táctil y sistema de tooltips para términos técnicos y barra lateral","cambios":["Se agregan tooltips en la barra lateral para visualizar el nombre completo de cualquier ejercicio truncado.","Se crea glosario interactivo con tooltips didácticos para Siemens LOGO!, KOP, Ladder, TON, TOF, TP, CTU, CTUD, etc.","Se optimiza la experiencia en móviles mediante drawer lateral slide-in, overlay desenfocado y botones táctiles de 42px."]},{"version":"1.2.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa cabecera sticky con enunciado persistente en cada ejercicio","cambios":["Se fija la cabecera del ejercicio (título y bloque de enunciado) con position: sticky bajo el header superior.","El enunciado permanece siempre visible mientras el usuario escrollea por la tabla I/O, análisis, Ladder y simulación.","Al ingresar al siguiente ejercicio, el contenedor sticky anterior es relevado de forma fluida por el nuevo enunciado."]},{"version":"1.1.0","fecha":"2026-09-29","tipo":"docs","titulo":"Se amplían explicaciones didácticas de autorretención y términos técnicos","cambios":["Se detalla en profundidad qué es la autorretención (latching), memoria biestable y relé autoenclavador.","Se explica el significado y funcionamiento de temporizadores TON (retardo a la conexión), TOF y TP.","Se aclara la función de contadores CTU / CTUD y contactos normalmente abiertos (N/A) vs cerrados (N/C).","Se modulariza el catálogo en 4 bloques independientes respetando el límite estricto de 200 líneas."]},{"version":"1.0.0","fecha":"2026-09-29","tipo":"feat","titulo":"Se implementa plataforma interactiva modular para TP 1 PLC LOGO!","cambios":["Se crea motor SVG de diagramas Ladder (KOP) con espaciado holgado y 0 colisiones.","Se implementa Live KOP Debugging con coloreado de corriente lógica en cian brillante.","Se agregan gemelos visuales animados temáticos para los 11 ejercicios (motores, tanque, portón, cinta, parking).","Se crea suite de tests unitarios TDD (Vitest) y prueba E2E (Playwright) 100% aprobada.","Se aprueba auditoría centralizada de gobernanza (Regla de Hierro <200 líneas, SAST 0 vulnerabilidades y Dependency Cruiser)."]}];
   const modal = document.getElementById('modal-changelog');
   const btnAbrir = document.getElementById('btn-abrir-changelog');
   const btnCerrar = document.getElementById('btn-cerrar-changelog');
@@ -1824,6 +2101,48 @@ header .header-controles [data-tooltip]:focus::after {
       html += '<div class="bloque-detalle-tecnico bloque-analisis-didactico">';
       html += '<h3 class="subtitulo-seccion-tecnica">Solución y Análisis Técnico</h3>';
       html += '<p class="parrafo-analisis-didactico">' + enriquecerTexto(ej.e) + '</p>';
+      html += '</div>';
+    }
+
+    if (ej.guiaLogo) {
+      const g = ej.guiaLogo;
+      html += '<div class="bloque-guia-logo">';
+      html += '<div class="encabezado-guia-logo">';
+      html += '<span class="icono-guia-logo">📐</span>';
+      html += '<h3 class="titulo-guia-logo">Guía de Construcción en LOGO!Soft Comfort</h3>';
+      html += '<span class="badge-logo-software">Tutorial KOP</span>';
+      html += '</div>';
+
+      html += '<div class="guia-logo-meta">';
+      if (g.bloques) {
+        html += '<div class="guia-logo-item-meta"><span class="guia-logo-etiqueta">Bloques de función:</span> <span class="guia-logo-valor">' + g.bloques + '</span></div>';
+      }
+      if (g.elementos) {
+        html += '<div class="guia-logo-item-meta"><span class="guia-logo-etiqueta">Elementos a utilizar:</span> <span class="guia-logo-valor">' + g.elementos + '</span></div>';
+      }
+      if (g.pines) {
+        html += '<div class="guia-logo-item-meta"><span class="guia-logo-etiqueta">Pines del bloque:</span> <span class="guia-logo-valor">' + g.pines + '</span></div>';
+      }
+      html += '</div>';
+
+      if (g.estructura && g.estructura.length > 0) {
+        html += '<div class="guia-logo-estructura-wrap">';
+        html += '<div class="guia-logo-estructura-titulo">Estructura KOP (Renglones paso a paso):</div>';
+        html += '<ul class="guia-logo-lista">';
+        g.estructura.forEach(renglon => {
+          html += '<li class="guia-logo-lista-item">' + renglon + '</li>';
+        });
+        html += '</ul>';
+        html += '</div>';
+      }
+
+      if (g.comportamiento) {
+        html += '<div class="guia-logo-nota"><strong>Comportamiento requerido:</strong> ' + g.comportamiento + '</div>';
+      }
+      if (g.doctrina) {
+        html += '<div class="guia-logo-nota"><strong>Doctrina de cátedra:</strong> ' + g.doctrina + '</div>';
+      }
+
       html += '</div>';
     }
 

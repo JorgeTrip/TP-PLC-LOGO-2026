@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { estilosCss } from '../presentacion/estilosGlobales.js';
 import { estilosModalChangelogCss } from '../presentacion/estilosModalChangelog.js';
+import { estilosGuiaLogoCss } from '../presentacion/estilosGuiaLogo.js';
 import { generarEncabezadoHtml } from './plantillaHtml.js';
 import { generarModalChangelogHtml, generarScriptModalChangelog } from './generadorModalChangelog.js';
 import { generarScriptCliente } from './generadorScriptCliente.js';
@@ -27,7 +28,7 @@ function obtenerDatosChangelog() {
 
 export function compilarDocumentoHtml() {
   const changelogData = obtenerDatosChangelog();
-  const estilosCompletos = `${estilosCss}\n${estilosModalChangelogCss}`;
+  const estilosCompletos = [estilosCss, estilosModalChangelogCss, estilosGuiaLogoCss].join('\n');
   const encabezado = generarEncabezadoHtml(estilosCompletos);
   const modalChangelogHtml = generarModalChangelogHtml(changelogData);
   const scriptCliente = generarScriptCliente();
