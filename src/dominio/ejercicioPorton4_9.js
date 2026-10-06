@@ -1,6 +1,6 @@
 /**
  * Especificación formal y simulación de Ejercicio 4.9: Portón Levadizo.
- * Mapeo 1:1 con bloques de función especial Relé Autoenclavador (RS) de LOGO!Soft (SF001 a SF004).
+ * Mapeo 1:1 con bloques de función especial Relé Autoenclavador (RS) de LOGO!Soft (B001 a B004).
  * Capa de dominio puro (IEC 61131-3 / Siemens LOGO! KOP).
  */
 
@@ -16,39 +16,36 @@ export const ejercicioPorton4_9 = {
     ['Q2', 'Contactor de motor - Sentido Cerrar', 'Digital / Relé', 'Salida energizada (portón en descenso)']
   ],
   soft: [
-    ['SF001', 'Relé RS', 'Etapa 1: Reposo cerrado (pin S: M8 / cierre; pin R: SF002)'],
-    ['SF002', 'Relé RS', 'Etapa 2: Abriendo (pin S: pulsar en reposo; pin R: tope /I2 o freno)'],
-    ['SF003', 'Relé RS', 'Etapa 3: Pausa / Tope abierto (pin S: freno/tope; pin R: SF004)'],
-    ['SF004', 'Relé RS', 'Etapa 4: Cerrando (pin S: pulsar en pausa; pin R: tope /I3 o freno)'],
-    ['M5', 'Marca flanco', 'Pulso monoestable de 1 ciclo al presionar pulsador I1'],
-    ['M6', 'Marca memoria', 'Registro de estado de I1 para ciclo siguiente'],
-    ['M8', 'Marca arranque', 'Inicialización en 1er scan para entrada Set de SF001']
+    ['B001', 'AND (flanco)', 'Detección de flanco de pulsación I1'],
+    ['B002', 'Relé autoenclavador', 'Etapa 1: Reposo cerrado'],
+    ['B003', 'Relé autoenclavador', 'Etapa 2: Abriendo'],
+    ['B004', 'Relé autoenclavador', 'Etapa 3: Pausa / Tope abierto'],
+    ['B005', 'Relé autoenclavador', 'Etapa 4: Cerrando']
   ],
   eq: [
-    'M5 = I1 · NOT(M6) ; M6 = I1  (Detección flanco I1)',
-    'SF001_S = M8 + SF004 · (NOT(I3) + M5) ; SF001_R = SF002',
-    'SF002_S = SF001 · M5 ; SF002_R = NOT(I2) + M5',
-    'SF003_S = SF002 · (NOT(I2) + M5) ; SF003_R = SF004',
-    'SF004_S = SF003 · M5 ; SF004_R = NOT(I3) + M5',
-    'Q1 = SF002 · NOT(Q2) ; Q2 = SF004 · NOT(Q1)'
+    'B001 = AND_Flanco(I1)',
+    'Set(B002) = M8 + B005 · (NOT(I3) + B001) ; Reset(B002) = B003',
+    'Set(B003) = B002 · B001 ; Reset(B003) = NOT(I2) + B001',
+    'Set(B004) = B003 · (NOT(I2) + B001) ; Reset(B004) = B005',
+    'Set(B005) = B004 · B001 ; Reset(B005) = NOT(I3) + B001',
+    'Q1 = B003 · NOT(Q2) ; Q2 = B005 · NOT(Q1)'
   ],
-  sol: 'Esquema secuencial con mapeo 1:1 para LOGO!Soft Comfort basado en 4 bloques de función especial Relé Autoenclavador RS (SF001 a SF004) y secuencia de scan según norma Grafcet. En LOGO!Soft, cada bloque RS dispone de dos terminales físicos independientes: entrada S (Set, patita superior) y entrada R (Reset, patita media). Para evitar carreras de escaneo donde una memoria se borre antes de encender la siguiente, el orden de renglones asegura primero el Set de la etapa entrante y luego el Reset de la saliente: R4 activa SF002 antes del reset de SF001 en R5; R6 activa la pausa SF003 antes del reset de SF002 en R7; y R8 activa SF004 antes del reset de SF003 en R9. Los motores Q1 y Q2 son excitados por SF002 y SF004 con interbloqueo negado cruzado.',
-  e: '¿Cómo garantizar transiciones seguras en LOGO!Soft con relés autoenclavadores? Siguiendo el principio universal de Grafcet: activar la etapa siguiente antes de desactivar la previa. Al ordenar los peldaños para que el Set de la etapa entrante se procese antes del Reset de la saliente (por ejemplo, R6 activa la pausa SF003 antes de que R7 apague la apertura SF002), se asegura que el contacto de la etapa actual esté disponible para conmutar la memoria posterior sin carreras de scan. Los contactores de potencia Q1 y Q2 cuentan con interbloqueo cruzado /Q2 y /Q1.',
+  sol: 'Esquema secuencial con mapeo 1:1 para LOGO!Soft Comfort basado en el bloque AND (flanco) B001 y 4 bloques Relé Autoenclavador RS (B002 a B005) según norma Grafcet. En LOGO!Soft, cada bloque RS dispone de terminales físicos independientes S y R. Para evitar carreras de escaneo, el orden de renglones asegura el Set de la etapa entrante antes del Reset de la saliente: R3 activa B003 antes del reset de B002 en R4; R5 activa B004 antes del reset de B003 en R6; y R7 activa B005 antes del reset de B004 en R8. Los motores Q1 y Q2 son comandados por B003 y B005 con interbloqueo cruzado /Q2 y /Q1.',
+  e: '¿Cómo garantizar transiciones seguras en LOGO!Soft con relés autoenclavadores? Siguiendo el principio universal de Grafcet: activar la etapa siguiente antes de desactivar la previa. Al ordenar los peldaños para que el Set de la etapa entrante se procese antes del Reset de la saliente (por ejemplo, R5 activa la pausa B004 antes de que R6 apague la apertura B003), se asegura que el contacto de la etapa actual esté disponible para conmutar la memoria posterior sin carreras de escaneo. Los contactores de potencia Q1 y Q2 cuentan con interbloqueo cruzado /Q2 y /Q1.',
   i: [['I1', 'Pulsador portón', 'p'], ['I2', 'Fin ABIERTO', 's', 1], ['I3', 'Fin CERRADO', 's', 1, 1]],
   o: ['Q1', 'Q2'],
   r: [
-    { c: 'R1: Pulso de flanco positivo M5 = I1 · NOT(M6)', s: ['I1', '/M6'], o: 'M5' },
-    { c: 'R2: Registro de estado de I1 para ciclo siguiente M6 = I1', s: ['I1'], o: 'M6' },
-    { c: 'R3: Entrada Set (S) de SF001 (Reposo): inicialización M8 o fin de cierre', p: [['M8'], ['SF004', '/I3'], ['SF004', 'M5']], o: 'SF001 (S)' },
-    { c: 'R4: Entrada Set (S) de SF002 (Abriendo): arranque al pulsar en reposo', s: ['SF001', 'M5'], o: 'SF002 (S)' },
-    { c: 'R5: Entrada Reset (R) de SF001 (Reposo): apagado al iniciar apertura SF002', s: ['SF002'], o: 'SF001 (R)' },
-    { c: 'R6: Entrada Set (S) de SF003 (Pausa): detención de apertura por tope /I2 o M5', p: [['SF002', '/I2'], ['SF002', 'M5']], o: 'SF003 (S)' },
-    { c: 'R7: Entrada Reset (R) de SF002 (Abriendo): detención por tope /I2 o pulsador M5', p: [['/I2'], ['M5']], o: 'SF002 (R)' },
-    { c: 'R8: Entrada Set (S) de SF004 (Cerrando): arranque al pulsar en pausa', s: ['SF003', 'M5'], o: 'SF004 (S)' },
-    { c: 'R9: Entrada Reset (R) de SF003 (Pausa): apagado al iniciar cierre SF004', s: ['SF004'], o: 'SF003 (R)' },
-    { c: 'R10: Entrada Reset (R) de SF004 (Cerrando): detención por tope /I3 o pulsador M5', p: [['/I3'], ['M5']], o: 'SF004 (R)' },
-    { c: 'R11: Motor apertura Q1 gobernado por etapa SF002 con interbloqueo negado /Q2', s: ['SF002', '/Q2'], o: 'Q1' },
-    { c: 'R12: Motor cierre Q2 gobernado por etapa SF004 con interbloqueo negado /Q1', s: ['SF004', '/Q1'], o: 'Q2' }
+    { c: 'R1: Contacto NA I1 conectado a la entrada del bloque AND (flanco) B001', s: ['I1'], o: '[AND B001]' },
+    { c: 'R2: Paralelo de inicialización M8 y fin de carrera [B005 · (/I3 + B001)] al pin Set (S) de B002', p: [['M8'], ['B005', '/I3'], ['B005', 'B001']], o: 'S B002' },
+    { c: 'R3: Contactos en serie NA B002 y NA B001 conectados al pin Set (S) de B003', s: ['B002', 'B001'], o: 'S B003' },
+    { c: 'R4: Contacto NA B003 conectado al pin Reset (R) de B002', s: ['B003'], o: 'R B002' },
+    { c: 'R5: Contacto NA B003 en serie con el paralelo [/I2 + B001] conectado al pin Set (S) de B004', p: [['B003', '/I2'], ['B003', 'B001']], o: 'S B004' },
+    { c: 'R6: Paralelo de contacto NC /I2 y NA B001 conectado al pin Reset (R) de B003', p: [['/I2'], ['B001']], o: 'R B003' },
+    { c: 'R7: Contactos en serie NA B004 y NA B001 conectados al pin Set (S) de B005', s: ['B004', 'B001'], o: 'S B005' },
+    { c: 'R8: Contacto NA B005 conectado al pin Reset (R) de B004', s: ['B005'], o: 'R B004' },
+    { c: 'R9: Paralelo de contacto NC /I3 y NA B001 conectado al pin Reset (R) de B005', p: [['/I3'], ['B001']], o: 'R B005' },
+    { c: 'R10: Contacto NA B003 en serie con enclavamiento NC /Q2 conectado a la bobina abrir ( Q1 )', s: ['B003', '/Q2'], o: 'Q1' },
+    { c: 'R11: Contacto NA B005 en serie con enclavamiento NC /Q1 conectado a la bobina cerrar ( Q2 )', s: ['B005', '/Q1'], o: 'Q2' }
   ],
   ejecutar: (S, I) => {
     if (!S.iniciado) {
@@ -60,12 +57,19 @@ export const ejercicioPorton4_9 = {
     S.m6 = Boolean(I.I1);
 
     if (S.b1 && S.m5) {
+      // De cerrado a abriendo
       S.b2 = true; S.b1 = false;
     } else if (S.b2 && (!I.I2 || S.m5)) {
+      // De abriendo a pausa (tope abierto) o parada por pulsación
       S.b3 = true; S.b2 = false;
     } else if (S.b3 && S.m5) {
+      // De pausa a cerrando
       S.b4 = true; S.b3 = false;
-    } else if (S.b4 && (!I.I3 || S.m5)) {
+    } else if (S.b4 && S.m5) {
+      // Pulsación durante cerrando: volver a cerrado inmediatamente
+      S.b1 = true; S.b4 = false;
+    } else if (S.b4 && (!I.I3)) {
+      // Fin de carrera inferior alcanzado: garantizar estado cerrado
       S.b1 = true; S.b4 = false;
     }
 
@@ -76,10 +80,17 @@ export const ejercicioPorton4_9 = {
     S.info = ['Parado (cerrado)', 'ABRIENDO PORTÓN (Q1)', 'Parado (abierto / pausa)', 'CERRANDO PORTÓN (Q2)'][idx];
     return {
       Q1: q1, Q2: q2,
-      SF001: Boolean(S.b1), SF002: Boolean(S.b2), SF003: Boolean(S.b3), SF004: Boolean(S.b4),
-      B001: Boolean(S.b1), B002: Boolean(S.b2), B003: Boolean(S.b3), B004: Boolean(S.b4),
-      M1: Boolean(S.b1), M2: Boolean(S.b2), M3: Boolean(S.b3), M4: Boolean(S.b4),
-      M5: Boolean(S.m5), M6: Boolean(S.m6)
+      B001: Boolean(S.m5),
+      B002: Boolean(S.b1),
+      B003: Boolean(S.b2),
+      B004: Boolean(S.b3),
+      B005: Boolean(S.b4),
+      M1: Boolean(S.b1),
+      M2: Boolean(S.b2),
+      M3: Boolean(S.b3),
+      M4: Boolean(S.b4),
+      M5: Boolean(S.m5),
+      M6: Boolean(S.m6)
     };
   }
 };

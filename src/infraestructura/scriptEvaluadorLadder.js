@@ -62,9 +62,9 @@ export function generarScriptEvaluadorLadder() {
         const nom = int.slice(4).trim();
         return { esBloque: true, pin: 'Trg', nom: nom, grupo: nom };
       }
-      const matchTipo = int.match(/^(TON|TP|TP_Retrig|CTU|Async)\\s+(.+)$/);
+      const matchTipo = int.match(/^(TON|TP|TP_Retrig|Barrido|AND|CTU|Async)\\s+(.+)$/);
       if (matchTipo) {
-        const pin = matchTipo[1] === 'Async' ? 'En' : (matchTipo[1] === 'CTU' ? 'Cnt' : 'Trg');
+        const pin = matchTipo[1] === 'Async' ? 'En' : (matchTipo[1] === 'CTU' ? 'Cnt' : (matchTipo[1] === 'AND' ? 'IN' : 'Trg'));
         return { esBloque: true, pin, nom: int, grupo: matchTipo[2].split('|')[0].trim() };
       }
       return { esBloque: true, pin: 'IN', nom: int, grupo: int };

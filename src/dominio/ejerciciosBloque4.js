@@ -48,33 +48,32 @@ export const ejerciciosBloque4 = [
       ['Q2', 'Bomba de impulsión cloacal 2', 'Digital / Relé', 'Salida energizada en turnos pares (2, 4, 6...)']
     ],
     soft: [
-      ['SF001', 'Relé de impulsos', 'Conmuta de 0 a 1 en el 1er ciclo por flanco ascendente de I1 y alterna sucesivamente']
+      ['B001', 'Relé de impulsos', 'Conmuta en cada flanco de demanda I1 (0 a 1 en 1er ciclo)']
     ],
     eq: [
-      'SF001_Trg = Flanco_Ascendente(I1)',
-      'Q1 = I1 · SF001 · I4',
-      'Q2 = I1 · NOT(SF001) · I4'
+      'B001_Trg = Flanco_Ascendente(I1)',
+      'Q1 = I4 · I1 · B001',
+      'Q2 = I4 · I1 · NOT(B001)'
     ],
-    sol: 'Durante la presencia de demanda (I1 = 1), el circuito deriva la alimentación hacia Q1 si SF001 = 1 (a través de su contacto normalmente abierto), o hacia Q2 si SF001 = 0 (a través de su contacto normalmente cerrado). Dado que el relé de impulsos SF001 se inicializa en 0 y es disparado en el renglón 1 por el flanco ascendente de I1, la memoria conmuta a 1 en el mismo ciclo en que comienza la primera demanda, garantizando que el ciclo inicie por Q1 y continúe con la secuencia requerida Q1 - Q2 - Q1 - Q2. Seguridad industrial (Doctrina "Lo que no va por programa"): La parada de emergencia PE I4 está cableada electromecánicamente en serie con los contactores de hardware; en software abre como contacto NA garantizando interrupción inmediata ante accionamiento o corte de cable.',
-    e: '¿Por qué asignar Q1 a contacto abierto y Q2 a cerrado en LOGO!Soft? Al disparar el relé de impulsos SF001 en el renglón 1 con el flanco ascendente de I1, SF001 conmuta de 0 a 1 en el primer scan de la primera demanda. Al asociar la Bomba 1 (Q1) al contacto abierto [ SF001 ], arranca inmediatamente en el ciclo 1. En la segunda demanda, SF001 conmuta a 0 y activa la Bomba 2 (Q2) mediante el contacto normalmente cerrado [/ SF001 /]. La parada PE actúa en hardware y software bajo criterio fail-safe.',
+    sol: 'Durante la presencia de demanda (I1 = 1), el circuito deriva la alimentación hacia Q1 si B001 = 1 (a través de su contacto normalmente abierto), o hacia Q2 si B001 = 0 (a través de su contacto normalmente cerrado). Dado que el relé de impulsos B001 se inicializa en 0 y es disparado en el renglón 1 por el flanco ascendente de I1, la memoria conmuta a 1 en el mismo ciclo en que comienza la primera demanda, garantizando que el ciclo inicie por Q1 y continúe con la secuencia requerida Q1 - Q2 - Q1 - Q2. Seguridad industrial (Doctrina "Lo que no va por programa"): La parada de emergencia PE I4 está cableada electromecánicamente en serie con los contactores de hardware; en software abre como contacto NA garantizando interrupción inmediata ante accionamiento o corte de cable.',
+    e: '¿Por qué asignar Q1 a contacto abierto y Q2 a cerrado en LOGO!Soft? Al disparar el relé de impulsos B001 en el renglón 1 con el flanco ascendente de I1, B001 conmuta de 0 a 1 en el primer scan de la primera demanda. Al asociar la Bomba 1 (Q1) al contacto abierto [ B001 ], arranca inmediatamente en el ciclo 1. En la segunda demanda, B001 conmuta a 0 y activa la Bomba 2 (Q2) mediante el contacto normalmente cerrado [/ B001 /]. La parada PE actúa en hardware y software bajo criterio fail-safe.',
     i: [['I1', 'Flotante demanda', 's'], ['I4', 'PE Emergencia', 'p', 1]],
     o: ['Q1', 'Q2'],
     r: [
-      { c: 'R1: Disparo de relé de impulsos SF001 en flanco ascendente de demanda I1', s: ['I1'], o: '[Trg SF001]' },
-      { c: 'R2: Bomba 1 habilitada por contacto abierto [ SF001 ] condicionado a demanda I1 y PE I4', s: ['I4', 'I1', 'SF001'], o: 'Q1' },
-      { c: 'R3: Bomba 2 habilitada por contacto cerrado [/ SF001 /] condicionado a demanda I1 y PE I4', s: ['I4', 'I1', '/SF001'], o: 'Q2' }
+      { c: 'R1: Disparo de relé de impulsos B001 en flanco ascendente de demanda I1', s: ['I1'], o: '[Trg B001]' },
+      { c: 'R2: Bomba 1 habilitada por contacto abierto [ B001 ] condicionado a demanda I1 y PE I4', s: ['I4', 'I1', 'B001'], o: 'Q1' },
+      { c: 'R3: Bomba 2 habilitada por contacto cerrado [/ B001 /] condicionado a demanda I1 y PE I4', s: ['I4', 'I1', '/B001'], o: 'Q2' }
     ],
     ejecutar: (S, I) => {
-      if (!S.previoDemanda && I.I1) S.sf001 = !S.sf001;
+      if (!S.previoDemanda && I.I1) S.b001 = !S.b001;
       S.previoDemanda = Boolean(I.I1);
-      S.f = Boolean(S.sf001);
-      S.b001 = Boolean(S.sf001);
-      S.info = !I.I4 ? '🛑 PARADA DE EMERGENCIA' : `Turno asignado: ${S.sf001 ? 'Bomba 1 (Q1)' : 'Bomba 2 (Q2)'}`;
+      S.f = Boolean(S.b001);
+      S.info = !I.I4 ? '🛑 PARADA DE EMERGENCIA' : `Turno asignado: ${S.b001 ? 'Bomba 1 (Q1)' : 'Bomba 2 (Q2)'}`;
       return {
-        Q1: Boolean(I.I1 && Boolean(S.sf001) && I.I4),
-        Q2: Boolean(I.I1 && !S.sf001 && I.I4),
-        SF001: Boolean(S.sf001),
-        B001: Boolean(S.sf001)
+        Q1: Boolean(I.I1 && Boolean(S.b001) && I.I4),
+        Q2: Boolean(I.I1 && !S.b001 && I.I4),
+        B001: Boolean(S.b001),
+        SF001: Boolean(S.b001)
       };
     }
   }

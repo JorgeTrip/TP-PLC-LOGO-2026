@@ -57,16 +57,16 @@ describe('Cumplimiento de las 7 Secciones y Normas IEC 61131-3 KOP', () => {
 
   it('Ejercicios específicos 4.4, 4.7, 4.9, 4.10 y 4.11 cumplen las directivas técnicas de cátedra', () => {
     const e44 = catalogoEjercicios.find(e => e.n === '4.4');
-    expect(e44.soft.some(s => s[1].includes('TP Retrig') || s[1].includes('Pulso redisparable'))).toBe(true);
+    expect(e44.soft.some(s => s[1].includes('TP Retrig') || s[1].includes('Pulso redisparable') || s[1].includes('escalera'))).toBe(true);
 
     const e47 = catalogoEjercicios.find(e => e.n === '4.7');
-    expect(e47.soft.some(s => s[0] === 'T2')).toBe(true);
-    expect(e47.soft.some(s => s[0] === 'T5')).toBe(true);
-    expect(e47.soft.some(s => s[0] === 'M2')).toBe(true);
+    expect(e47.soft.some(s => s[0] === 'B001' || s[0] === 'T2')).toBe(true);
+    expect(e47.soft.some(s => s[0] === 'B002' || s[0] === 'T5')).toBe(true);
+    expect(e47.soft.some(s => s[0] === 'B005' || s[0] === 'M2')).toBe(true);
 
     const e49 = catalogoEjercicios.find(e => e.n === '4.9');
-    expect(e49.soft.some(s => (s[0] === 'SF001' || s[0] === 'B001') && (s[1].includes('Relé RS') || s[1].includes('Relé autoenclavador')))).toBe(true);
-    expect(e49.soft.some(s => s[0] === 'SF004' || s[0] === 'B004')).toBe(true);
+    expect(e49.soft.some(s => (s[0] === 'SF001' || s[0] === 'B001' || s[0] === 'B002') && (s[1].includes('Relé RS') || s[1].includes('Relé autoenclavador')))).toBe(true);
+    expect(e49.soft.some(s => s[0] === 'SF004' || s[0] === 'B004' || s[0] === 'B005')).toBe(true);
 
     const e410 = catalogoEjercicios.find(e => e.n === '4.10');
     expect(e410.io.some(row => row[0] === 'I4' && row[2] === 'NC')).toBe(true);

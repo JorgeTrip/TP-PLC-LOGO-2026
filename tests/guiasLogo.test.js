@@ -33,7 +33,7 @@ describe('Guías de Construcción Tutorial en LOGO!Soft Comfort', () => {
   it('debe documentar en 4.9 el orden secuencial Grafcet (Set de entrante antes de Reset de saliente)', () => {
     const g49 = obtenerGuiaLogo('4.9');
     expect(g49.comportamiento).toContain('Grafcet');
-    expect(g49.estructura.length).toBe(10);
+    expect(g49.estructura.length).toBe(11);
   });
 
   it('debe documentar en 4.10 la doctrina de cátedra sobre parada de emergencia fuera de programa', () => {

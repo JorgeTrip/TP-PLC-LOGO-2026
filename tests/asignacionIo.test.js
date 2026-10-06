@@ -48,11 +48,11 @@ describe('Estructura canónica de Asignación de I/O y Recursos de Software', ()
 
   it('Ejercicios con temporizadores o marcas deben declararlos en soft y no en io', () => {
     const ej43 = catalogoEjercicios.find(e => e.n === '4.3');
-    expect(ej43.soft.some(s => s[0] === 'T1')).toBe(true);
-    expect(ej43.io.some(row => row[0] === 'T1')).toBe(false);
+    expect(ej43.soft.some(s => s[0] === 'B002' || s[0] === 'T1')).toBe(true);
+    expect(ej43.io.some(row => row[0] === 'B002' || row[0] === 'T1')).toBe(false);
 
     const ej45 = catalogoEjercicios.find(e => e.n === '4.5');
-    expect(ej45.soft.some(s => s[0] === 'C1')).toBe(true);
-    expect(ej45.io.some(row => row[0] === 'C1')).toBe(false);
+    expect(ej45.soft.some(s => s[0] === 'B001' || s[0] === 'C1')).toBe(true);
+    expect(ej45.io.some(row => row[0] === 'B001' || row[0] === 'C1')).toBe(false);
   });
 });

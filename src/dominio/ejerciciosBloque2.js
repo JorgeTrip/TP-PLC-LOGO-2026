@@ -15,29 +15,28 @@ export const ejerciciosBloque2 = [
       ['Q2', 'Testigo de pre-aviso', 'Digital / Relé', 'Salida energizada desde t=10s hasta el reinicio']
     ],
     soft: [
-      ['T1', 'TP Retrig (15 s)', 'Temporización iluminación principal Q1'],
-      ['T2', 'TON (10 s)', 'Detección de aviso previo a los 10 s'],
-      ['M1', 'Relé RS', 'Enclava testigo Q2 hasta rearme I1']
+      ['B001', 'Interruptor alumbrado escalera', 'Temporización iluminación principal (15 s)'],
+      ['B002', 'Retardo a la conexión', 'Detección de ventana de pre-aviso (10 s)'],
+      ['B003', 'Relé autoenclavador', 'Enclavamiento de luz testigo Q2 hasta rearme']
     ],
     eq: [
-      'T1 = TP_Retrig(I1, 15 s)',
-      'Q1 = T1',
-      'T2_IN = Q1 · NOT(I1)  (TON, PT = 10 s)',
-      'Set(M1) = T2',
-      'Reset(M1) = I1',
-      'Q2 = M1'
+      'B001 = Escalera(I1, 15 s)',
+      'Q1 = B001',
+      'B002_Trg = B001 · NOT(I1) (TON, PT = 10 s)',
+      'Set(B003) = B002 ; Reset(B003) = I1',
+      'Q2 = B003'
     ],
     sol: 'Automatismo basado en un temporizador de pulso redisparable parametrizado en 15 segundos para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. Para garantizar que el pre-aviso acompañe el redisparo, el temporizador TON T2 (10 s) se alimenta mediante Q1 · NOT(I1): cualquier pulsación sobre I1 hace caer la entrada de T2 a 0, reseteando su acumulador y sincronizando el conteo de 10 segundos con el nuevo ciclo. Cumplido este plazo, T2 enclava M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 lo apaga.',
     e: '¿Qué es un temporizador de pulso redisparable y cómo se resetea el pre-aviso? Cada pulsación en I1 reinicia el tiempo total de 15 s de T1. Para evitar que el pre-aviso quede vencido al repulsar en medio del ciclo, la entrada del bloque TON T2 (10 s) se condiciona con Q1 AND NOT(I1): al pulsar I1 la señal cae a cero forzando el reseteo del temporizador. Al vencer los 10 s, T2 enclava la marca RS M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 resetea M1.',
     i: [['I1', 'Pulsador pasillo', 'p']],
     o: ['Q1', 'Q2'],
     r: [
-      { c: 'R1: Disparo de pulso redisparable T1 (15 s) por pulsación de I1', s: ['I1'], o: '[TP_Retrig T1 | 15s]' },
-      { c: 'R2: Accionamiento directo de luminaria principal Q1', s: ['T1'], o: 'Q1' },
-      { c: 'R3: Habilitación y sincronismo de temporizador TON T2 (10 s) con Q1 y /I1', s: ['Q1', '/I1'], o: '[TON T2 | 10s]' },
-      { c: 'R4: Enclavamiento del testigo M1 al cumplirse T2', s: ['T2'], o: 'S M1' },
-      { c: 'R5: Rearme y apagado del testigo mediante pulsador I1', s: ['I1'], o: 'R M1' },
-      { c: 'R6: Comando de luz testigo Q2 desde marca memorizada M1', s: ['M1'], o: 'Q2' }
+      { c: 'R1: Disparo de pulso de escalera B001 (15 s) por pulsación de I1', s: ['I1'], o: '[TP_Retrig B001 | 15s]' },
+      { c: 'R2: Accionamiento directo de luminaria principal Q1', s: ['B001'], o: 'Q1' },
+      { c: 'R3: Sincronismo de temporizador TON B002 (10 s) con B001 y /I1', s: ['B001', '/I1'], o: '[TON B002 | 10s]' },
+      { c: 'R4: Entrada Set (S) del testigo en relé autoenclavador B003', s: ['B002'], o: 'S B003' },
+      { c: 'R5: Entrada Reset (R) del testigo B003 mediante pulsador I1', s: ['I1'], o: 'R B003' },
+      { c: 'R6: Comando de luz testigo Q2 desde contacto de bloque B003', s: ['B003'], o: 'Q2' }
     ],
     ejecutar: (S, I, dt) => {
       const pulsoI1 = detectarFlancoAscendente(S, 'pasillo', I.I1);
@@ -53,7 +52,16 @@ export const ejerciciosBloque2 = [
       }
       if (I.I1) S.m1 = false;
       S.info = S.activo ? `Tiempo: ${(S.t || 0).toFixed(1)} / 15.0 s` : (S.m1 ? 'Testigo en espera de reinicio' : 'Apagado');
-      return { Q1: Boolean(S.activo), Q2: Boolean(S.m1), T1: Boolean(S.activo), T2: Boolean(S.activo && S.t >= 10 && !I.I1), M1: Boolean(S.m1) };
+      return {
+        Q1: Boolean(S.activo),
+        Q2: Boolean(S.m1),
+        B001: Boolean(S.activo),
+        B002: Boolean(S.activo && S.t >= 10 && !I.I1),
+        B003: Boolean(S.m1),
+        T1: Boolean(S.activo),
+        T2: Boolean(S.activo && S.t >= 10 && !I.I1),
+        M1: Boolean(S.m1)
+      };
     }
   },
   {
@@ -67,20 +75,21 @@ export const ejerciciosBloque2 = [
       ['Q1', 'Motor de proceso productivo', 'Digital / Relé', 'Salida energizada durante el ciclo']
     ],
     soft: [
-      ['C1', 'CTU (PV=5)', 'Acumula 5 piezas y corta marcha de Q1']
+      ['B001', 'Contador adelante/atrás', 'Acumula 5 piezas y corta marcha de Q1 (On=5, Off=0)']
     ],
     eq: [
-      'C1_CU = Flanco_Ascendente(NOT(I2)) · Q1',
-      'C1_R = NOT(I3)',
-      'Q1 = (I1 + Q1) · NOT(C1)'
+      'B001_Cnt = Q1 · NOT(I2)',
+      'B001_R = NOT(I3)',
+      'Q1 = (I1 + Q1) · NOT(B001)'
     ],
-    sol: 'Proceso productivo gobernado por autorretención combinada con corte automático por límite de eventos. El pulsador I1 energiza el motor Q1 en serie con un contacto cerrado del contador C1. Para evitar registros espurios con la máquina detenida, la entrada de conteo CU se condiciona en serie con un contacto abierto de Q1: los pulsos generados por el captor de paso I2 (físicamente NC, evaluado negado) solo incrementan la cuenta durante la marcha efectiva del proceso. Al alcanzar 5 registros, la salida C1 conmuta a nivel alto, interrumpe la autorretención de Q1 y detiene el proceso. El sistema queda bloqueado frente a nuevas órdenes de arranque hasta que el operario acciona el pulsador de rearme I3 (NC).',
-    e: '¿Por qué condicionar la entrada de conteo con Q1 y cómo interactúa con I2? Condicionar la entrada CU con un contacto abierto de marcha Q1 garantiza que solo se computen piezas cuando el motor está en movimiento, evitando descalibrar el lote por manipulaciones manuales o ruidos con la máquina parada. El captor I2 es normal cerrado por seguridad (1 en reposo) y abre a 0 al pasar una pieza; en Ladder se programa invertido /I2 en serie con Q1. Al alcanzar 5 pulsos (PV=5), el contacto /C1 abre la autorretención de Q1 y detiene el motor.',
+    sol: 'Proceso productivo gobernado por autorretención combinada con corte automático por límite de eventos. El pulsador I1 energiza el motor Q1 en serie con un contacto cerrado del contador B001. Para evitar registros espurios con la máquina detenida, la entrada de conteo Cnt se condiciona en serie con un contacto abierto de Q1: los pulsos generados por el captor de paso I2 (físicamente NC, evaluado negado) solo incrementan la cuenta durante la marcha efectiva del proceso. Al alcanzar 5 registros, la salida B001 conmuta a nivel alto, interrumpe la autorretención de Q1 y detiene el proceso. El sistema queda bloqueado frente a nuevas órdenes de arranque hasta que el operario acciona el pulsador de rearme I3 (NC).',
+    e: '¿Por qué condicionar la entrada de conteo con Q1 y cómo interactúa con I2? Condicionar la entrada Cnt con un contacto abierto de marcha Q1 garantiza que solo se computen piezas cuando el motor está en movimiento, evitando descalibrar el lote por manipulaciones manuales o ruidos con la máquina parada. El captor I2 es normal cerrado por seguridad (1 en reposo) y abre a 0 al pasar una pieza; en Ladder se programa invertido /I2 en serie con Q1. Al alcanzar 5 pulsos, el contacto /B001 abre la autorretención de Q1 y detiene el motor.',
     i: [['I1', 'Arranque', 'p'], ['I2', 'Sensor pulsos', 'p', 1], ['I3', 'Reset contador', 'p', 1]],
     o: ['Q1'],
     r: [
-      { c: 'R1: Registro de conteo CU condicionado a marcha Q1 y reset manual en bloque CTU C1 (PV=5)', s: ['Q1', '/I2'], o: '[CTU C1 | PV=5 | R=/I3]' },
-      { c: 'R2: Motor Q1 con autorretención y corte por contacto /C1', p: [['I1'], ['Q1']], s: ['/C1'], o: 'Q1' }
+      { c: 'R1: Entrada de conteo Cnt en B001 condicionada a marcha Q1', s: ['Q1', '/I2'], o: 'B001 (Cnt)' },
+      { c: 'R2: Entrada de reset R en B001 por apertura de I3 (NC)', s: ['/I3'], o: 'B001 (R)' },
+      { c: 'R3: Motor Q1 con autorretención y corte por contacto /B001', p: [['I1'], ['Q1']], s: ['/B001'], o: 'Q1' }
     ],
     ejecutar: (S, I) => {
       if (S.q && detectarFlancoAscendente(S, 'pulso', !I.I2)) S.c = (S.c || 0) + 1;
@@ -89,7 +98,7 @@ export const ejerciciosBloque2 = [
       const limite = (S.c || 0) >= 5;
       S.q = Boolean((I.I1 || S.q) && !limite);
       S.info = `Pulsos registrados: ${S.c || 0} / 5${limite ? ' (LÍMITE ALCANZADO)' : (!S.q ? ' (Motor detenido - conteo en pausa)' : '')}`;
-      return { Q1: S.q, C1: limite };
+      return { Q1: S.q, B001: limite, C1: limite };
     }
   },
   {
@@ -104,10 +113,10 @@ export const ejerciciosBloque2 = [
       ['Q1', 'Salida de habilitación segura', 'Digital / Relé', 'Salida energizada tras secuencia exitosa']
     ],
     soft: [
-      ['M1', 'Relé RS', 'Memoriza ejecución válida Paso 1 (I2)'],
-      ['M2', 'Relé RS', 'Memoriza Paso 2 (I1 con M1)'],
-      ['M3', 'Relé RS', 'Memoriza Paso 3 (I3) y habilita Q1'],
-      ['B', 'Relé RS', 'Bandera de bloqueo ante error']
+      ['M1', 'Marca interna', 'Memoriza ejecución válida Paso 1 (I2)'],
+      ['M2', 'Marca interna', 'Memoriza Paso 2 (I1 con M1)'],
+      ['M3', 'Marca interna', 'Memoriza Paso 3 (I3) y habilita Q1'],
+      ['B', 'Marca interna', 'Bandera de bloqueo ante error']
     ],
     eq: [
       'Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2)) + (I2 · I1) + (I1 · I3) + (I2 · I3) + B',
