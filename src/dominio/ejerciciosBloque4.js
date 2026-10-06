@@ -21,8 +21,8 @@ export const ejerciciosBloque4 = [
       'Q1 = (I1 + Q1) · NOT(I3) · I4',
       'Q2 = (I2 + Q2) · NOT(I3) · I4'
     ],
-    sol: 'Esquema en cascada basado en circuitos independientes de autorretención con desenergización unificada. Al descender el fluido y cerrar el sensor S1 (NA), arranca la bomba principal Q1 y se enclava. Si la demanda supera el caudal aportado y el nivel alcanza el sensor crítico S2 (NA), arranca de forma solidaria la bomba auxiliar Q2 reteniéndose en paralelo. Cuando el volumen restablece la cota máxima S3 (NA), su contacto normalmente cerrado en Ladder abre simultáneamente ambas ramas y extingue el bombeo. El pulsador de emergencia I4 (físicamente NC) se programa como contacto abierto en serie al inicio de cada línea: conduce normalmente en reposo y corta toda alimentación instantáneamente ante accionamiento o corte de conductores.',
-    e: '¿Qué es el control en cascada en sistemas de bombeo? Es una estrategia para escalonar el consumo energético según la demanda de caudal. Al bajar el nivel y activarse S1 (I1), arranca la bomba principal Q1 y se autorretiene. Si el caudal no alcanza y el agua baja al sensor crítico S2 (I2), arranca la auxiliar Q2 aportando doble caudal. Al alcanzar el sensor superior S3 (I3), el contacto cerrado /I3 abre ambas ramas y detiene el bombeo. El pulsador de emergencia PE (I4, N/C) está cableado en serie: al presionarlo la señal cae a 0 y desenergiza todo al instante.',
+    sol: 'Esquema en cascada basado en autorretención escalonada con desenergización unificada. Al descender el fluido y cerrar S1 (NA), arranca la bomba principal Q1 y se enclava. Si la demanda supera el caudal y el agua alcanza el sensor crítico S2 (NA), arranca la auxiliar Q2. Cuando el fluido recupera la cota máxima S3 (NA), su contacto negado /I3 en Ladder abre simultáneamente ambas ramas y extingue el bombeo. Seguridad industrial (Doctrina "Lo que no va por programa"): El contacto físico NC del pulsador de emergencia PE se cablea electromecánicamente en serie con la alimentación del contactor en el circuito de potencia/mando de hardware. En Ladder, I4 actúa como corte de seguridad fail-safe (contacto abierto que vale 1 en reposo) y extingue de inmediato la autorretención interna de las bombas, evitando el arranque intempestivo automático al destrabar el pulsador hongo.',
+    e: '¿Por qué la parada de emergencia "no va por programa" según la cátedra? Un fallo de CPU o un relé de salida soldado mantendría el motor energizado si la parada fuera solo por software. Por norma, el contacto físico NC del pulsador hongo corta electromecánicamente la bobina del contactor en hardware. En Ladder, la entrada I4 ingresa como contacto abierto (1 en reposo): al accionarse o ante corte de cable, cae a 0, extingue al instante la autorretención de Q1 y Q2 y previene arranques intempestivos al rearmar el hongo.',
     i: [['I1', 'S1 Mínimo', 's'], ['I2', 'S2 Crítico', 's'], ['I3', 'S3 Máximo', 's'], ['I4', 'PE Emergencia', 'p', 1]],
     o: ['Q1', 'Q2'],
     r: [
@@ -30,9 +30,10 @@ export const ejerciciosBloque4 = [
       { c: 'R2: Bomba auxiliar Q2 con autorretención, corte por S3 y seguridad PE I4', p: [['I2'], ['Q2']], s: ['/I3', 'I4'], o: 'Q2' }
     ],
     ejecutar: (S, I) => {
+      if (!I.I4) { S.q1 = false; S.q2 = false; } // Extingue autorretención ante emergencia
       S.q1 = Boolean((I.I1 || S.q1) && !I.I3 && I.I4);
       S.q2 = Boolean((I.I2 || S.q2) && !I.I3 && I.I4);
-      S.info = !I.I4 ? '🛑 PARADA DE EMERGENCIA ACCIONADA' : `Bombas en marcha: ${S.q1 ? 'Q1' : ''}${S.q1 && S.q2 ? ' + ' : ''}${S.q2 ? 'Q2' : (!S.q1 ? 'Ninguna (Nivel adecuado)' : '')}`;
+      S.info = !I.I4 ? '🛑 PARADA DE EMERGENCIA ACCIONADA (Corte electromecánico y software)' : `Bombas en marcha: ${S.q1 ? 'Q1' : ''}${S.q1 && S.q2 ? ' + ' : ''}${S.q2 ? 'Q2' : (!S.q1 ? 'Ninguna (Nivel adecuado)' : '')}`;
       return { Q1: S.q1, Q2: S.q2 };
     }
   },
@@ -54,8 +55,8 @@ export const ejerciciosBloque4 = [
       'Q1 = I1 · SF001 · I4',
       'Q2 = I1 · NOT(SF001) · I4'
     ],
-    sol: 'Durante la presencia de demanda (I1 = 1), el circuito deriva la alimentación hacia Q1 si SF001 = 1 (a través de su contacto normalmente abierto), o hacia Q2 si SF001 = 0 (a través de su contacto normalmente cerrado). Dado que el relé de impulsos SF001 se inicializa en 0 y es disparado en el renglón 1 por el flanco ascendente de I1, la memoria conmuta a 1 en el mismo ciclo en que comienza la primera demanda, garantizando que el ciclo inicie por Q1 y continúe con la secuencia requerida Q1 - Q2 - Q1 - Q2. Por seguridad, la parada de emergencia I4 se programa en serie como contacto normalmente abierto.',
-    e: '¿Por qué asignar Q1 a contacto abierto y Q2 a cerrado en LOGO!Soft? Al disparar el relé de impulsos SF001 en el renglón 1 con el flanco ascendente de I1, SF001 conmuta de 0 a 1 en el primer scan de la primera demanda. Al asociar la Bomba 1 (Q1) al contacto abierto [ SF001 ], arranca inmediatamente en el ciclo 1. En la segunda demanda, SF001 conmuta a 0 y activa la Bomba 2 (Q2) mediante el contacto normalmente cerrado [/ SF001 /].',
+    sol: 'Durante la presencia de demanda (I1 = 1), el circuito deriva la alimentación hacia Q1 si SF001 = 1 (a través de su contacto normalmente abierto), o hacia Q2 si SF001 = 0 (a través de su contacto normalmente cerrado). Dado que el relé de impulsos SF001 se inicializa en 0 y es disparado en el renglón 1 por el flanco ascendente de I1, la memoria conmuta a 1 en el mismo ciclo en que comienza la primera demanda, garantizando que el ciclo inicie por Q1 y continúe con la secuencia requerida Q1 - Q2 - Q1 - Q2. Seguridad industrial (Doctrina "Lo que no va por programa"): La parada de emergencia PE I4 está cableada electromecánicamente en serie con los contactores de hardware; en software abre como contacto NA garantizando interrupción inmediata ante accionamiento o corte de cable.',
+    e: '¿Por qué asignar Q1 a contacto abierto y Q2 a cerrado en LOGO!Soft? Al disparar el relé de impulsos SF001 en el renglón 1 con el flanco ascendente de I1, SF001 conmuta de 0 a 1 en el primer scan de la primera demanda. Al asociar la Bomba 1 (Q1) al contacto abierto [ SF001 ], arranca inmediatamente en el ciclo 1. En la segunda demanda, SF001 conmuta a 0 y activa la Bomba 2 (Q2) mediante el contacto normalmente cerrado [/ SF001 /]. La parada PE actúa en hardware y software bajo criterio fail-safe.',
     i: [['I1', 'Flotante demanda', 's'], ['I4', 'PE Emergencia', 'p', 1]],
     o: ['Q1', 'Q2'],
     r: [

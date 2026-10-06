@@ -22,19 +22,19 @@ export const ejerciciosBloque2 = [
     eq: [
       'T1 = TP_Retrig(I1, 15 s)',
       'Q1 = T1',
-      'T2_IN = Q1  (TON, PT = 10 s)',
+      'T2_IN = Q1 · NOT(I1)  (TON, PT = 10 s)',
       'Set(M1) = T2',
       'Reset(M1) = I1',
       'Q2 = M1'
     ],
-    sol: 'Automatismo basado en un temporizador de pulso redisparable parametrizado en 15 segundos para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. La energización de Q1 comanda en paralelo un temporizador TON calibrado en 10 segundos, determinando la ventana previa de 5 segundos respecto del apagado. Cumplido este plazo, T2 enclava la marca M1 encendiendo el testigo Q2, el cual permanece encendido tras extinguirse Q1 hasta que una nueva pulsación en I1 resetea M1 y reinicia el ciclo.',
-    e: '¿Qué es un temporizador de pulso redisparable (relé de escalera)? Es una función donde cada pulso de entrada reinicia el tiempo fijado desde cero, garantizando que mantener presionado el pulsador no distorsione el intervalo total de 15 segundos. ¿Cómo se articula el pre-aviso de 5 segundos antes del corte? La propia salida Q1 excita un bloque TON calibrado a 10 segundos (15 s - 5 s). Al vencer los 10 s, T2 enclava la marca RS M1 encendiendo el testigo Q2. Cuando Q1 se apaga a los 15 s, Q2 permanece encendida de forma memorizada hasta que un nuevo usuario presiona I1, reseteando M1 e iniciando un nuevo ciclo.',
+    sol: 'Automatismo basado en un temporizador de pulso redisparable parametrizado en 15 segundos para la carga principal Q1. Cada pulsación sobre I1 reinicia la cuenta a cero sin importar el tiempo de presión física. Para garantizar que el pre-aviso acompañe el redisparo, el temporizador TON T2 (10 s) se alimenta mediante Q1 · NOT(I1): cualquier pulsación sobre I1 hace caer la entrada de T2 a 0, reseteando su acumulador y sincronizando el conteo de 10 segundos con el nuevo ciclo. Cumplido este plazo, T2 enclava M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 lo apaga.',
+    e: '¿Qué es un temporizador de pulso redisparable y cómo se resetea el pre-aviso? Cada pulsación en I1 reinicia el tiempo total de 15 s de T1. Para evitar que el pre-aviso quede vencido al repulsar en medio del ciclo, la entrada del bloque TON T2 (10 s) se condiciona con Q1 AND NOT(I1): al pulsar I1 la señal cae a cero forzando el reseteo del temporizador. Al vencer los 10 s, T2 enclava la marca RS M1 encendiendo el testigo Q2 hasta que una nueva pulsación en I1 resetea M1.',
     i: [['I1', 'Pulsador pasillo', 'p']],
     o: ['Q1', 'Q2'],
     r: [
       { c: 'R1: Disparo de pulso redisparable T1 (15 s) por pulsación de I1', s: ['I1'], o: '[TP_Retrig T1 | 15s]' },
       { c: 'R2: Accionamiento directo de luminaria principal Q1', s: ['T1'], o: 'Q1' },
-      { c: 'R3: Habilitación de temporizador TON T2 (10 s) desde Q1', s: ['Q1'], o: '[TON T2 | 10s]' },
+      { c: 'R3: Habilitación y sincronismo de temporizador TON T2 (10 s) con Q1 y /I1', s: ['Q1', '/I1'], o: '[TON T2 | 10s]' },
       { c: 'R4: Enclavamiento del testigo M1 al cumplirse T2', s: ['T2'], o: 'S M1' },
       { c: 'R5: Rearme y apagado del testigo mediante pulsador I1', s: ['I1'], o: 'R M1' },
       { c: 'R6: Comando de luz testigo Q2 desde marca memorizada M1', s: ['M1'], o: 'Q2' }
@@ -46,13 +46,14 @@ export const ejerciciosBloque2 = [
         S.activo = true;
         S.m1 = false;
       } else if (S.activo) {
-        S.t = (S.t || 0) + dt;
+        if (I.I1) S.t = 0; // Mientras I1 se mantiene pulsado durante el ciclo, T2 se mantiene en 0
+        else S.t = (S.t || 0) + dt;
         if (S.t >= 10) S.m1 = true;
         if (S.t >= 15) S.activo = false;
       }
       if (I.I1) S.m1 = false;
       S.info = S.activo ? `Tiempo: ${(S.t || 0).toFixed(1)} / 15.0 s` : (S.m1 ? 'Testigo en espera de reinicio' : 'Apagado');
-      return { Q1: Boolean(S.activo), Q2: Boolean(S.m1), T1: Boolean(S.activo), T2: Boolean(S.activo && S.t >= 10), M1: Boolean(S.m1) };
+      return { Q1: Boolean(S.activo), Q2: Boolean(S.m1), T1: Boolean(S.activo), T2: Boolean(S.activo && S.t >= 10 && !I.I1), M1: Boolean(S.m1) };
     }
   },
   {
@@ -122,9 +123,9 @@ export const ejerciciosBloque2 = [
     o: ['Q1'],
     r: [
       { c: 'R1: Detección y memoria de bloqueo B ante error de secuencia o pulsación simultánea', p: [['I1', '/M1'], ['I3', '/M2'], ['I1', 'I2'], ['I1', 'I3'], ['I2', 'I3']], s: ['/I4'], o: 'B' },
-      { c: 'R2: Paso 1: habilitación de marca M1 al pulsar I2', p: [['I2']], s: ['/I4', '/B'], o: 'M1' },
-      { c: 'R3: Paso 2: habilitación de marca M2 por I1 con I2 liberado y M1 activo', p: [['I1', '/I2', 'M1']], s: ['/I4', '/B'], o: 'M2' },
-      { c: 'R4: Paso 3: habilitación de marca M3 por I3 con I1 liberado y M2 activo', p: [['I3', '/I1', 'M2']], s: ['/I4', '/B'], o: 'M3' },
+      { c: 'R2: Paso 1: habilitación y autorretención de marca M1 al pulsar I2', p: [['I2'], ['M1']], s: ['/I4', '/B'], o: 'M1' },
+      { c: 'R3: Paso 2: habilitación y autorretención de M2 por I1 con I2 liberado y M1 activo', p: [['I1', '/I2', 'M1'], ['M2']], s: ['/I4', '/B'], o: 'M2' },
+      { c: 'R4: Paso 3: habilitación y autorretención de M3 por I3 con I1 liberado y M2 activo', p: [['I3', '/I1', 'M2'], ['M3']], s: ['/I4', '/B'], o: 'M3' },
       { c: 'R5: Salida de habilitación segura Q1 gobernada por etapa M3', s: ['M3'], o: 'Q1' }
     ],
     ejecutar: (S, I) => {

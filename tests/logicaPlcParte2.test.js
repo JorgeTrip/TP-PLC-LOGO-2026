@@ -133,6 +133,10 @@ describe('Simulación Lógica PLC: Ejercicios 4.7 a 4.11', () => {
     res = ej.ejecutar(estado, { I1: false, I2: false, I3: false, I4: false }, 0.05);
     expect(res.Q1).toBe(false);
     expect(res.Q2).toBe(false);
+    // Destrabar PE I4 (vuelve a 1): no debe haber arranque intempestivo sin demanda
+    res = ej.ejecutar(estado, { I1: false, I2: false, I3: false, I4: true }, 0.05);
+    expect(res.Q1).toBe(false);
+    expect(res.Q2).toBe(false);
   });
 
   it('4.11: Alternancia de Bombas para Reparto de Carga', () => {

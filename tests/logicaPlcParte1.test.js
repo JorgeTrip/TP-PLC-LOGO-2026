@@ -77,11 +77,16 @@ describe('Simulación Lógica PLC: Ejercicios 4.1 a 4.6', () => {
     res = ej.ejecutar(estado, { I1: false }, 2);
     expect(res.Q1).toBe(true);
     expect(res.Q2).toBe(true);
-    // Avanzar a 16 segundos (Q1 se apaga, Q2 queda encendida)
-    res = ej.ejecutar(estado, { I1: false }, 5);
+    // Redisparo a los 11s: repulsar I1 apaga testigo y reinicia cuenta a 0
+    res = ej.ejecutar(estado, { I1: true }, 0.05);
+    expect(res.Q1).toBe(true);
+    expect(res.Q2).toBe(false);
+    expect(estado.t).toBe(0);
+    // Soltar y avanzar a 16 segundos (Q1 se apaga, Q2 queda encendida)
+    res = ej.ejecutar(estado, { I1: false }, 16);
     expect(res.Q1).toBe(false);
     expect(res.Q2).toBe(true);
-    // Reinicio: pulsar I1 apaga testigo y reinicia Q1
+    // Reinicio final: pulsar I1 apaga testigo y reinicia Q1
     res = ej.ejecutar(estado, { I1: true }, 0.05);
     expect(res.Q1).toBe(true);
     expect(res.Q2).toBe(false);
