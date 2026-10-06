@@ -69,24 +69,25 @@ export const ejerciciosBloque2 = [
       ['C1', 'CTU (PV=5)', 'Acumula 5 piezas y corta marcha de Q1']
     ],
     eq: [
-      'C1_CU = Flanco_Ascendente(NOT(I2))',
+      'C1_CU = Flanco_Ascendente(NOT(I2)) · Q1',
       'C1_R = NOT(I3)',
       'Q1 = (I1 + Q1) · NOT(C1)'
     ],
-    sol: 'Proceso productivo gobernado por autorretención combinada con corte automático por límite de eventos. El pulsador I1 energiza el motor Q1 en serie con un contacto cerrado del contador C1. Los pulsos generados por el captor de paso I2 (físicamente NC) ingresan al borne de conteo CU mediante lectura negada que conmuta a 1 ante cada apertura. Al alcanzar 5 registros, la salida C1 conmuta a nivel alto, interrumpe la autorretención de Q1 y detiene el proceso. El sistema queda bloqueado frente a nuevas órdenes de arranque hasta que el operario acciona el pulsador de rearme I3 (NC).',
-    e: '¿Qué es un contador CTU y cómo interactúa con entradas NC? El captor de piezas I2 es físicamente normal cerrado por seguridad (1 en reposo); cada paso de pieza interrumpe el circuito pasando a 0. En Ladder se programa el contacto invertido /I2 en la entrada de conteo CU del bloque CTU. Al alcanzar 5 pulsos (PV=5), la salida del contador conmuta a 1 lógico. Su contacto /C1 en la línea de marcha se abre, extinguiendo la autorretención de Q1 e impidiendo arranques posteriores hasta que el rearme /I3 limpie el contador.',
+    sol: 'Proceso productivo gobernado por autorretención combinada con corte automático por límite de eventos. El pulsador I1 energiza el motor Q1 en serie con un contacto cerrado del contador C1. Para evitar registros espurios con la máquina detenida, la entrada de conteo CU se condiciona en serie con un contacto abierto de Q1: los pulsos generados por el captor de paso I2 (físicamente NC, evaluado negado) solo incrementan la cuenta durante la marcha efectiva del proceso. Al alcanzar 5 registros, la salida C1 conmuta a nivel alto, interrumpe la autorretención de Q1 y detiene el proceso. El sistema queda bloqueado frente a nuevas órdenes de arranque hasta que el operario acciona el pulsador de rearme I3 (NC).',
+    e: '¿Por qué condicionar la entrada de conteo con Q1 y cómo interactúa con I2? Condicionar la entrada CU con un contacto abierto de marcha Q1 garantiza que solo se computen piezas cuando el motor está en movimiento, evitando descalibrar el lote por manipulaciones manuales o ruidos con la máquina parada. El captor I2 es normal cerrado por seguridad (1 en reposo) y abre a 0 al pasar una pieza; en Ladder se programa invertido /I2 en serie con Q1. Al alcanzar 5 pulsos (PV=5), el contacto /C1 abre la autorretención de Q1 y detiene el motor.',
     i: [['I1', 'Arranque', 'p'], ['I2', 'Sensor pulsos', 'p', 1], ['I3', 'Reset contador', 'p', 1]],
     o: ['Q1'],
     r: [
-      { c: 'R1: Registro de conteo CU y reset manual en bloque CTU C1 (PV=5)', s: ['/I2'], o: '[CTU C1 | PV=5 | R=/I3]' },
+      { c: 'R1: Registro de conteo CU condicionado a marcha Q1 y reset manual en bloque CTU C1 (PV=5)', s: ['Q1', '/I2'], o: '[CTU C1 | PV=5 | R=/I3]' },
       { c: 'R2: Motor Q1 con autorretención y corte por contacto /C1', p: [['I1'], ['Q1']], s: ['/C1'], o: 'Q1' }
     ],
     ejecutar: (S, I) => {
-      if (detectarFlancoAscendente(S, 'pulso', !I.I2)) S.c = (S.c || 0) + 1;
+      if (S.q && detectarFlancoAscendente(S, 'pulso', !I.I2)) S.c = (S.c || 0) + 1;
+      else if (!S.q) detectarFlancoAscendente(S, 'pulso', !I.I2);
       if (!I.I3) S.c = 0;
       const limite = (S.c || 0) >= 5;
       S.q = Boolean((I.I1 || S.q) && !limite);
-      S.info = `Pulsos registrados: ${S.c || 0} / 5${limite ? ' (LÍMITE ALCANZADO)' : ''}`;
+      S.info = `Pulsos registrados: ${S.c || 0} / 5${limite ? ' (LÍMITE ALCANZADO)' : (!S.q ? ' (Motor detenido - conteo en pausa)' : '')}`;
       return { Q1: S.q, C1: limite };
     }
   },
@@ -108,32 +109,33 @@ export const ejerciciosBloque2 = [
       ['B', 'Relé RS', 'Bandera de bloqueo ante error']
     ],
     eq: [
-      'Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2))',
+      'Set(B) = (I1 · NOT(M1)) + (I3 · NOT(M2)) + (I2 · I1) + (I1 · I3) + (I2 · I3)',
       'Reset(B) = I4',
       'Set(M1) = I2 · NOT(B) ; Reset(M1) = I4 + B',
-      'Set(M2) = I1 · M1 · NOT(B) ; Reset(M2) = I4 + B',
-      'Set(M3) = I3 · M2 · NOT(B) ; Reset(M3) = I4 + B',
+      'Set(M2) = I1 · NOT(I2) · M1 · NOT(B) ; Reset(M2) = I4 + B',
+      'Set(M3) = I3 · NOT(I1) · M2 · NOT(B) ; Reset(M3) = I4 + B',
       'Q1 = M3'
     ],
-    sol: 'Máquina secuencial escalonada con lazo de interbloqueo preventivo. Cada etapa condiciona estrictamente el acceso a la siguiente: M1 memoriza la pulsación inicial de I2; M2 requiere M1 activo al presionar I1; y M3 exige M2 activo al presionar I3, habilitando la salida segura Q1. Cualquier accionamiento irregular (presionar I1 sin M1, o I3 sin M2) activa la marca de bloqueo B, la cual abre sus contactos normalmente cerrados en todas las líneas funcionales e inmoviliza el control. El pulsador I4 restablece las marcas de etapa y extingue el bloqueo.',
-    e: '¿Qué es una secuencia con enclavamiento escalonado? Cada etapa requiere que la anterior esté formalmente fijada en memoria. Si un operario pulsa I1 sin estar activo M1, o I3 sin estar activo M2, la lógica bifurca inmediatamente energizando la marca de bloqueo B. El contacto /B corta todas las ramas de habilitación impidiendo que se prosiga. Solo el rearme voluntario mediante I4 resetea el bloqueo y limpia las memorias para reiniciar la maniobra desde el Paso 1.',
+    sol: 'Máquina secuencial escalonada con lazo de interbloqueo preventivo y protección contra accionamientos simultáneos. Cada etapa condiciona estrictamente el acceso a la siguiente: M1 memoriza la pulsación inicial de I2; M2 exige M1 activo con I2 ya liberado al pulsar I1; y M3 exige M2 activo con I1 liberado al pulsar I3, habilitando la salida segura Q1. Cualquier accionamiento irregular (presionar I1 sin M1, I3 sin M2 o pulsar múltiples entradas simultáneamente) activa la marca de bloqueo B, la cual abre sus contactos normalmente cerrados e inmoviliza el control. El pulsador I4 restablece las marcas de etapa y extingue el bloqueo.',
+    e: '¿Cómo prevenir la vulneración de una secuencia de seguridad ante entradas simultáneas? En el renglón 1 se evalúa el bloqueo preventivo B: si se detectan dos o más pulsadores activos a la vez o un avance sin la etapa previa, B se enclava de inmediato. Asimismo, cada paso exige que el pulsador anterior ya esté liberado (/I2 en paso 2 y /I1 en paso 3). El contacto /B corta todas las líneas de avance. Solo el rearme voluntario mediante I4 resetea el bloqueo y limpia las memorias para reiniciar desde el Paso 1.',
     i: [['I1', 'Paso 2 (I1)', 'p'], ['I2', 'Paso 1 (I2)', 'p'], ['I3', 'Paso 3 (I3)', 'p'], ['I4', 'Reset secuencia', 'p']],
     o: ['Q1'],
     r: [
-      { c: 'R1: Detección y memoria de bloqueo B ante error de secuencia', p: [['I1', '/M1'], ['I3', '/M2']], s: ['/I4'], o: 'B' },
-      { c: 'R2: Paso 1: habilitación de marca M1 al pulsar I2', p: [['I2'], ['M1']], s: ['/I4', '/B'], o: 'M1' },
-      { c: 'R3: Paso 2: habilitación de marca M2 por I1 condicionada a M1', p: [['I1', 'M1'], ['M2']], s: ['/I4', '/B'], o: 'M2' },
-      { c: 'R4: Paso 3: habilitación de marca M3 por I3 condicionada a M2', p: [['I3', 'M2'], ['M3']], s: ['/I4', '/B'], o: 'M3' },
+      { c: 'R1: Detección y memoria de bloqueo B ante error de secuencia o pulsación simultánea', p: [['I1', '/M1'], ['I3', '/M2'], ['I1', 'I2'], ['I1', 'I3'], ['I2', 'I3']], s: ['/I4'], o: 'B' },
+      { c: 'R2: Paso 1: habilitación de marca M1 al pulsar I2', p: [['I2']], s: ['/I4', '/B'], o: 'M1' },
+      { c: 'R3: Paso 2: habilitación de marca M2 por I1 con I2 liberado y M1 activo', p: [['I1', '/I2', 'M1']], s: ['/I4', '/B'], o: 'M2' },
+      { c: 'R4: Paso 3: habilitación de marca M3 por I3 con I1 liberado y M2 activo', p: [['I3', '/I1', 'M2']], s: ['/I4', '/B'], o: 'M3' },
       { c: 'R5: Salida de habilitación segura Q1 gobernada por etapa M3', s: ['M3'], o: 'Q1' }
     ],
     ejecutar: (S, I) => {
       const { m1, m2, m3 } = S;
-      S.b = Boolean(((I.I1 && !m1) || (I.I3 && !m2) || S.b) && !I.I4);
+      const simultaneidad = (I.I1 && I.I2) || (I.I1 && I.I3) || (I.I2 && I.I3);
+      S.b = Boolean(((I.I1 && !m1) || (I.I3 && !m2) || simultaneidad || S.b) && !I.I4);
       S.m1 = Boolean((I.I2 || m1) && !I.I4 && !S.b);
-      S.m2 = Boolean(((I.I1 && S.m1) || m2) && !I.I4 && !S.b);
-      S.m3 = Boolean(((I.I3 && S.m2) || m3) && !I.I4 && !S.b);
+      S.m2 = Boolean(((I.I1 && !I.I2 && S.m1) || m2) && !I.I4 && !S.b);
+      S.m3 = Boolean(((I.I3 && !I.I1 && S.m2) || m3) && !I.I4 && !S.b);
       const pasoActual = S.m3 ? 3 : (S.m2 ? 2 : (S.m1 ? 1 : 0));
-      S.info = S.b ? '⚠️ SISTEMA BLOQUEADO (Orden incorrecto) - Pulsar I4' : `Paso activo: ${pasoActual} de 3`;
+      S.info = S.b ? '⚠️ SISTEMA BLOQUEADO (Orden incorrecto / simultáneo) - Pulsar I4' : `Paso activo: ${pasoActual} de 3`;
       return { Q1: Boolean(S.m3), M1: S.m1, M2: S.m2, M3: S.m3, B: S.b };
     }
   }

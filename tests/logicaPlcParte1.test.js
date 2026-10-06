@@ -90,12 +90,17 @@ describe('Simulación Lógica PLC: Ejercicios 4.1 a 4.6', () => {
   it('4.5: Conteo de 5 Pulsos y Reset Manual N/C', () => {
     const ej = obtenerEjercicioPorId('4.5');
     const estado = {};
-    // I2 e I3 son N/C (1 en reposo). Arrancar motor
+    // I2 e I3 son N/C (1 en reposo). Con motor parado, pulsar I2 no debe contar
+    ej.ejecutar(estado, { I1: false, I2: false, I3: true }, 0.05);
+    ej.ejecutar(estado, { I1: false, I2: true, I3: true }, 0.05);
+    expect(estado.c || 0).toBe(0);
+
+    // Arrancar motor Q1
     let res = ej.ejecutar(estado, { I1: true, I2: true, I3: true }, 0.05);
     expect(res.Q1).toBe(true);
     res = ej.ejecutar(estado, { I1: false, I2: true, I3: true }, 0.05);
     expect(res.Q1).toBe(true);
-    // 4 pulsos de I2 (pulsar = 0, soltar = 1)
+    // 4 pulsos de I2 durante la marcha
     for (let i = 0; i < 4; i++) {
       ej.ejecutar(estado, { I1: false, I2: false, I3: true }, 0.05);
       res = ej.ejecutar(estado, { I1: false, I2: true, I3: true }, 0.05);
@@ -138,5 +143,11 @@ describe('Simulación Lógica PLC: Ejercicios 4.1 a 4.6', () => {
     // Reset I4 desbloquea
     ej.ejecutar(estInvalido, { I1: false, I2: false, I3: false, I4: true }, 0.05);
     expect(estInvalido.b).toBe(false);
+
+    // Intento de vulneración por pulsación simultánea (I1, I2, I3 a la vez)
+    let estSimultaneo = {};
+    ej.ejecutar(estSimultaneo, { I1: true, I2: true, I3: true, I4: false }, 0.05);
+    expect(estSimultaneo.b).toBe(true);
+    expect(estSimultaneo.Q1).toBeFalsy();
   });
 });
